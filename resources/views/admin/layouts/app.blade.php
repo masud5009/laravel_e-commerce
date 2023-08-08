@@ -29,7 +29,7 @@
     <link rel="stylesheet" href="{{ asset('asset/admin/css/theme-default.css') }}"
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('asset/admin/css/demo.css') }}" />
-
+    <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('asset/admin/lib/perfect-scrollbar/perfect-scrollbar.js') }}" />
 

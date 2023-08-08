@@ -1,0 +1,11 @@
+.bg-menu
+{
+    background-color: #4f5962;
+    color: #c2c7d0;
+}
+.menu-link{
+    color: #c2c7d0;
+}
+.menu-link:hover{
+    color: #ffffff;
+}
