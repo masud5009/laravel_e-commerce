@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('frontend.layouts.app')
 @section('content')
         <!-- Featured Start -->
         <div class="container-fluid pt-5">
