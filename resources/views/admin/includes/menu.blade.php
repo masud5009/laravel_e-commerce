@@ -111,7 +111,7 @@
 
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="" class="menu-link">
+                    <a href="{{ route('category.index')}}" class="menu-link">
                         <div data-i18n="Without menu">Category</div>
                     </a>
                 </li>
