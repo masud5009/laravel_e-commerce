@@ -6,15 +6,36 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Yajra\DataTables\DataTables;
+
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categories = Category::orderBy('created_at', 'desc')->get();
-        return view('admin.pages.category.index', compact('categories'));
+        if ($request->ajax()) {
+
+
+            $categories = Category::all();
+
+            return DataTables::of($categories)
+                ->addColumn('action', function ($row) {
+                    return '<a href class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
+                                <i class="bx bx-edit"></i>
+                            </a>
+                            <a href class="btn-sm btn btn-danger">
+                                <i class="bx bx-trash"></i>
+                            </a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+
+
+
+        return view('admin.pages.category.index');
     }
 
     /**
@@ -30,17 +51,17 @@ class CategoryController extends Controller
      */
     public function store(Request $req)
     {
-        $this->validate($req,[
+        $this->validate($req, [
             'name' => 'required',
             'description' => 'nullable',
         ]);
         $category = new Category();
         $category->name = $req->name;
-        $category->slug = Str::slug($req->name,'_');
+        $category->slug = Str::slug($req->name, '_');
         $category->description = $req->description;
         $category->save();
 
-        return response()->json(['success'=>'Category create success']);
+        return response()->json(['success' => 'Category create success']);
     }
 
     /**

@@ -52,23 +52,11 @@
                 <th>SL</th>
                 <th>Name</th>
                 <th>Description</th>
-                <th>Action</th>
+                <th>Actions</th>
             </tr>
         </thead>
-        <tbody id="data-table-body">
-            @foreach ($categories as $key => $cat)
-                <tr>
-                    <td>{{ $key + 1 }}</td>
-                    <td>{{ $cat->name }}</td>
-                    <td>{{ $cat->description }}</td>
-                    <td>
-                        <button class="btn btn-danger delete-category" data-category-id="{{ $cat->id }}"><i
-                                class='bx bx-trash-alt'></i></button>
-                        <button class="btn btn-success edit-category" data-category-id="{{ $cat->id }}"><i
-                                class='bx bx-edit'></i></button>
-                    </td>
-                </tr>
-            @endforeach
+        <tbody>
+
         </tbody>
     </table>
 @endsection
@@ -78,16 +66,28 @@
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <script type="text/javascript">
-        $(document).ready(function() {
-            $('#myTable').DataTable();
-        });
-    </script>
     <!-- store category -->
     <script>
         $(document).ready(function() {
+
             $('#modal-title').html('Add Category');
             $('#saveBtn').html('Add');
+
+
+
+
+            $('#myTable').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: '{{ route('category.index') }}',
+                columns: [
+                    {data: 'id'},
+                    {data: 'name'},
+                    { data: 'description'},
+                    { data: 'action', name: 'action', searchable: false, orderable: false }
+                ]
+            });
+
             var form = $('#ajaxform')[0];
 
             $('#saveBtn').click(function() {
@@ -105,7 +105,7 @@
                     },
                     success: function(response) {
                         $('#Modal').modal('hide');
-                        if(response){
+                        if (response) {
                             Swal.fire("Success", response.success, "success");
                         }
                     },
