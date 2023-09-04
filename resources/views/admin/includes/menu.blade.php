@@ -111,12 +111,12 @@
 
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{ route('category.index')}}" class="menu-link">
+                    <a href="{{ route('category.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Category</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('sub-category.index')}}" class="menu-link">
+                    <a href="{{ route('sub-category.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Sub Category</div>
                     </a>
                 </li>
