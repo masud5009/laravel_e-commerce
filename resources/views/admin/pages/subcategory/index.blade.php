@@ -12,8 +12,8 @@
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_category">
-            Add Category
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_subcategory">
+            Add Subategory
         </button>
     </div>
 
@@ -27,10 +27,20 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="category_id" id="category_id">
+                        <input type="hidden" name="subcategory_id" id="subcategory_id">
                         <div class="form-group mb-2">
                             <label class="mb-1">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="mb-1">Select Category <span class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="Default select example" name="category_name"
+                                id="select_category">
+                                <option selected disabled>Choose Option</option>
+                                @foreach ($category as $cat)
+                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
                         </div>
                         <div class="form-group">
                             <label class="mb-1">Description</label>
@@ -52,6 +62,7 @@
             <tr>
                 <th>SL</th>
                 <th>Name</th>
+                <th>Category</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -70,16 +81,27 @@
     <!-- store category -->
     <script>
         $(document).ready(function() {
+            $('#add_subcategory').click(function() {
+                $('#modal-title').html('Add Category');
+                $('#saveBtn').html('Add');
+                $('#name').val('');
+                $('#description').val('');
+                $('#select_category option[selected]').prop('selected', true);
+            });
+
             // Load data form serverside
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('category.index') }}',
+                ajax: '{{ route('sub-category.index') }}',
                 columns: [{
                         data: 'id'
                     },
                     {
                         data: 'name'
+                    },
+                    {
+                        data: 'category.name'
                     },
                     {
                         data: 'description'
@@ -90,22 +112,18 @@
                         searchable: false,
                         orderable: false
                     }
-                ],
-                order: [
-                    [1, 'DESC']
-                ],
-
+                ]
             });
-            // Create & Update Category
-            var form = $('#ajaxform')[0];
 
+            // Create Sub-category
+            var form = $('#ajaxform')[0];
             $('#saveBtn').click(function() {
-                var formData = new FormData(form);
+                var formData = new FormData(form)
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
-                    url: '{{ route('category.store') }}',
-                    method: 'POST',
+                    url: '{{ route('sub-category.store') }}',
+                    type: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -114,16 +132,12 @@
                     },
                     success: function(response) {
                         table.draw();
-
-                        $('#saveBtn').attr('disabled', false);
-                        $('#saveBtn').html('Adding...');
-
                         $('#name').val('');
                         $('#description').val('');
-                        $('#category_id').val('');
-
-
+                        $('#category_name').val('');
                         $('#Modal').modal('hide');
+
+
                         if (response) {
                             Swal.fire("Success", response.success, "success");
                         }
@@ -143,33 +157,32 @@
                 });
             });
 
-            // Edit categorty
+            // Edit category
             $('body').on('click', '.editBtn', function() {
                 var id = $(this).data('id');
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('category.edit', ['category' => '__category__']) }}'.replace(
-                        '__category__', id),
+                    url: '{{ route('sub-category.edit', ['sub_category' => '__subcategory__']) }}'
+                        .replace(
+                            '__subcategory__', id),
                     success: function(response) {
+                        //basic filed dynamic
                         $('.modal').modal('show');
-                        $('#modal-title').html('Edit Category');
+                        $('#modal-title').html('Edit Sub category');
                         $('#saveBtn').html('Update');
-                        $('#category_id').val(response.id);
+
+                        //input filed
+                        $('#select_category option[value="' + response.category_id + '"]').prop('selected', true);
                         $('#name').val(response.name);
                         $('#description').val(response.description);
                     }
                 });
             });
 
-            $('#add_category').click(function() {
-                $('#modal-title').html('Add Category');
-                $('#saveBtn').html('Add');
-            });
 
-
-            //Delete category
-            $('body').on('click', '.deletBtn', function() {
+             //Delete category
+             $('body').on('click', '.deletBtn', function() {
                 var id = $(this).data('id');
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 Swal.fire({
@@ -186,9 +199,9 @@
                     if (willDelete.value) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('category.destroy', ['category' => '__category__']) }}'
+                            url: '{{ route('sub-category.destroy', ['sub_category' => '__subcategory__']) }}'
                                 .replace(
-                                    '__category__', id),
+                                    '__subcategory__', id),
                             headers: {
                                 'X-CSRF-TOKEN': csrfToken
                             },
@@ -209,6 +222,7 @@
                     }
                 });
             });
+
         });
     </script>
 @endpush

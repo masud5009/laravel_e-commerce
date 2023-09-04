@@ -115,9 +115,6 @@
                     success: function(response) {
                         table.draw();
 
-                        $('#saveBtn').attr('disabled', false);
-                        $('#saveBtn').html('Adding...');
-
                         $('#name').val('');
                         $('#description').val('');
                         $('#category_id').val('');

@@ -18,7 +18,7 @@ class CategoryController extends Controller
         if ($request->ajax()) {
 
 
-            $categories = Category::orderBy('created_at', 'DESC')->get();
+            $categories = Category::all();
 
             return DataTables::of($categories)
                 ->addColumn('action', function ($row) {
