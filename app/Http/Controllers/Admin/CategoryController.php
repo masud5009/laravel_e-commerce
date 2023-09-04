@@ -18,14 +18,14 @@ class CategoryController extends Controller
         if ($request->ajax()) {
 
 
-            $categories = Category::all();
+            $categories = Category::orderBy('created_at', 'DESC')->get();
 
             return DataTables::of($categories)
                 ->addColumn('action', function ($row) {
-                    return '<a href class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
+                    return '<a href="javascript::void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-edit"></i>
                             </a>
-                            <a href class="btn-sm btn btn-danger">
+                            <a href="javascript::void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-trash"></i>
                             </a>';
                 })
@@ -49,19 +49,34 @@ class CategoryController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $req)
+    public function store(Request $request)
     {
-        $this->validate($req, [
-            'name' => 'required',
-            'description' => 'nullable',
-        ]);
-        $category = new Category();
-        $category->name = $req->name;
-        $category->slug = Str::slug($req->name, '_');
-        $category->description = $req->description;
-        $category->save();
+        if ($request->category_id) {
+            $category = Category::find($request->category_id);
 
-        return response()->json(['success' => 'Category create success']);
+            if (!$category) {
+                abort(404);
+            } else {
+                $category->update([
+                    'name' => $request->name,
+                    'slug' => Str::slug($request->name, '_'),
+                    'description' => $request->description
+                ]);
+                return response()->json(['success' => 'Category update success']);
+            }
+        } else {
+            $this->validate($request, [
+                'name' => 'required',
+                'description' => 'nullable',
+            ]);
+            $category = new Category();
+            $category->name = $request->name;
+            $category->slug = Str::slug($request->name, '_');
+            $category->description = $request->description;
+            $category->save();
+
+            return response()->json(['success' => 'Category create success']);
+        }
     }
 
     /**
@@ -78,6 +93,9 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $category = Category::find($id);
+        if (!$category) {
+            abort(404);
+        }
         return $category;
     }
 
@@ -86,13 +104,6 @@ class CategoryController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        $category = Category::findOrFail($id);
-        $category->name = $request->name;
-        $category->slug = Str::slug($request->name, '_');
-        $category->description = $request->description;
-        $category->save();
-
-        return response()->json(['status' => 'success', 'message' => 'Category updated successfully']);
     }
 
     /**
@@ -100,9 +111,13 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::find($id);
-        $category->delete();
+        $category = Category::destroy($id);
 
-        return response()->json(['message' => 'Category delete successfully'], 200);
+        if (!$category) {
+            abort(404);
+        }
+
+        return response()->json(['success' => 'Category deleted successfully']);
     }
+
 }
