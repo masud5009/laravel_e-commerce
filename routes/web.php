@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     ChilCategoryController,
     SeoController,
+    SmtpController,
     SubcategoryController
 };
 use Illuminate\Support\Facades\Auth;
@@ -18,9 +19,12 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('sub-category', SubcategoryController::class);
     Route::resource('child-category', ChilCategoryController::class);
     Route::resource('brand', BrandController::class);
-    // seo setting
-    Route::get('seo',[SeoController::class,'index'])->name('seo.index');
-    Route::post('seo',[SeoController::class,'update'])->name('seo.update');
+    // SEO setting
+    Route::get('seo', [SeoController::class, 'index'])->name('seo.index');
+    Route::post('seo', [SeoController::class, 'update'])->name('seo.update');
+    // SMTP setting
+    Route::get('smtp', [SmtpController::class, 'index'])->name('smtp.index');
+    Route::post('smtp', [SmtpController::class, 'update'])->name('smtp.update');
 });
 
 

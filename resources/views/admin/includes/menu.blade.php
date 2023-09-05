@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ route('admin.index') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg"
                     xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -162,7 +162,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('brand.index') }}" class="menu-link">
+            <a href="{{ route('smtp.index') }}" class="menu-link">
                 <div data-i18n="Without menu">SMTP Setting</div>
             </a>
         </li>
