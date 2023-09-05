@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     BrandController,
     CategoryController,
     ChilCategoryController,
+    SeoController,
     SubcategoryController
 };
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,9 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('sub-category', SubcategoryController::class);
     Route::resource('child-category', ChilCategoryController::class);
     Route::resource('brand', BrandController::class);
+    // seo setting
+    Route::get('seo',[SeoController::class,'index'])->name('seo.index');
+    Route::post('seo',[SeoController::class,'update'])->name('seo.update');
 });
 
 

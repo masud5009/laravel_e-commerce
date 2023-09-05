@@ -147,7 +147,7 @@
 
     <ul class="menu-sub">
         <li class="menu-item">
-            <a href="{{ route('category.index') }}" class="menu-link">
+            <a href="{{ route('seo.index') }}" class="menu-link">
                 <div data-i18n="Without menu">SEO Setting</div>
             </a>
         </li>
