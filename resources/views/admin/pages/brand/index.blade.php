@@ -12,14 +12,14 @@
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_childcategory">
-            Add Child Category
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_brand">
+            Add Brand
         </button>
     </div>
 
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
-        <form id="ajaxform">
+        <form id="ajaxform" enctype="multipart/form-data">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -27,30 +27,14 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="childcategory_id" id="childcategory_id">
+                        <input type="hidden" name="brand_id" id="brand_id">
                         <div class="form-group mb-2">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
                         </div>
                         <div class="form-group mb-2">
-                            <label class="form-label">Select Category <span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="category_name"
-                                id="select_category">
-                                <option selected disabled>Choose Option</option>
-                                @foreach ($category as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group mb-2">
-                            <label class="form-label">Select Sub Category <span class="text-danger">*</span></label>
-                            <select class="form-select" aria-label="Default select example" name="subcategory_name"
-                                id="select_subcategory">
-                                <option selected disabled>Choose Option</option>
-                                @foreach ($subcategory as $subcat)
-                                    <option value="{{ $subcat->id }}">{{ $subcat->name }}</option>
-                                @endforeach
-                            </select>
+                            <label class="form-label" for="logo">Upload Logo <span class="text-danger">*</span></label>
+                            <input type="file" class="form-control" id="logo" name="logo" />
                         </div>
                         <div class="form-group">
                             <label class="form-label">Description</label>
@@ -71,9 +55,8 @@
         <thead class="header">
             <tr>
                 <th>SL</th>
+                <th>Image</th>
                 <th>Name</th>
-                <th>Category</th>
-                <th>Subcategory</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -92,31 +75,36 @@
     <!-- store category -->
     <script>
         $(document).ready(function() {
-            $('#add_childcategory').click(function() {
-                $('#modal-title').html('Add Child Category');
+
+            $('#add_brand').click(function() {
+                $('#modal-title').html('Add Brand');
                 $('#saveBtn').html('Add');
                 $('#name').val('');
                 $('#description').val('');
-                $('#childcategory_id').val('');
-                $('#select_category option[selected]').prop('selected', true);
-                $('#select_subcategory option[selected]').prop('selected', true);
+                $('#brand_id').val('');
             });
+
             // Load data form serverside
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('child-category.index') }}',
+                ajax: '{{ route('brand.index') }}',
                 columns: [{
                         data: 'id'
                     },
                     {
+                        data: 'logo',
+                        render: function(data, type, full, meta) {
+                            if (data) {
+                                return '<img src="{{ asset('storage/brand') }}/' + data +
+                                    '" width="50" height="50">';
+                            } else {
+                                return '';
+                            }
+                        },
+                    },
+                    {
                         data: 'name'
-                    },
-                    {
-                        data: 'category.name'
-                    },
-                    {
-                        data: 'subcategory.name'
                     },
                     {
                         data: 'description'
@@ -131,14 +119,14 @@
 
             });
 
-            // Create Sub-category
+            // Create Brand
             var form = $('#ajaxform')[0];
             $('#saveBtn').click(function() {
                 var formData = new FormData(form)
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
-                    url: '{{ route('child-category.store') }}',
+                    url: '{{ route('brand.store') }}',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -150,8 +138,6 @@
                         table.draw();
                         $('#name').val('');
                         $('#description').val('');
-                        $('#select_category').val('');
-                        $('#select_subcategory').val('');
                         $('#Modal').modal('hide');
 
                         if (response) {
@@ -173,37 +159,30 @@
                 });
             });
 
-            // Edit category
+            //Edit Brand
             $('body').on('click', '.editBtn', function() {
                 var id = $(this).data('id');
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('child-category.edit', ['child_category' => '__childcategory__']) }}'
+                    url: '{{ route('brand.edit', ['brand' => '__brand__']) }}'
                         .replace(
-                            '__childcategory__', id),
+                            '__brand__', id),
                     success: function(response) {
                         //basic filed dynamic
                         $('.modal').modal('show');
-                        $('#modal-title').html('Edit Child category');
+                        $('#modal-title').html('Edit Brand');
                         $('#saveBtn').html('Update');
 
                         //input filed
-                        $('#select_category option[value="' + response.category_id + '"]').prop(
-                            'selected', true);
-                        $('#select_subcategory option[value="' + response.subcategory_id + '"]')
-                            .prop('selected', true);
                         $('#name').val(response.name);
                         $('#description').val(response.description);
-                        $('#childcategory_id').val(response.id);
-
+                        $('#brand_id').val(response.id);
                     }
                 });
             });
 
-
-
-            //Delete category
+            //Delete Brand
             $('body').on('click', '.deletBtn', function() {
                 var id = $(this).data('id');
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -221,9 +200,9 @@
                     if (willDelete.value) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('child-category.destroy', ['child_category' => '__childcategory__']) }}'
+                            url: '{{ route('brand.destroy', ['brand' => '__brand__']) }}'
                                 .replace(
-                                    '__childcategory__', id),
+                                    '__brand__', id),
                             headers: {
                                 'X-CSRF-TOKEN': csrfToken
                             },

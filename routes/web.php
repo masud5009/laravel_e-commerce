@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\{
+    BrandController,
     CategoryController, ChilCategoryController, SubcategoryController
 };
 use App\Models\Admin\ChildCategory;
@@ -22,6 +23,10 @@ Route::resource('category',CategoryController::class);
 Route::resource('sub-category',SubcategoryController::class);
 //Childcategory route
 Route::resource('child-category',ChilCategoryController::class);
+//Childcategory route
+Route::resource('brand',BrandController::class);
+
+
 
 Auth::routes();
 

@@ -126,8 +126,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="" class="menu-link">
-                        <div data-i18n="Without menu">Product List</div>
+                    <a href="{{ route('brand.index')}}" class="menu-link">
+                        <div data-i18n="Without menu">Brand</div>
                     </a>
                 </li>
             </ul>

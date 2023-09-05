@@ -29,11 +29,11 @@
                     <div class="modal-body">
                         <input type="hidden" name="category_id" id="category_id">
                         <div class="form-group mb-2">
-                            <label class="mb-1">Name <span class="text-danger">*</span></label>
+                            <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
                         </div>
                         <div class="form-group">
-                            <label class="mb-1">Description</label>
+                            <label class="form-label">Description</label>
                             <textarea class="form-control" name="description" cols="30" id="description"></textarea>
                         </div>
                         <div class="modal-footer">

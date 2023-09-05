@@ -29,11 +29,11 @@
                     <div class="modal-body">
                         <input type="hidden" name="subcategory_id" id="subcategory_id">
                         <div class="form-group mb-2">
-                            <label class="mb-1">Name <span class="text-danger">*</span></label>
+                            <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
                         </div>
                         <div class="form-group mb-2">
-                            <label class="mb-1">Select Category <span class="text-danger">*</span></label>
+                            <label class="form-label">Select Category <span class="text-danger">*</span></label>
                             <select class="form-select" aria-label="Default select example" name="category_name"
                                 id="select_category">
                                 <option selected disabled>Choose Option</option>
@@ -43,7 +43,7 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label class="mb-1">Description</label>
+                            <label class="form-label">Description</label>
                             <textarea class="form-control" name="description" cols="30" id="description"></textarea>
                         </div>
                         <div class="modal-footer">
@@ -82,7 +82,7 @@
     <script>
         $(document).ready(function() {
             $('#add_subcategory').click(function() {
-                $('#modal-title').html('Add Category');
+                $('#modal-title').html('Add Sub-Category');
                 $('#saveBtn').html('Add');
                 $('#name').val('');
                 $('#description').val('');
@@ -158,7 +158,7 @@
                 });
             });
 
-            // Edit category
+            // Edit sub-category
             $('body').on('click', '.editBtn', function() {
                 var id = $(this).data('id');
 
@@ -183,7 +183,7 @@
             });
 
 
-             //Delete category
+             //Delete sub-category
              $('body').on('click', '.deletBtn', function() {
                 var id = $(this).data('id');
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');

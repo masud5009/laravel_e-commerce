@@ -38,13 +38,6 @@ class CategoryController extends Controller
         return view('admin.pages.category.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -79,13 +72,6 @@ class CategoryController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -99,12 +85,6 @@ class CategoryController extends Controller
         return $category;
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -119,5 +99,4 @@ class CategoryController extends Controller
 
         return response()->json(['success' => 'Category deleted successfully']);
     }
-
 }
