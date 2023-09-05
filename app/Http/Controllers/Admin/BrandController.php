@@ -116,9 +116,15 @@ class BrandController extends Controller
      */
     public function destroy(string $id)
     {
-        $brand = Brand::destroy($id);
-
-        if (!$brand) {
+        $brand = Brand::find($id);
+        if ($brand) {
+            //image exists
+            $image_path = public_path('storage/brand/' . $brand->logo);
+            if (File::exists($image_path)) {
+                File::delete($image_path);
+            }
+            $brand->delete();
+        } else {
             abort(404);
         }
 
