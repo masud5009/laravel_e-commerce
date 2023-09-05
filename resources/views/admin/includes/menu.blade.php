@@ -121,8 +121,8 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="" class="menu-link">
-                        <div data-i18n="Without menu">Brand</div>
+                    <a href="{{ route('child-category.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Child Category</div>
                     </a>
                 </li>
                 <li class="menu-item">

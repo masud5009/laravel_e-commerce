@@ -12,8 +12,8 @@
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
     <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_subcategory">
-            Add Subategory
+        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_childcategory">
+            Add Child Category
         </button>
     </div>
 
@@ -27,18 +27,28 @@
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <input type="hidden" name="subcategory_id" id="subcategory_id">
+                        <input type="hidden" name="childcategory_id" id="childcategory_id">
                         <div class="form-group mb-2">
                             <label class="mb-1">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
                         </div>
                         <div class="form-group mb-2">
-                            <label class="mb-1">Select Category <span class="text-danger">*</span></label>
+                            <label class="mb-2">Select Category <span class="text-danger">*</span></label>
                             <select class="form-select" aria-label="Default select example" name="category_name"
                                 id="select_category">
                                 <option selected disabled>Choose Option</option>
                                 @foreach ($category as $cat)
                                     <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label class="mb-2">Select Sub Category <span class="text-danger">*</span></label>
+                            <select class="form-select" aria-label="Default select example" name="subcategory_name"
+                                id="select_subcategory">
+                                <option selected disabled>Choose Option</option>
+                                @foreach ($subcategory as $subcat)
+                                    <option value="{{ $subcat->id }}">{{ $subcat->name }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -63,6 +73,7 @@
                 <th>SL</th>
                 <th>Name</th>
                 <th>Category</th>
+                <th>Subcategory</th>
                 <th>Description</th>
                 <th>Actions</th>
             </tr>
@@ -81,20 +92,20 @@
     <!-- store category -->
     <script>
         $(document).ready(function() {
-            $('#add_subcategory').click(function() {
-                $('#modal-title').html('Add Category');
+            $('#add_childcategory').click(function() {
+                $('#modal-title').html('Add Child Category');
                 $('#saveBtn').html('Add');
                 $('#name').val('');
                 $('#description').val('');
-                $('#subcategory_id').val('');
+                $('#childcategory_id').val('');
                 $('#select_category option[selected]').prop('selected', true);
+                $('#select_subcategory option[selected]').prop('selected', true);
             });
-
             // Load data form serverside
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('sub-category.index') }}',
+                ajax: '{{ route('child-category.index') }}',
                 columns: [{
                         data: 'id'
                     },
@@ -103,6 +114,9 @@
                     },
                     {
                         data: 'category.name'
+                    },
+                    {
+                        data: 'subcategory.name'
                     },
                     {
                         data: 'description'
@@ -114,6 +128,7 @@
                         orderable: false
                     }
                 ]
+
             });
 
             // Create Sub-category
@@ -123,7 +138,7 @@
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
-                    url: '{{ route('sub-category.store') }}',
+                    url: '{{ route('child-category.store') }}',
                     type: 'POST',
                     data: formData,
                     processData: false,
@@ -135,9 +150,9 @@
                         table.draw();
                         $('#name').val('');
                         $('#description').val('');
-                        $('#category_name').val('');
+                        $('#select_category').val('');
+                        $('#select_subcategory').val('');
                         $('#Modal').modal('hide');
-
 
                         if (response) {
                             Swal.fire("Success", response.success, "success");
@@ -164,27 +179,32 @@
 
                 $.ajax({
                     type: 'GET',
-                    url: '{{ route('sub-category.edit', ['sub_category' => '__subcategory__']) }}'
+                    url: '{{ route('child-category.edit', ['child_category' => '__childcategory__']) }}'
                         .replace(
-                            '__subcategory__', id),
+                            '__childcategory__', id),
                     success: function(response) {
                         //basic filed dynamic
                         $('.modal').modal('show');
-                        $('#modal-title').html('Edit Sub category');
+                        $('#modal-title').html('Edit Child category');
                         $('#saveBtn').html('Update');
 
                         //input filed
-                        $('#select_category option[value="' + response.category_id + '"]').prop('selected', true);
+                        $('#select_category option[value="' + response.category_id + '"]').prop(
+                            'selected', true);
+                        $('#select_subcategory option[value="' + response.subcategory_id + '"]')
+                            .prop('selected', true);
                         $('#name').val(response.name);
                         $('#description').val(response.description);
-                        $('#subcategory_id').val(response.id);
+                        $('#childcategory_id').val(response.id);
+
                     }
                 });
             });
 
 
-             //Delete category
-             $('body').on('click', '.deletBtn', function() {
+
+            //Delete category
+            $('body').on('click', '.deletBtn', function() {
                 var id = $(this).data('id');
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 Swal.fire({
@@ -201,9 +221,9 @@
                     if (willDelete.value) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('sub-category.destroy', ['sub_category' => '__subcategory__']) }}'
+                            url: '{{ route('child-category.destroy', ['child_category' => '__childcategory__']) }}'
                                 .replace(
-                                    '__subcategory__', id),
+                                    '__childcategory__', id),
                             headers: {
                                 'X-CSRF-TOKEN': csrfToken
                             },
@@ -224,7 +244,6 @@
                     }
                 });
             });
-
         });
     </script>
 @endpush
