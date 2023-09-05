@@ -7,14 +7,12 @@ use App\Http\Controllers\Admin\{
     ChilCategoryController,
     SubcategoryController
 };
-use App\Models\Admin\ChildCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // SUPPER ADMIN ALL ROUTE
 Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::get('/', [AdminController::class, 'admin'])->name('admin.index');
-    Route::post('/logout',[AdminController::class,'logout'])->name('admin.logout');
     Route::resource('category', CategoryController::class);
     Route::resource('sub-category', SubcategoryController::class);
     Route::resource('child-category', ChilCategoryController::class);
@@ -30,4 +28,3 @@ Route::get('/', function () {
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-

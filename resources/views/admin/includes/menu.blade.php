@@ -99,7 +99,7 @@
                 </li>
             </ul>
         </li>
-
+<!-- product -->
         <li class="menu-header small text-uppercase">
             <span class="menu-header-text">Product</span>
         </li>
@@ -126,11 +126,58 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('brand.index')}}" class="menu-link">
+                    <a href="{{ route('brand.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Brand</div>
                     </a>
                 </li>
             </ul>
         </li>
+<!-- /.product -->
+
+
+<!-- settings -->
+<li class="menu-header small text-uppercase">
+    <span class="menu-header-text">Settings</span>
+</li>
+<li class="menu-item">
+    <a href="javascript:void(0);" class="menu-link menu-toggle">
+        <i class='menu-icon tf-icons bx bx-list-ul'></i>
+        <div data-i18n="Layouts">Settings</div>
+    </a>
+
+    <ul class="menu-sub">
+        <li class="menu-item">
+            <a href="{{ route('category.index') }}" class="menu-link">
+                <div data-i18n="Without menu">SEO Setting</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('sub-category.index') }}" class="menu-link">
+                <div data-i18n="Without menu">Website Setting</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('child-category.index') }}" class="menu-link">
+                <div data-i18n="Without menu">Page Manage</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('brand.index') }}" class="menu-link">
+                <div data-i18n="Without menu">SMTP Setting</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('brand.index') }}" class="menu-link">
+                <div data-i18n="Without menu">Payment Gateway</div>
+            </a>
+        </li>
+        <li class="menu-item">
+            <a href="{{ route('brand.index') }}" class="menu-link">
+                <div data-i18n="Without menu">Role Managment</div>
+            </a>
+        </li>
+    </ul>
+</li>
+<!-- /settings -->
     </ul>
 </aside>

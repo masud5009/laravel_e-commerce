@@ -1,4 +1,6 @@
+====== product option =====
 1. category
 2. sub-category
 3. child-category
 4. brand
+====== setting option =====
