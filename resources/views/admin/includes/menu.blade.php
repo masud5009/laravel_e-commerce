@@ -157,7 +157,7 @@
             </a>
         </li>
         <li class="menu-item">
-            <a href="{{ route('child-category.index') }}" class="menu-link">
+            <a href="{{ route('page.index') }}" class="menu-link">
                 <div data-i18n="Without menu">Page Manage</div>
             </a>
         </li>
