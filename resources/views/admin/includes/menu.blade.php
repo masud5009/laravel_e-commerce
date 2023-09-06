@@ -99,14 +99,12 @@
                 </li>
             </ul>
         </li>
-<!-- product -->
-        <li class="menu-header small text-uppercase">
-            <span class="menu-header-text">Product</span>
-        </li>
+
+        <!-- Category -->
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons bx bx-list-ul'></i>
-                <div data-i18n="Layouts">Product</div>
+                <div data-i18n="Layouts">Category</div>
             </a>
 
             <ul class="menu-sub">
@@ -132,52 +130,69 @@
                 </li>
             </ul>
         </li>
-<!-- /.product -->
+        <!-- product -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i>
+                <div data-i18n="Layouts">Product</div>
+            </a>
 
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('product.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">All Products</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('product.create') }}" class="menu-link">
+                        <div data-i18n="Without menu">Add Product</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
 
-<!-- settings -->
-<li class="menu-header small text-uppercase">
-    <span class="menu-header-text">Settings</span>
-</li>
-<li class="menu-item">
-    <a href="javascript:void(0);" class="menu-link menu-toggle">
-        <i class='menu-icon tf-icons bx bx-list-ul'></i>
-        <div data-i18n="Layouts">Settings</div>
-    </a>
+        <!-- settings -->
 
-    <ul class="menu-sub">
         <li class="menu-item">
-            <a href="{{ route('seo.index') }}" class="menu-link">
-                <div data-i18n="Without menu">SEO Setting</div>
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                {{-- <i class='menu-icon tf-icons bx bx-list-ul'></i> --}}
+                <i class='menu-icon bx bx-cog'></i>
+                <div data-i18n="Layouts">Settings</div>
             </a>
+
+            <ul class="menu-sub">
+                <li class="menu-item">
+                    <a href="{{ route('seo.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">SEO Setting</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('sub-category.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Website Setting</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('page.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Page Manage</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('smtp.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">SMTP Setting</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('brand.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Payment Gateway</div>
+                    </a>
+                </li>
+                <li class="menu-item">
+                    <a href="{{ route('brand.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Role Managment</div>
+                    </a>
+                </li>
+            </ul>
         </li>
-        <li class="menu-item">
-            <a href="{{ route('sub-category.index') }}" class="menu-link">
-                <div data-i18n="Without menu">Website Setting</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="{{ route('page.index') }}" class="menu-link">
-                <div data-i18n="Without menu">Page Manage</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="{{ route('smtp.index') }}" class="menu-link">
-                <div data-i18n="Without menu">SMTP Setting</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="{{ route('brand.index') }}" class="menu-link">
-                <div data-i18n="Without menu">Payment Gateway</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="{{ route('brand.index') }}" class="menu-link">
-                <div data-i18n="Without menu">Role Managment</div>
-            </a>
-        </li>
-    </ul>
-</li>
-<!-- /settings -->
+        <!-- /settings -->
     </ul>
 </aside>

@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\{
     CategoryController,
     ChilCategoryController,
     PageController,
+    ProductController,
     SeoController,
     SmtpController,
     SubcategoryController
@@ -21,6 +22,7 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('child-category', ChilCategoryController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
+    Route::resource('product', ProductController::class);
     // SEO setting
     Route::get('seo', [SeoController::class, 'index'])->name('seo.index');
     Route::post('seo', [SeoController::class, 'update'])->name('seo.update');
