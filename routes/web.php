@@ -9,7 +9,8 @@ use App\Http\Controllers\Admin\{
     ProductController,
     SeoController,
     SmtpController,
-    SubcategoryController
+    SubcategoryController,
+    WarhouseCotroller
 };
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,11 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     // SMTP setting
     Route::get('smtp', [SmtpController::class, 'index'])->name('smtp.index');
     Route::post('smtp', [SmtpController::class, 'update'])->name('smtp.update');
+    // Warhouse
+    Route::get('warehouse',[WarhouseCotroller::class,'index'])->name('warhouse.index');
+    Route::post('warehouse',[WarhouseCotroller::class,'store'])->name('warhouse.store');
+    Route::get('/warehouse/{warehouse}/edit',[WarhouseCotroller::class,'edit'])->name('warehouse.edit');
+    Route::delete('/warehouse/{warehouse}/delete',[WarhouseCotroller::class,'destory'])->name('warehouse.destory');
 });
 
 
