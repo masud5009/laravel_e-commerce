@@ -88,6 +88,11 @@
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="Without menu">Colors</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="{{ route('warhouse.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Warhouse</div>
                     </a>
@@ -119,6 +124,27 @@
                 </li>
             </ul>
         </li>
+
+                <!-- Marketing -->
+                <li class="menu-item">
+                    <a href="javascript:void(0);" class="menu-link menu-toggle">
+                        <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i>
+                        <div data-i18n="Layouts">Marketing</div>
+                    </a>
+
+                    <ul class="menu-sub">
+                        <li class="menu-item">
+                            <a href="" class="menu-link">
+                                <div data-i18n="Without menu">Coupon</div>
+                            </a>
+                        </li>
+                        <li class="menu-item">
+                            <a href="" class="menu-link">
+                                <div data-i18n="Without menu">E Campaign</div>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
 
         <!-- settings -->
 
