@@ -6,10 +6,14 @@
     <div class="container flex-grow-1 container-p-y">
         <h5>Add New product</h5>
         <form action="" class="form form-horizontal mar-top">
+             <!-- Product Information -->
             <div class="col-lg-8 mb-5">
                 <div class="card">
-                    <h5 class="card-header">Product Information</h5>
+                    <div class="card-header">
+                        <h5 class="card-title">Product Information</h5>
+                    </div>
                     <div class="card-body">
+
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
                             <input type="input" class="form-control" id="name" name="name"
@@ -46,7 +50,7 @@
                                 placeholder="Unit (e.g KG, Pc etc)">
                         </div>
                         <div class="form-group mb-3">
-                            <label for="unit" class="form-label">Unit</label>
+                            <label for="unit" class="form-label">Tags</label>
                             <div class="form-group mb-3 position-relative">
                                 <input type="text" class="form-control" id="product-tags" placeholder="Add tags">
                                 <div class="tag-container">
@@ -63,9 +67,12 @@
                 </div>
             </div>
 
+            <!-- Product Images -->
             <div class="col-lg-8 mb-5">
                 <div class="card">
-                    <h5 class="card-header">Product Images</h5>
+                    <div class="card-header">
+                        <h5 class="card-title">Product Images</h5>
+                    </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="images" class="form-label">Gallery Images (600x600)</label>
@@ -93,10 +100,12 @@
                     </div>
                 </div>
             </div>
-
+            <!-- Product price + stock -->
             <div class="col-lg-8 mb-5">
                 <div class="card">
-                    <h5 class="card-header">Product price + stock</h5>
+                    <div class="card-header">
+                        <h5 class="card-title">Product price + stock</h5>
+                    </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Unit price<span class="text-danger">*</span></label>
@@ -107,9 +116,45 @@
                 </div>
             </div>
 
+            <!-- Product Variation -->
             <div class="col-lg-8 mb-5">
                 <div class="card">
-                    <h5 class="card-header">Product Description</h5>
+                    <div class="card-header ">
+                        <div class="card-title">
+                            <h5 class="card-title">Product Variation</h5>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="form-group row mb-3">
+                            <div class="col-md-3">
+                                <input type="text" value="Colors" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-8">
+                                <select name="color" id="color" class="form-select">
+                                    <option selected>Nothing selected</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row mb-3">
+                            <div class="col-md-3">
+                                <input type="text" value="Attributes" class="form-control" disabled>
+                            </div>
+                            <div class="col-md-8">
+                                <select name="attributes" id="attributes" class="form-select">
+                                    <option selected>Nothing selected</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Description -->
+            <div class="col-lg-8 mb-5">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title">Product Description</h5>
+                    </div>
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="description" class="form-label">Description</label>
