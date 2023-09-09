@@ -25,15 +25,16 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
     Route::resource('product', ProductController::class);
+    // Coupon Routes
     Route::resource('coupon', CouponController::class);
     Route::post('coupon/toggle-status/{coupon}', [CouponController::class,'toggleStatus'])->name('coupon.toggle-status');
-    // SEO setting
+    // SEO setting Routes
     Route::get('seo', [SeoController::class, 'index'])->name('seo.index');
     Route::post('seo', [SeoController::class, 'update'])->name('seo.update');
-    // SMTP setting
+    // SMTP setting Routes
     Route::get('smtp', [SmtpController::class, 'index'])->name('smtp.index');
     Route::post('smtp', [SmtpController::class, 'update'])->name('smtp.update');
-    // Warhouse
+    // Warhouse Routes
     Route::get('warehouse',[WarhouseCotroller::class,'index'])->name('warhouse.index');
     Route::post('warehouse',[WarhouseCotroller::class,'store'])->name('warhouse.store');
     Route::get('/warehouse/{warehouse}/edit',[WarhouseCotroller::class,'edit'])->name('warehouse.edit');

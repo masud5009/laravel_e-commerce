@@ -1,3 +1,6 @@
+@push('css')
+    <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
+@endpush
 @extends('admin.layouts.app')
 @section('content')
     <div class="container flex-grow-1 container-p-y">
@@ -37,6 +40,25 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group mb-3">
+                            <label for="unit" class="form-label">Unit</label>
+                            <input type="input" class="form-control" id="unit" name="unit"
+                                placeholder="Unit (e.g KG, Pc etc)">
+                        </div>
+                        <div class="form-group mb-3">
+                            <label for="unit" class="form-label">Unit</label>
+                            <div class="form-group mb-3 position-relative">
+                                <input type="text" class="form-control" id="product-tags" placeholder="Add tags">
+                                <div class="tag-container">
+                                    <!-- Tags will be displayed here -->
+                                </div>
+                                <div class="form-text text-danger" id="countdown">
+
+                                </div>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
@@ -106,6 +128,57 @@
     <script>
         $(document).ready(function() {
             $('#description').summernote();
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            const tagContainer = $('.tag-container');
+            const tagInput = $('#product-tags');
+            const addedTags = new Set();
+            let maxTags = 8; // Maximum number of tags allowed
+
+            // Function to update the countdown display
+            function updateCountdown() {
+                $('#countdown').text(maxTags + ' tags are remaining');
+            }
+
+            updateCountdown(); // Initial display of the countdown
+
+            function addTag(tagValue) {
+                if (maxTags > 0 && tagValue.length >= 2) {
+                    const tagBadge = $('<span>').addClass('badge bg-primary tag-badge').text(tagValue);
+                    const removeButton = $('<span>').addClass('badge tag-badge-remove').attr('id', 'crox-badge')
+                        .text('x');
+
+                    tagBadge.append(removeButton);
+                    tagContainer.append(tagBadge);
+                    addedTags.add(tagValue);
+                    maxTags--;
+
+                    updateCountdown(); // Update the countdown display
+
+                    removeButton.click(function() {
+                        tagBadge.remove();
+                        addedTags.delete(tagValue);
+                        maxTags++;
+
+                        updateCountdown(); // Update the countdown display
+                    });
+                }
+            }
+
+            tagInput.keypress(function(event) {
+                if (event.which === 13) { // Check if the Enter key (key code 13) is pressed
+                    const tagValue = tagInput.val().trim();
+
+                    if (tagValue !== '' && !addedTags.has(tagValue) && maxTags > 0) {
+                        addTag(tagValue);
+                        tagInput.val('');
+                    } else {
+                        tagInput.val('');
+                    }
+                }
+            });
         });
     </script>
 @endpush

@@ -1,54 +1,35 @@
-.bg-menu
-{
+.bg-menu {
     background-color: #4f5962;
     color: #c2c7d0;
 }
-.menu-link{
+
+.menu-link {
     color: #c2c7d0;
 }
-.menu-link:hover{
+
+.menu-link:hover {
     color: #ffffff;
 }
-.switch input {
-    display: none;
-}
 
-/* Define the switch container's style */
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 60px;
-    height: 26px;
-}
-
-/* Define the switch's background */
-.switch .slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    transition: .4s;
-    border-radius: 34px;
-}
-
-.switch .slider:before {
-    position: absolute;
-    content: "";
-    height: 26px;
-    width: 26px;
-    left: 0px;
-    bottom: 0px;
-    background-color: white;
-    transition: .4s;
+/* badge css */
+#crox-badge {
     border-radius: 50%;
+    background: #dbdbdb;
+    position: relative;
+    color: black;
+    left: 6px;
+    cursor: pointer;
+    margin: 4px;
 }
 
-.switch input:checked + .slider {
-    background-color: #2196F3;
+.tag-badge {
+
+    padding: 0.3em 0.3em;
+    font-size: 11px;
+    line-height: 0;
+    text-transform: capitalize;
 }
-.switch input:checked + .slider:before {
-    transform: translateX(35px);
+
+.tag-badge {
+    margin: 2px;
 }
