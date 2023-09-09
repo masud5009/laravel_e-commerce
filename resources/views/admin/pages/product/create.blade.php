@@ -9,26 +9,33 @@
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Product Name <span class="text-danger">*</span></label>
-                            <input type="input" class="form-control" id="name" name="name" placeholder="Product Name">
+                            <input type="input" class="form-control" id="name" name="name"
+                                placeholder="Product Name">
                         </div>
-                        <div class="form-group mb-3">
-                            <label for="category" class="form-label">Category<span class="text-danger">*</span></label>
-                            <select class="form-control" id="category" name="category">
-                                <option selected>Select Category</option>
-                                @foreach ($category as $cat)
-                                <option value="{{ $cat->name }}">{{ $cat->name }}</option>
-                                @endforeach
-
-                            </select>
+                        <div class="form-group mb-2">
+                            <label for="category" class="form-label">Select Category<span class="text-danger">
+                                    *</span></label>
+                            <div class="input-group">
+                                <label class="input-group-text">Category</label>
+                                <select class="form-select" id="category" name="category">
+                                    <option selected>Select Category</option>
+                                    @foreach ($category as $cat)
+                                        <option value="{{ $cat->name }}">{{ $cat->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group mb-2">
                             <label for="brand" class="form-label">Brand</label>
-                            <select class="form-control" id="brand" name="brand">
-                                <option selected>Select Category</option>
-                                @foreach ($brand as $br)
-                                <option value="{{ $br->name }}">{{ $br->name }}</option>
-                                @endforeach
-                            </select>
+                            <div class="input-group">
+                                <label class="input-group-text">Brand</label>
+                                <select class="form-select" id="brand" name="brand">
+                                    <option selected>Select Brand</option>
+                                    @foreach ($brand as $br)
+                                        <option value="{{ $br->name }}">{{ $br->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -40,14 +47,21 @@
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="images" class="form-label">Gallery Images (600x600)</label>
-                            <input type="file" class="form-control" id="images" name="images">
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="images" name="images">
+                                <label class="input-group-text" for="inputGroupFile02">Upload</label>
+                            </div>
                             <div class="form-text">
                                 These images are visible in product details page gallery. Use 600x600 sizes images.
                             </div>
                         </div>
+
                         <div class="form-group mb-3">
                             <label for="thumbnail" class="form-label">Thumbnail Image (300x300)</label>
-                            <input type="file" class="form-control" id="thumbnail" name="thumbnail">
+                            <div class="input-group">
+                                <input type="file" class="form-control" id="thumbnail" name="thumbnail">
+                                <label class="input-group-text">Upload</label>
+                            </div>
                             <div class="form-text">
                                 This image is visible in all product box. Use 300x300 sizes image. Keep some blank space
                                 around main object of your image as we had to crop some edge in different devices to make it
@@ -64,7 +78,8 @@
                     <div class="card-body">
                         <div class="form-group mb-3">
                             <label for="name" class="form-label">Unit price<span class="text-danger">*</span></label>
-                            <input type="input" class="form-control" id="name" name="name" placeholder="Product Name">
+                            <input type="input" class="form-control" id="name" name="name"
+                                placeholder="Product Name">
                         </div>
                     </div>
                 </div>

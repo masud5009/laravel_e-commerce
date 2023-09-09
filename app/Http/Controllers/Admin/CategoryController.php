@@ -18,7 +18,7 @@ class CategoryController extends Controller
         if ($request->ajax()) {
 
 
-            $categories = Category::all();
+            $categories = Category::query();
 
             return DataTables::of($categories)
                 ->addColumn('action', function ($row) {

@@ -17,7 +17,7 @@ class PageController extends Controller
         if ($request->ajax()) {
 
 
-            $brand = Page::all();
+            $brand = Page::query();
 
             return DataTables::of($brand)
                 ->addColumn('action', function ($row) {

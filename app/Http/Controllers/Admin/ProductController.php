@@ -22,7 +22,7 @@ class ProductController extends Controller
      */
     public function create()
     {
-        $category = Category::all();
+        $category = Category::query();
         $brand = Brand::all();
         return view('admin.pages.product.create', compact('category','brand'));
     }

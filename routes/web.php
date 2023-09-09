@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\{
     BrandController,
     CategoryController,
     ChilCategoryController,
+    CouponController,
     PageController,
     ProductController,
     SeoController,
@@ -24,6 +25,8 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
     Route::resource('product', ProductController::class);
+    Route::resource('coupon', CouponController::class);
+    Route::post('coupon/toggle-status/{coupon}', [CouponController::class,'toggleStatus'])->name('coupon.toggle-status');
     // SEO setting
     Route::get('seo', [SeoController::class, 'index'])->name('seo.index');
     Route::post('seo', [SeoController::class, 'update'])->name('seo.update');

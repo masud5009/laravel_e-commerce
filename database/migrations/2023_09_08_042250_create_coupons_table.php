@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('date')->nullable();
             $table->integer('type')->nullable();
             $table->integer('amount');
-            $table->boolean('status')->nullable();
+            $table->boolean('status')->default(0);
             $table->timestamps();
         });
     }

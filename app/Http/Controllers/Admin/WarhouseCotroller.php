@@ -17,7 +17,7 @@ class WarhouseCotroller extends Controller
 
         if ($request->ajax()) {
 
-            $warehouse = Warhouse::all();
+            $warehouse = Warhouse::query();
 
             return DataTables::of($warehouse)
                 ->addColumn('action', function ($row) {

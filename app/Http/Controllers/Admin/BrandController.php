@@ -19,7 +19,7 @@ class BrandController extends Controller
         if ($request->ajax()) {
 
 
-            $brand = Brand::all();
+            $brand = Brand::query();
 
             return DataTables::of($brand)
                 ->addColumn('action', function ($row) {
