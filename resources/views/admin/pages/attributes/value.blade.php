@@ -27,7 +27,7 @@
                                 @foreach ($attribute->attributeValues as $key => $values)
                                     <tr>
                                         <td>{{ $key + 1 }}</td>
-                                        <td>{{ $values->value }}</td>
+                                        <td>{{ $values->attributeValues->value }}</td>
                                         <td>
                                             <a href="javascript:void()" class="btn-sm btn btn-primary editBtn"
                                                 data-id="' . $row->id . '">
