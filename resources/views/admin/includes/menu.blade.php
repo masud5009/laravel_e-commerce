@@ -93,6 +93,11 @@
                     </a>
                 </li>
                 <li class="menu-item">
+                    <a href="{{ route('color.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Attributes</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="{{ route('warhouse.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Warhouse</div>
                     </a>
