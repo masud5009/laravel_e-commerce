@@ -128,8 +128,8 @@
                     {
                         data: 'status',
                         render: function(data, type, row) {
-                            var buttonClass = data === 0 ? 'btn-success' : 'btn-secondary';
-                            var buttonText = data === 0 ? 'Active' : 'Inactive';
+                            let buttonClass = data === 0 ? 'btn-success' : 'btn-secondary';
+                            let buttonText = data === 0 ? 'Active' : 'Inactive';
 
                             return '<button class="btn btn-sm ' + buttonClass +
                                 ' toggle-status" data-coupon-id="' + row.id + '">' + buttonText +
