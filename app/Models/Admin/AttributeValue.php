@@ -5,13 +5,12 @@ namespace App\Models\Admin;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Attribute extends Model
+class AttributeValue extends Model
 {
     use HasFactory;
-    protected $fillable = ['name'];
     
-    public function attributeValues()
+    public function attribute()
     {
-        return $this->hasMany(Attribute::class);
+        return $this->belongsTo(Attribute::class);
     }
 }
