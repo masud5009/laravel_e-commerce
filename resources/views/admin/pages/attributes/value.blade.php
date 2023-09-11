@@ -9,46 +9,37 @@
 
 @section('content')
     <div class="container">
-        <h5 class="text-dark">All Attributes</h5>
+        <h5 class="text-dark">Attribute Detail</h5>
         <div class="row">
-            <div class="col-lg-8 col-sm-12 mb-3">
+            <div class="col-lg-8">
                 <div class="card">
-                    <h5 class="card-header">Attributes</h5>
+                    <h5 class="card-header">{{ $attribute->name }}</h5>
                     <div class="table-responsive text-nowrap">
                         <table class="table">
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Name</th>
                                     <th>Value</th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
-                                @if ($attributes)
-                                    @foreach ($attributes as $key => $attr)
-                                        <tr>
-                                            <td>{{ $key + 1 }}</td>
-                                            <td>{{ $attr->name }}</td>
-                                            <td>{{ $attr->value }}</td>
-                                            <td>
-                                                <a href="{{ route('attribute.edit',['attribute'=>$attr->id])}}" class="btn-sm btn btn-primary">
-                                                    <i class="bx bx-edit"></i>
-                                                </a>
-                                                <a href="{{ route('attribute.show',['attribute'=>$attr->id])}}" class="btn-sm btn btn-secondary">
-                                                    <i class="bx bx-cog"></i>
-                                                </a>
-                                                <a href="javascript:void(0)" class="btn-sm btn btn-danger deletBtn"
-                                                    data-id="{{ $attr->id }}">
-                                                    <i class="bx bx-trash"></i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    @endforeach
-                                @else
-                                    <td colspan="4">not data found</td>
-                                @endif
-
+                                @foreach ($attribute->attributeValues as $key => $values)
+                                    <tr>
+                                        <td>{{ $key + 1 }}</td>
+                                        <td>{{ $values->value }}</td>
+                                        <td>
+                                            <a href="javascript:void()" class="btn-sm btn btn-primary editBtn"
+                                                data-id="' . $row->id . '">
+                                                <i class="bx bx-edit"></i>
+                                            </a>
+                                            <a href="javascript:void(0)" class="btn-sm btn btn-danger deletBtn"
+                                                data-id="{{ $attribute->id }}">
+                                                <i class="bx bx-trash"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -60,11 +51,17 @@
                         <h5 class="card-title">Add New Attribute</h5>
                     </div>
                     <div class="card-body">
-                        <form action="{{ route('attribute.store') }}" method="POST">
+                        <form action="{{ route('attribute.update', ['attribute' => $attribute->id]) }}" method="POST">
+                            @method('PUT')
                             @csrf
+                            <div class="form-group mb-3">
+                                <label for="name" class="form-label">Attribute Name</label>
+                                <input type="text" readonly value="{{ $attribute->name }}" name="attribute_id"
+                                    id="attribute_id" class="form-control">
+                            </div>
                             <div class="form-group">
-                                <label for="name" class="form-label">Name</label>
-                                <input type="text" name="name" id="name" class="form-control">
+                                <label for="name" class="form-label">Attribute Value</label>
+                                <input type="text" name="attribute_value" id="attribute_value" class="form-control">
                             </div>
                             <button type="submit" class="btn btn-success float-end mt-3">Save</button>
                         </form>

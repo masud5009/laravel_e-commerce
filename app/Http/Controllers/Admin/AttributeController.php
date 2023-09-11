@@ -57,7 +57,8 @@ class AttributeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $attribute = Attribute::find($id);
+        return view('admin.pages.attributes.value', compact('attribute'));
     }
 
     /**
@@ -78,7 +79,16 @@ class AttributeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate([
+            'attribute_value' => 'required|string',
+        ]);
+
+        $attribute = Attribute::find($id);
+        $attribute->attributeValues()->create([
+            'attribute_id' => $request->attribute_id,
+            'value' => $request->attribute_value,
+        ]);
+        return redirect()->back();
     }
 
     /**
