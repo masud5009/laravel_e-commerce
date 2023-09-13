@@ -15,10 +15,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->string('slug');
-            $table->string('banner');
-            $table->string('icon');
-            $table->string('cover_img');
-            $table->text('description');
+            $table->string('banner')->nullable();
+            $table->string('icon')->nullable();
+            $table->string('cover_img')->nullable();
+            $table->text('description')->nullable();
             $table->timestamps();
         });
     }

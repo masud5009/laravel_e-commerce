@@ -31,6 +31,22 @@
                         <div class="form-group mb-2">
                             <label class="form-label">Name <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="name" id="name">
+                            <span class="text-danger" id="name-error"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="banner" class="form-label">Banner (200x200)</label>
+                                <input type="file" class="form-control" id="banner" name="banner">
+                                <span class="text-danger" id="banner-error"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="icon" class="form-label">Icon (32x32)</label>
+                                <input type="file" class="form-control" id="icon" name="icon">
+                                <span class="text-danger" id="icon-error"></span>
+                        </div>
+                        <div class="form-group mb-2">
+                            <label for="cover_img" class="form-label">Cover Image (250x250)</label>
+                                <input type="file" class="form-control" id="cover_img" name="cover_img">
+                                <span class="text-danger" id="cover-error"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Description</label>
@@ -91,15 +107,15 @@
                         orderable: false
                     }
                 ],
-                order: [
-                    [1, 'DESC']
-                ],
+                "order": [[ 1, 'asc' ]]
 
             });
             // Create & Update Category
             var form = $('#ajaxform')[0];
 
-            $('#saveBtn').click(function() {
+            $('#saveBtn').click(function(e) {
+                e.preventDefault();
+
                 var formData = new FormData(form);
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -132,6 +148,10 @@
 
                         if (error.responseJSON && error.responseJSON.errors) {
                             var errors = error.responseJSON.errors;
+                            $('#name-error').html(errors.name);
+                            $('#banner-error').html(errors.banner);
+                            $('#icon-error').html(errors.icon);
+                            $('#cover-error').html(errors.cover_img);
                             console.log(errors);
                         } else {
                             console.log("An unexpected error occurred:", error);
