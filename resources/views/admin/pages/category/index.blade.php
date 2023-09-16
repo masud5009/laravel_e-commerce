@@ -2,7 +2,6 @@
 @push('css')
     <!-- Ajax Cdn -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <!-- sweetalert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @endpush
@@ -35,18 +34,18 @@
                         </div>
                         <div class="form-group mb-2">
                             <label for="banner" class="form-label">Banner (200x200)</label>
-                                <input type="file" class="form-control" id="banner" name="banner">
-                                <span class="text-danger" id="banner-error"></span>
+                            <input type="file" class="form-control" id="banner" name="banner">
+                            <span class="text-danger" id="banner-error"></span>
                         </div>
                         <div class="form-group mb-2">
                             <label for="icon" class="form-label">Icon (32x32)</label>
-                                <input type="file" class="form-control" id="icon" name="icon">
-                                <span class="text-danger" id="icon-error"></span>
+                            <input type="file" class="form-control" id="icon" name="icon">
+                            <span class="text-danger" id="icon-error"></span>
                         </div>
                         <div class="form-group mb-2">
                             <label for="cover_img" class="form-label">Cover Image (250x250)</label>
-                                <input type="file" class="form-control" id="cover_img" name="cover_img">
-                                <span class="text-danger" id="cover-error"></span>
+                            <input type="file" class="form-control" id="cover_img" name="cover_img">
+                            <span class="text-danger" id="cover-error"></span>
                         </div>
                         <div class="form-group">
                             <label class="form-label">Description</label>
@@ -63,53 +62,98 @@
     </div>
 
     <!--/.Bootsttap modal-->
-    <table id="myTable" class="table">
-        <thead class="header">
-            <tr>
-                <th>SL</th>
-                <th>Name</th>
-                <th>Description</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="col-lg-12" id="Table">
+        <div class="card">
+            <div class="card-header border-bottom">
+                <div class="row">
+                    <div class="col-lg-9">
+                        <h5>Categories</h5>
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="search" name="search" id="search" class="form-control">
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                    <span class="fs-6 text-dark">Name</span>
+                    <span class="fs-6 text-dark me-4">Options</span>
+                </div>
+                <div id="data">
+                    @foreach ($categories as $key => $category)
+                        <div class="accordion border-bottom" id="categorySelector{{ $category->id }}">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header d-flex justify-content-between" id="heading">
+                                    <div class="col-lg-10 d-flex justify-content-around align-items-center">
+                                        <i class='bx bx-plus-circle text-danger fs-5'></i>
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                            data-bs-target="#collapse{{ $category->id }}" aria-expanded="false"
+                                            aria-controls="collapseTwo">
+                                            {{ $category->name }}
+                                        </button>
+                                    </div>
+                                    <div class="col-lg-2 d-flex justify-content-end align-items-center">
+                                        <a href="javascript:void(0)" class="btn-sm btn btn-primary m-2 editBtn"
+                                            data-id="{{ $category->id }}">
+                                            <i class="bx bx-edit"></i>
+                                        </a>
+                                        <a href="javascript:void(0)" class="btn-sm btn btn-danger m-2 deletBtn"
+                                            data-id="{{ $category->id }}">
+                                            <i class="bx bx-trash"></i>
+                                        </a>
+                                    </div>
+                                </h2>
+                                <div id="collapse{{ $category->id }}" class="accordion-collapse collapse"
+                                    aria-labelledby="heading" data-bs-parent="#categorySelector{{ $category->id }}">
+                                    <div class="accordion-body">
+                                        <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
+                                            <span>#</span>
+                                            <h5>{{ $key + 1 }}</h5>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
+                                            <span>Banner</span>
+                                            <img src="{{ asset('storage/images/category_img/' . $category->banner) }}"
+                                                alt="" style="max-width: 100px;max-height:100px">
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
+                                            <span>Icon</span>
+                                            <img src="{{ asset('storage/images/category_img/' . $category->icon) }}"
+                                                alt="" style="max-width: 100px;max-height:100px">
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
+                                            <span>Cover Image</span>
+                                            <img src="{{ asset('storage/images/category_img/' . $category->cover_img) }}"
+                                                alt="" style="max-width: 100px;max-height:100px">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
 
-        </tbody>
-    </table>
+                </div>
+            </div>
+            <div id="pagination" class="d-flex justify-content-center align-items-center">
+
+                {{ $categories->links() }}
+            </div>
+        </div>
+    </div>
 @endsection
 
 
 @push('scripts')
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
     <!-- store category -->
     <script>
         $(document).ready(function() {
-            // Load data form serverside
-            var table = $('#myTable').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: '{{ route('category.index') }}',
-                columns: [{
-                        data: 'id'
-                    },
-                    {
-                        data: 'name'
-                    },
-                    {
-                        data: 'description'
-                    },
-                    {
-                        data: 'action',
-                        name: 'action',
-                        searchable: false,
-                        orderable: false
-                    }
-                ],
-                "order": [[ 1, 'asc' ]]
-
+            $('#add_category').click(function() {
+                $('#modal-title').html('Add Category');
+                $('#saveBtn').html('Add');
+                $('#ajaxform')[0].reset();
             });
+
             // Create & Update Category
             var form = $('#ajaxform')[0];
 
@@ -129,7 +173,8 @@
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
-                        table.draw();
+                        // laod the data
+                        $('#data').load(location.href + ' #data');
 
                         $('#name').val('');
                         $('#description').val('');
@@ -159,6 +204,7 @@
                     },
                 });
             });
+            // load the data that come form server
 
             // Edit categorty
             $('body').on('click', '.editBtn', function() {
@@ -178,12 +224,6 @@
                     }
                 });
             });
-
-            $('#add_category').click(function() {
-                $('#modal-title').html('Add Category');
-                $('#saveBtn').html('Add');
-            });
-
 
             //Delete category
             $('body').on('click', '.deletBtn', function() {
@@ -210,8 +250,10 @@
                                 'X-CSRF-TOKEN': csrfToken
                             },
                             success: function(response) {
-                                $(`[data-id="${id}"]`).closest('tr').remove();
                                 Swal.fire("Success", response.success, "success");
+                                $('#data').load(location.href + ' #data');
+                                // $(`[data-id="${id}"]`).closest('tr').remove();
+
                             },
                             error: function(xhr, status, error) {
                                 // Handle errors here, if necessary
@@ -223,6 +265,43 @@
                         });
                     } else {
                         Swal.fire("Cancelled", "Your data is safe!", "info");
+                    }
+                });
+            });
+
+            //pagination category
+            $('body').on('click', '.pagination a', function(e) {
+                e.preventDefault();
+                let page = $(this).attr('href').split('page=')[1];
+                category(page);
+
+            });
+
+            function category(page) {
+                $.ajax({
+                    url: 'pagination/paginate-data?page=' + page,
+                    success: function(response) {
+                        $('#data').html(response);
+                    }
+                });
+            }
+
+
+            //search category
+            $('body').on('keyup', '#search', function() {
+                let Searchdata = $('#search').val();
+                const csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: '{{ route('category.search') }}',
+                    method: 'GET',
+                    data: {
+                        Searchdata: Searchdata
+                    },
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    success: function(response) {
+                        $('#data').html(response);
                     }
                 });
             });

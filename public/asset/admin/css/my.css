@@ -108,3 +108,15 @@ input:checked+.slider:before {
 .no-spin {
   -moz-appearance: textfield;
 }
+
+
+.accordion .accordion-item.active
+{
+    box-shadow: none;
+}
+.accordion-button::after {
+    display: none;
+}
+.custom-accordion .accordion-button::after {
+    display: none;
+}

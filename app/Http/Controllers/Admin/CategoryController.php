@@ -16,30 +16,9 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        if ($request->ajax()) {
-
-
-            $categories = Category::query();
-
-            return DataTables::of($categories)
-                ->addColumn('action', function ($row) {
-                    return '<a href="javascript:void(0)" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
-                                <i class="bx bx-edit"></i>
-                            </a>
-                            <a href="javascript:void(0)" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
-                                <i class="bx bx-trash"></i>
-                            </a>';
-                })
-                ->rawColumns(['action'])
-                ->make(true);
-        }
-
-
-
-        return view('admin.pages.category.index');
+        $categories = Category::orderBy('created_at', 'DESC')->paginate(3);
+        return view('admin.pages.category.index', compact('categories'));
     }
-
-
     /**
      * Store a newly created resource in storage.
      */
@@ -64,25 +43,50 @@ class CategoryController extends Controller
                     'slug' => Str::slug($request->name, '_'),
                     'description' => $request->description,
                 ]);
+                $currentBannerPath = 'storage/images/category_img/' . $category->banner;
+                $currentIconPath = 'storage/images/category_img/' . $category->icon;
+                $currentCoverImgPath = 'storage/images/category_img/' . $category->cover_img;
+
+                $category->name = $request->name;
+                $category->slug = Str::slug($request->name, '_');
+                $category->description = $request->description;
+
                 if ($request->hasFile('banner')) {
+                    // Delete the current banner image file
+                    if (file_exists($currentBannerPath)) {
+                        unlink($currentBannerPath);
+                    }
+
                     $banner_file = $request->file('banner');
-                    $filename = time() . '.' . $banner_file->getClientOriginalExtension();
-                    $banner_file->move('storage/images/category_img', $filename);
-                    $category->banner = $filename;
+                    $banner_filename = time() . '_' . uniqid() . '.' . $banner_file->getClientOriginalExtension();
+                    $banner_file->move('storage/images/category_img', $banner_filename);
+                    $category->banner = $banner_filename;
                 }
+
                 if ($request->hasFile('icon')) {
+                    // Delete the current icon image file
+                    if (file_exists($currentIconPath)) {
+                        unlink($currentIconPath);
+                    }
+
                     $icon_file = $request->file('icon');
-                    $filename = time() . '.' . $icon_file->getClientOriginalExtension();
-                    $icon_file->move('storage/images/category_img', $filename);
-                    $category->icon = $filename;
+                    $icon_filename = time() . '_' . uniqid() . '.' . $icon_file->getClientOriginalExtension();
+                    $icon_file->move('storage/images/category_img', $icon_filename);
+                    $category->icon = $icon_filename;
                 }
+
                 if ($request->hasFile('cover_img')) {
+                    // Delete the current cover image file
+                    if (file_exists($currentCoverImgPath)) {
+                        unlink($currentCoverImgPath);
+                    }
+
                     $coverImg_file = $request->file('cover_img');
-                    $filename = time() . '.' . $coverImg_file->getClientOriginalExtension();
-                    $coverImg_file->move('storage/images/category_img', $filename);
-                    $category->cover_img = $filename;
+                    $coverImg_filename = time() . '_' . uniqid() . '.' . $coverImg_file->getClientOriginalExtension();
+                    $coverImg_file->move('storage/images/category_img', $coverImg_filename);
+                    $category->cover_img = $coverImg_filename;
                 }
-                $category->save();
+                $category->update();
 
                 return response()->json(['success' => 'Category update success']);
             }
@@ -140,5 +144,31 @@ class CategoryController extends Controller
         }
 
         return response()->json(['success' => 'Category deleted successfully']);
+    }
+
+    /**
+     * Display the pagination data
+     */
+    public function pagination(Request $request)
+    {
+        $categories = Category::latest()->paginate(3);
+        return view('admin.pages.category.data', compact('categories'))->render();
+    }
+    /**
+     * Display the Search data
+     */
+    public function search(Request $req)
+    {
+        $categories = Category::where('name', 'like', '%'.$req->Searchdata.'%')
+            ->orderBy('id', 'desc')
+            ->paginate(3);
+
+        if ($categories->count() >= 1) {
+            return view('admin.pages.category.data', compact('categories'))->render();
+        }else{
+            return response()->json([
+                'status' => 'nothing found !'
+            ]);
+        }
     }
 }

@@ -21,7 +21,11 @@ use Illuminate\Support\Facades\Route;
 // SUPPER ADMIN ALL ROUTE
 Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::get('/', [AdminController::class, 'admin'])->name('admin.index');
+    //category all route
     Route::resource('category', CategoryController::class);
+    Route::get('pagination/paginate-data', [CategoryController::class,'pagination']);
+    Route::get('category/search',[CategoryController::class,'search'])->name('category.search');
+
     Route::resource('sub-category', SubcategoryController::class);
     Route::resource('child-category', ChilCategoryController::class);
     Route::resource('brand', BrandController::class);
