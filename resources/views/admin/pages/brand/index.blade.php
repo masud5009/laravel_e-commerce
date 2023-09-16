@@ -96,7 +96,7 @@
                         data: 'logo',
                         render: function(data, type, full, meta) {
                             if (data) {
-                                return '<img src="{{ asset('storage/brand') }}/' + data +
+                                return '<img src="{{ asset('storage/images/brand') }}/' + data +
                                     '" width="50" height="50">';
                             } else {
                                 return '';

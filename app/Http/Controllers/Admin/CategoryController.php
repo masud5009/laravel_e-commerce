@@ -26,9 +26,9 @@ class CategoryController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string',
-            'banner' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'cover_img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'banner' => 'nullable|image|mimes:jpeg,png,webp,jpg,gif|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,,webp,jpg,gif|max:2048',
+            'cover_img' => 'nullable|image|mimes:jpeg,webp,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
         ]);
 

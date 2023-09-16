@@ -270,21 +270,21 @@
             });
 
             //pagination category
-            $('body').on('click', '.pagination a', function(e) {
-                e.preventDefault();
-                let page = $(this).attr('href').split('page=')[1];
-                category(page);
+            // $('body').on('click', '.pagination a', function(e) {
+            //     e.preventDefault();
+            //     let page = $(this).attr('href').split('page=')[1];
+            //     category(page);
 
-            });
+            // });
 
-            function category(page) {
-                $.ajax({
-                    url: 'pagination/paginate-data?page=' + page,
-                    success: function(response) {
-                        $('#data').html(response);
-                    }
-                });
-            }
+            // function category(page) {
+            //     $.ajax({
+            //         url: 'pagination/paginate-data?page=' + page,
+            //         success: function(response) {
+            //             $('#data').html(response);
+            //         }
+            //     });
+            // }
 
 
             //search category

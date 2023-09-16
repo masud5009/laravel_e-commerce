@@ -52,14 +52,14 @@ class BrandController extends Controller
                 $brand->slug = Str::slug($request->name, '_');
                 $brand->description = $request->description;
 
-                $image_path = public_path('storage/brand/' . $brand->logo);
+                $image_path = public_path('storage/images/brand/' . $brand->logo);
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
                 if ($request->hasFile('logo')) {
                     $file = $request->file('logo');
                     $filname = time() . '.' . $file->getClientOriginalExtension();
-                    $file->move('storage/brand', $filname);
+                    $file->move('storage/images/brand', $filname);
                     $brand->logo = $filname;
                 }
                 $brand->save();
@@ -67,9 +67,9 @@ class BrandController extends Controller
             }
         } else {
             $this->validate($request, [
-                'name' => 'required',
+                'name' => 'required|unique:brands',
                 'description' => 'nullable',
-                'logo' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048',
+                'logo' => 'required|image|mimes:jpeg,,webp,png,jpg,gif|max:2048',
             ]);
             $brand = new Brand();
             $brand->name = $request->name;
@@ -79,7 +79,7 @@ class BrandController extends Controller
             if ($request->hasFile('logo')) {
                 $file = $request->file('logo');
                 $filname = time() . '.' . $file->getClientOriginalExtension();
-                $file->move('storage/Brand', $filname);
+                $file->move('storage/images/brand', $filname);
                 $brand->logo = $filname;
             }
 
@@ -119,7 +119,7 @@ class BrandController extends Controller
         $brand = Brand::find($id);
         if ($brand) {
             //image exists
-            $image_path = public_path('storage/brand/' . $brand->logo);
+            $image_path = public_path('storage/images/brand/' . $brand->logo);
             if (File::exists($image_path)) {
                 File::delete($image_path);
             }
