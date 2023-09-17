@@ -18,22 +18,27 @@ class SmtpController extends Controller
     {
         $smtp = Smtp::find(1);
         if ($smtp) {
+            dd($smtp);
             $smtp->update([
-                'mailer' => $request->mailer,
+                'transport' => $request->transport,
+                'encryption' => $request->encryption,
                 'host' => $request->host,
                 'port' => $request->port,
                 'user_name' => $request->user_name,
                 'password' => $request->password,
+                'address' => $request->address,
             ]);
             return redirect()->back();
         } else {
             $smtp = new Smtp();
             $smtp->create([
-                'mailer' => $request->mailer,
+                'transport' => $request->transport,
+                'encryption' => $request->encryption,
                 'host' => $request->host,
                 'port' => $request->port,
                 'user_name' => $request->user_name,
                 'password' => $request->password,
+                'address' => $request->address,
             ]);
 
             return redirect()->back();

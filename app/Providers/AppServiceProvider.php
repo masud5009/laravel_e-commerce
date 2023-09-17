@@ -32,8 +32,8 @@ class AppServiceProvider extends ServiceProvider
                 'encryption' => $mailsetting->encryption,
                 'username' =>   $mailsetting->user_name,
                 'password' =>   $mailsetting->password,
-                'form' => [
-                    'address' => $mailsetting->mail_from,
+                'from' => [
+                    'address' => $mailsetting->address,
                     'name' => 'MCommerce',
                 ],
             ];

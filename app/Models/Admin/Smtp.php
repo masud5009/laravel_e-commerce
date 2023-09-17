@@ -9,10 +9,12 @@ class Smtp extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'mailer',
+        'transport',
         'host',
+        'encryption',
         'port',
         'user_name',
-        'password'
+        'password',
+        'from',
     ];
 }

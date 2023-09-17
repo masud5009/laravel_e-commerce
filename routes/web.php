@@ -55,6 +55,9 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
 
 
 Route::get('/', function () {
+    dd(
+        config('mail.host')
+    );
     return view('frontend.index');
 });
 
