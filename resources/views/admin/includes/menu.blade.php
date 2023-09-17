@@ -130,36 +130,34 @@
             </ul>
         </li>
 
-                <!-- Marketing -->
+        <!-- Marketing -->
+        <li class="menu-item">
+            <a href="javascript:void(0);" class="menu-link menu-toggle">
+                {{-- <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i> --}}
+                <i class="menu-icon fa-solid fa-bullhorn"></i>
+
+                <div data-i18n="Layouts">Marketing</div>
+            </a>
+
+            <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="javascript:void(0);" class="menu-link menu-toggle">
-                        {{-- <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i> --}}
-                        <i class="menu-icon fa-solid fa-bullhorn"></i>
-
-                        <div data-i18n="Layouts">Marketing</div>
+                    <a href="{{ route('coupon.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">Coupon</div>
                     </a>
-
-                    <ul class="menu-sub">
-                        <li class="menu-item">
-                            <a href="{{ route('coupon.index') }}" class="menu-link">
-                                <div data-i18n="Without menu">Coupon</div>
-                            </a>
-                        </li>
-                        <li class="menu-item">
-                            <a href="" class="menu-link">
-                                <div data-i18n="Without menu">E Campaign</div>
-                            </a>
-                        </li>
-                    </ul>
                 </li>
-
+                <li class="menu-item">
+                    <a href="" class="menu-link">
+                        <div data-i18n="Without menu">E Campaign</div>
+                    </a>
+                </li>
+            </ul>
+        </li>
         <!-- settings -->
 
         <li class="menu-item">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                {{-- <i class='menu-icon tf-icons bx bx-list-ul'></i> --}}
                 <i class='menu-icon bx bx-cog'></i>
-                <div data-i18n="Layouts">Settings</div>
+                <div data-i18n="Layouts">Setup & Configuration</div>
             </a>
 
             <ul class="menu-sub">
