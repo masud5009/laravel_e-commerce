@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Attribute;
+use App\Models\Admin\AttributeValue;
 use Illuminate\Http\Request;
 
 class AttributeController extends Controller
@@ -13,7 +14,7 @@ class AttributeController extends Controller
      */
     public function index()
     {
-        $attributes = Attribute::all();
+        $attributes = Attribute::latest('created_at')->get();
         return view('admin.pages.attributes.index', compact('attributes'));
     }
 
@@ -77,19 +78,24 @@ class AttributeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request,string $id)
     {
         $request->validate([
             'attribute_value' => 'required|string',
         ]);
-
         $attribute = Attribute::find($id);
-        $attribute->attributeValues()->create([
-            'attribute_id' => $request->attribute_id,
-            'value' => $request->attribute_value,
-        ]);
+        if (!$attribute) {
+            abort(404);
+        } else {
+            $attribute->attributeValues()->create([
+                'attribute_id' => $request->attribute_id,
+                'value' => $request->attribute_value
+            ]);
+        }
+
         return redirect()->back();
     }
+
 
     /**
      * Remove the specified resource from storage.
