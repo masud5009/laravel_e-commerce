@@ -35,12 +35,11 @@
                                                 <td>{{ $key + 1 }}</td>
                                                 <td>{{ $values->value }}</td>
                                                 <td>
-                                                    <a href="javascript:void()" class="btn-sm btn btn-primary editBtn"
-                                                        data-id="' . $row->id . '">
+                                                    <a href="{{ route('attribute-value.edit',['attribute_value'=>$values->id])}}" class="btn-sm btn btn-primary editBtn">
                                                         <i class="bx bx-edit"></i>
                                                     </a>
                                                     <a href="javascript:void(0)" class="btn-sm btn btn-danger deletBtn"
-                                                        data-id="">
+                                                        data-id="{{ $values->id }}">
                                                         <i class="bx bx-trash"></i>
                                                     </a>
                                                 </td>
@@ -97,7 +96,7 @@
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 Swal.fire({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this color!",
+                    text: "Once deleted, you will not be able to recover this Attribute Value!",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
@@ -109,9 +108,9 @@
                     if (willDelete.value) {
                         $.ajax({
                             type: 'DELETE',
-                            url: '{{ route('attribute.destroy', ['attribute' => '__attribute__']) }}'
+                            url: '{{ route('attribute-value.destroy', ['attribute_value' => '__attributeValue__']) }}'
                                 .replace(
-                                    '__attribute__', id),
+                                    '__attributeValue__', id),
                             headers: {
                                 'X-CSRF-TOKEN': csrfToken
                             },
@@ -122,7 +121,7 @@
                             error: function(xhr, status, error) {
                                 // Handle errors here, if necessary
                                 swal("Error",
-                                    "An error occurred while deleting the color.",
+                                    "An error occurred while deleting the Attribute Value.",
                                     "error");
                                 console.error(xhr.responseText);
                             }
@@ -131,58 +130,6 @@
                         Swal.fire("Cancelled", "Your data is safe!", "info");
                     }
                 });
-            });
-        });
-    </script>
-    <script>
-        $(document).ready(function(e) {
-            const tagContainer = $('.tag-container');
-            const tagInput = $('#product-tags');
-            const addedTags = new Set();
-            let maxTags = 8; // Maximum number of tags allowed
-
-            // Function to update the countdown display
-            function updateCountdown() {
-                $('#countdown').text(maxTags + ' tags are remaining');
-            }
-
-            updateCountdown(); // Initial display of the countdown
-
-            function addTag(tagValue) {
-                if (maxTags > 0 && tagValue.length >= 1) {
-                    const tagBadge = $('<span>').addClass('badge bg-primary tag-badge').text(tagValue);
-                    const removeButton = $('<span>').addClass('badge tag-badge-remove').attr('id', 'crox-badge')
-                        .text('x');
-
-                    tagBadge.append(removeButton);
-                    tagContainer.append(tagBadge);
-                    addedTags.add(tagValue);
-                    maxTags--;
-
-                    updateCountdown(); // Update the countdown display
-
-                    removeButton.click(function() {
-                        tagBadge.remove();
-                        addedTags.delete(tagValue);
-                        maxTags++;
-
-                        updateCountdown(); // Update the countdown display
-                    });
-                }
-            }
-
-            tagInput.keypress(function(event) {
-                if (event.which === 13) {
-                    event.preventDefault(); // Prevent the default form submission behavior
-                    const tagValue = tagInput.val().trim();
-
-                    if (tagValue !== '' && !addedTags.has(tagValue) && maxTags > 0) {
-                        addTag(tagValue);
-                        tagInput.val('');
-                    } else {
-                        tagInput.val('');
-                    }
-                }
             });
         });
     </script>

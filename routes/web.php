@@ -3,6 +3,7 @@
 use App\Http\Controllers\Admin\{
     AdminController,
     AttributeController,
+    AttributeValueController,
     BrandController,
     CategoryController,
     ChilCategoryController,
@@ -33,6 +34,7 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
     Route::resource('product', ProductController::class);
     Route::resource('color', ColorController::class);
     Route::resource('attribute', AttributeController::class);
+    Route::resource('attribute-value',AttributeValueController::class);
     // Coupon Routes
     Route::resource('coupon', CouponController::class);
     Route::post('coupon/toggle-status/{coupon}', [CouponController::class,'toggleStatus'])->name('coupon.toggle-status');

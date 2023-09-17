@@ -59,7 +59,7 @@ class AttributeController extends Controller
     public function show(string $id)
     {
         $attribute = Attribute::find($id);
-        return view('admin.pages.attributes.value', compact('attribute'));
+        return view('admin.pages.attributes.value.value', compact('attribute'));
     }
 
     /**
