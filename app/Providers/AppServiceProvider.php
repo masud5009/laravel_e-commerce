@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Providers;
+
 use App\Models\Admin\Smtp;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -26,7 +27,7 @@ class AppServiceProvider extends ServiceProvider
         $mailsetting = Smtp::first();
         if ($mailsetting) {
             $data = [
-                'dirver' =>  $mailsetting->transport,
+                'driver' =>  $mailsetting->transport,
                 'host' =>   $mailsetting->host,
                 'port' =>  $mailsetting->port,
                 'encryption' => $mailsetting->encryption,

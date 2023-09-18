@@ -42,15 +42,7 @@
 <body>
     <!-- Content -->
 
-    <div class="container-xxl">
-        <div class="authentication-wrapper authentication-basic container-p-y">
-            <div class="authentication-inner">
-                <!-- Register Card -->
-                @yield('content')
-                <!-- Register Card -->
-            </div>
-        </div>
-    </div>
+    @yield('content')
 
     <!-- / Content -->
     <!-- Core JS -->
