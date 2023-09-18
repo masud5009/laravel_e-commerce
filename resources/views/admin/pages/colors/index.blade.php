@@ -1,22 +1,23 @@
 @extends('admin.layouts.app')
 @push('css')
     <!-- Ajax Cdn -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/rowreorder/1.4.1/css/rowReorder.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
     <!-- sweetalert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @endpush
-
-
 @section('content')
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
-    <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_color">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mt-3">
+            All Colors
+        </h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal" id="add_color">
             Add Color
         </button>
     </div>
-
     <!-- Modal -->
     <div class="modal fade" id="Modal" tabindex="-1" aria-hidden="true">
         <form id="ajaxform">
@@ -47,7 +48,7 @@
     </div>
 
     <!--/.Bootsttap modal-->
-    <table id="myTable" class="table">
+    <table id="myTable" class="table display nowrap" style="width:100%">
         <thead class="header">
             <tr>
                 <th>SL</th>
@@ -64,14 +65,28 @@
 
 
 @push('scripts')
+    <script src=" https://code.jquery.com/jquery-3.7.0.js"></script>
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
+    <!-- datatables responsive-->
+    <script src="https://cdn.datatables.net/rowreorder/1.4.1/js/dataTables.rowReorder.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <!-- store category -->
     <script>
         $(document).ready(function() {
+            $('#add_color').click(function() {
+                $('#modal-title').html('Add Color');
+                $('#saveBtn').html('Add');
+                $('#name').val('');
+                $('#code').val('');
+            });
+
             // Load data form serverside
             var table = $('#myTable').DataTable({
+                responsive: true,
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('color.index') }}',
@@ -152,11 +167,6 @@
                         $('#code').val(response.color_code);
                     }
                 });
-            });
-
-            $('#add_color').click(function() {
-                $('#modal-title').html('Add Color');
-                $('#saveBtn').html('Add');
             });
 
 

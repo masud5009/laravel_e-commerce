@@ -10,8 +10,11 @@
 @section('content')
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
-    <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_category">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mt-3">
+            All Categories
+        </h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal" id="add_category">
             Add Category
         </button>
     </div>

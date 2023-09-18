@@ -17,13 +17,14 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
-use GuzzleHttp\Psr7\Request;
+
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 // SUPPER ADMIN ALL ROUTE
-Route::prefix('admin/')->middleware('superAdmin')->group(function () {
+Route::prefix('admin/')->middleware('superAdmin','verified')->group(function () {
     Route::get('/', [AdminController::class, 'admin'])->name('admin.index');
     //category all route
     Route::resource('category', CategoryController::class);
@@ -57,16 +58,13 @@ Route::prefix('admin/')->middleware('superAdmin')->group(function () {
 
 
 Route::get('/', function () {
-    dd(
-        config('mail')
-    );
     return view('frontend.index');
 });
 
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home')->middleware(['auth', 'verified']);
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 /**
  *  *Email Verification
@@ -78,7 +76,7 @@ Route::get('/email/verify', function () {
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
     $request->fulfill();
 
-    return redirect('/home');
+    return redirect('/admin');
 })->middleware(['auth', 'signed'])->name('verification.verify');
 
 //Resent Verification Email
