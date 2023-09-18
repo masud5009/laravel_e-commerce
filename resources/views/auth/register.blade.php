@@ -76,8 +76,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" class="form-control" @error('email') is-invalid @enderror"
-                                    name="email" value="{{ old('email') }}" required autocomplete="email""
+                                <input type="email"
+                                class="form-control @error('email') is-invalid @enderror"
+                                    name="email" value="{{ old('email') }}"  autocomplete="email"
                                     placeholder="Enter your email" />
 
                                 @error('email')
@@ -91,7 +92,7 @@
                                 <div class="input-group input-group-merge">
                                     <input id="password" type="password"
                                         class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="new-password"
+                                         autocomplete="new-password"
                                         placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                         aria-describedby="password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
@@ -103,12 +104,15 @@
                                 </div>
                             </div>
                             <div class="mb-3 form-password-toggle">
-                                <label class="form-label" for="c_password">Confirm Password</label>
+                                <label class="form-label" for="password_confirmation">Confirm Password</label>
                                 <div class="input-group input-group-merge">
-                                    <input id="password-confirm" type="password" class="form-control"
-                                        name="password_confirmation" required autocomplete="new-password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
+                                    <input id="password-confirm"
+                                            type="password"
+                                            class="form-control"
+                                            name="password_confirmation"
+                                            autocomplete="new-password"
+                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                            aria-describedby="password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                 </div>
                             </div>

@@ -66,9 +66,11 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" id="email"
-                                    class="form-control @error('email') is-invalid @enderror" name="email"
-                                    value="{{ old('email') }}" required autocomplete="email"
-                                    placeholder="Enter your email or username" autofocus />
+                                        class="form-control @error('email') is-invalid @enderror"
+                                        name="email"
+                                        value="{{ old('email') }}"
+                                        autocomplete="email"
+                                        placeholder="Enter your email or username" autofocus />
                                 @error('email')
                                     <span class="invalid-feedback" role="alert">
                                         <strong>{{ $message }}</strong>
@@ -83,16 +85,14 @@
                                             <small>Forgot Password?</small>
                                         </a>
                                     @endif
-                                    {{-- <a href="auth-forgot-password-basic.html">
-
-                                </a> --}}
                                 </div>
                                 <div class="input-group input-group-merge">
                                     <input id="password" type="password"
-                                        class="form-control @error('password') is-invalid @enderror" name="password"
-                                        required autocomplete="current-password"
-                                        placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
-                                        aria-describedby="password" />
+                                            class="form-control @error('password') is-invalid @enderror"
+                                            name="password"
+                                            autocomplete="current-password"
+                                            placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
+                                            aria-describedby="password" />
                                     <span class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
                                     @error('password')
                                         <span class="invalid-feedback" role="alert">
