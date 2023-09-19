@@ -68,7 +68,6 @@
                 <th>SL</th>
                 <th>Name</th>
                 <th>Category</th>
-                <th>Description</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -115,9 +114,6 @@
                     },
                     {
                         data: 'category.name'
-                    },
-                    {
-                        data: 'description'
                     },
                     {
                         data: 'action',

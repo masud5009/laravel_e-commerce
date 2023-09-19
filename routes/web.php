@@ -35,7 +35,13 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::resource('child-category', ChilCategoryController::class);
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
+    /**
+     *  Product Routes
+     */
     Route::resource('product', ProductController::class);
+    //GET Attribute value form product  controller
+    Route::get('attribute-value/{id}', [ProductController::class, 'getAttributeValue'])->name('attribute.value');
+
     Route::resource('color', ColorController::class);
     Route::resource('attribute', AttributeController::class);
     Route::resource('attribute-value', AttributeValueController::class);
@@ -56,7 +62,7 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
 
     //Profile Routes
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
-    Route::post('profile',[ProfileController::class,'update'])->name('profile.update');
+    Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
 });
 
 

@@ -5,7 +5,9 @@
 @section('content')
     <div class="container flex-grow-1 container-p-y">
         <h5 class="text-dark">Add New product</h5>
-        <form action="" class="form form-horizontal mar-top">
+        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data"
+            class="form form-horizontal mar-top">
+            @csrf
             <div class="row">
                 <div class="col-lg-8">
                     <!-- Product Information -->
@@ -41,8 +43,8 @@
                                     <label class="input-group-text">Brand</label>
                                     <select class="form-select" id="brand" name="brand">
                                         <option selected>Select Brand</option>
-                                        @foreach ($brand as $br)
-                                            <option value="{{ $br->name }}">{{ $br->name }}</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -132,7 +134,8 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="number" value="0" min="0" step="0.01" class="form-control no-spin" placeholder="100"
+                                    <input type="number" value="0" min="0" step="0.01"
+                                        class="form-control no-spin" placeholder="100"
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -159,24 +162,45 @@
                                     <input type="text" value="Colors" class="form-control" disabled>
                                 </div>
                                 <div class="col-md-8">
-                                    <select name="color" id="color" class="form-select">
+                                    <select name="color" id="color" class="form-select" disabled>
                                         <option selected>Nothing selected</option>
+                                        @foreach ($colors as $color)
+                                            <option value="{{ $color->name }}">{{ $color->name }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
+                                <label class="switch">
+                                    <input type="checkbox" id="variation" name="variation">
+                                    <span class="slider round"></span>
+                                </label>
                             </div>
                             <div class="form-group row mb-3">
                                 <div class="col-md-3">
                                     <input type="text" value="Attributes" class="form-control" disabled>
                                 </div>
                                 <div class="col-md-8">
-                                    <select name="attributes" id="attributes" class="form-select">
+                                    <select name="attributes" id="attributes" class="form-select" disabled>
                                         <option selected>Nothing selected</option>
+                                        @foreach ($attributes as $attribute)
+                                            <option value="{{ $attribute->name }}"
+                                                data-attribute-value="{{ $attribute->id }}">{{ $attribute->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row mb-3 attributeValueDiv" style="display: none">
+                                <div class="col-md-3">
+                                    <input type="text" value="Values" class="form-control" disabled>
+                                </div>
+                                <div class="col-md-8">
+                                    <select name="attribute_values" id="attribute_values" class="form-select">
+                                        <!-- here are show the data under attribute -->
                                     </select>
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <!-- Product Description -->
                     <div class="card mb-4">
                         <div class="card-header">
@@ -216,7 +240,8 @@
                             </div>
                             <div class="form-group" id="flatRateInput" style="display: none;">
                                 <label for="flat_rate" class="form-label">Flat Rate</label>
-                                <input type="number" min="0" step="0.01" value="0" class="form-control no-spin" id="flat_rate" name="flat_rate">
+                                <input type="number" min="0" step="0.01" value="0"
+                                    class="form-control no-spin" id="flat_rate" name="flat_rate">
                             </div>
                         </div>
                     </div>
@@ -334,6 +359,7 @@
                     </div>
                 </div>
             </div>
+            <button class="btn btn-primary float-end">Save</button>
         </form>
     </div>
 @endsection
@@ -453,6 +479,55 @@
                     }
                 }
             });
+        });
+    </script>
+
+    <!-- product variation -->
+    <script>
+        $(document).ready(function() {
+            let color = $('#color');
+            let attributes = $('#attributes');
+            let variation = $('#variation');
+
+            variation.on('change', function() {
+                if ($(this).prop('checked')) {
+                    color.prop('disabled', false);
+                    attributes.prop('disabled', false);
+
+                    //attribute selected value show
+                    $('#attributes').on('change', function() {
+                        let selectedAttributeId = $(this).find('option:selected').data(
+                            'attribute-value');
+                        $('.attributeValueDiv').show();
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ route('attribute.value', ['id' => '__id__']) }}'
+                                .replace(
+                                    '__id__', selectedAttributeId),
+                            success: function(data) {
+                                $('#attribute_values option:not(:first-child)')
+                                    .remove();
+                                for (let i = 0; i < data.length; i++) {
+                                    $('#attribute_values').append('<option>' + data[i] +
+                                        '</option>');
+                                }
+                            },
+                            error: function() {
+                                console.error('Error fetching attribute value.');
+                            }
+                        });
+
+                    });
+
+                } else {
+                    color.prop('disabled', true);
+                    attributes.prop('disabled', true);
+                    $('.attributeValueDiv').hide();
+                }
+            });
+
+
+
         });
     </script>
 @endpush

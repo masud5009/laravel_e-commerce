@@ -36,7 +36,7 @@ class SubcategoryController extends Controller
         return view('admin.pages.subcategory.index', compact('category'));
     }
 
-    
+
     /**
      * Store a newly created resource in storage.
      */
@@ -48,6 +48,11 @@ class SubcategoryController extends Controller
             if (!$subcategory) {
                 abort(404);
             } else {
+                $this->validate($request, [
+                    'name' => 'required|unique:subcategories',
+                    'description' => 'nullable',
+                    'category_name' => 'required'
+                ]);
 
                 $subcategory->update([
                     'name' => $request->name,
