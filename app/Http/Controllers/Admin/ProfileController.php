@@ -34,15 +34,12 @@ class ProfileController extends Controller
             $user = User::find($request->user_id);
             $user->name = $request->name;
             $user->email = $request->email;
-            $currentBannerPath = 'storage/images/users/' . $user->user_image;
             if ($request->password) {
                 $user->password = Hash::make($request->password);
             }
-            if ($request->hasFile('avatar')) {
-                if (file_exists($currentBannerPath)) {
-                    unlink($currentBannerPath);
-                }
 
+
+            if ($request->hasFile('avatar')) {
 
                 $file = $request->file('avatar');
                 $fileName = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();

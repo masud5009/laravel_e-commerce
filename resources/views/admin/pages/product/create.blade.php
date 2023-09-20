@@ -5,6 +5,15 @@
 @section('content')
     <div class="container flex-grow-1 container-p-y">
         <h5 class="text-dark">Add New product</h5>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data"
             class="form form-horizontal mar-top">
             @csrf
@@ -32,7 +41,7 @@
                                     <select class="form-select" id="category" name="category">
                                         <option selected>Select Category</option>
                                         @foreach ($category as $cat)
-                                            <option value="{{ $cat->name }}">{{ $cat->name }}</option>
+                                            <option value="{{ $cat->id }}">{{ $cat->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -44,7 +53,7 @@
                                     <select class="form-select" id="brand" name="brand">
                                         <option selected>Select Brand</option>
                                         @foreach ($brands as $brand)
-                                            <option value="{{ $brand->name }}">{{ $brand->name }}</option>
+                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -54,18 +63,14 @@
                                 <input type="input" class="form-control" id="unit" name="unit"
                                     placeholder="Unit (e.g KG, Pc etc)">
                             </div>
-                            <div class="form-group mb-3">
-                                <label for="unit" class="form-label">Tags <span
-                                        class="text-danger fs-6">*</span></label>
-                                <div class="form-group mb-3 position-relative">
-                                    <input type="text" class="form-control" id="product-tags"
-                                        placeholder="Type and hit enter to add tag">
-                                    <div class="tag-container">
-                                        <!-- Tags will be displayed here -->
-                                    </div>
-                                    <div class="form-text text-danger" id="countdown">
+                            <div class="form-group">
+                                <label for="tags" class="form-label">Tags</label>
+                                <div class="tags-input">
+                                    <ul id="tags"></ul>
+                                    <input type="text" class="form-control" id="input-tag"
+                                        placeholder="Enter tag name" />
+                                    <input type="hidden" name="tags[]" id="tags-input" />
 
-                                    </div>
                                 </div>
                             </div>
 
@@ -83,7 +88,7 @@
                             <div class="form-group mb-3">
                                 <label for="images" class="form-label">Gallery Images (600x600)</label>
                                 <div class="input-group">
-                                    <input type="file" class="form-control" id="images" name="images">
+                                    <input type="file" class="form-control" id="images" name="images[]" multiple>
                                     <label class="input-group-text" for="inputGroupFile02">Upload</label>
                                 </div>
                                 <div class="form-text">
@@ -120,22 +125,22 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" value="0" class="form-control" placeholder="100"
-                                        aria-label="Amount (to the nearest dollar)">
+                                    <input type="text" value="0.00" name="unit_price" class="form-control"
+                                        placeholder="100" aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
                                 </div>
                             </div>
                             <div class="form-group mb-2">
                                 <label class="form-label">Discount Date Range</label>
-                                <input class="form-control" type="datetime-local" id="discunt_date" name="discunt_date">
+                                <input class="form-control" type="datetime-local" id="discunt_date" name="discount_date">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="unit_price" class="form-label">Discount price<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="number" value="0" min="0" step="0.01"
-                                        class="form-control no-spin" placeholder="100"
+                                    <input name="discount_price" type="number" value="0" min="0"
+                                        step="0.01" class="form-control no-spin" placeholder="100"
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
                                 </div>
@@ -165,7 +170,7 @@
                                     <select name="color" id="color" class="form-select" disabled>
                                         <option selected>Nothing selected</option>
                                         @foreach ($colors as $color)
-                                            <option value="{{ $color->name }}">{{ $color->name }}</option>
+                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -226,7 +231,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Free Shipping</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="free_shipping_status" name="free_shipping_status" checked>
+                                    <input type="checkbox" id="free_shipping_status" name="free_shipping_status">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -256,8 +261,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="cash_on_delivery_status" name="cash_on_delivery_status"
-                                        checked>
+                                    <input type="checkbox" id="cash_on_delivery_status" name="cash_on_delivery_status">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -287,7 +291,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Show Stock Quantity</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="show_stock_quantity" name="show_stock_quantity" checked>
+                                    <input type="checkbox" id="show_stock_quantity" name="show_stock_quantity">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -367,11 +371,14 @@
     <!-- include summernote css/js -->
     <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+    {{-- DataTables --}}
     <script>
         $(document).ready(function() {
             $('#description').summernote();
         });
     </script>
+
+    {{-- Stock Visibility State  --}}
     <script>
         $(document).ready(function() {
             // Get references to the checkboxes and the input field
@@ -383,6 +390,9 @@
             showStockQuantity.on("change", function() {
                 if ($(this).prop('checked')) {
                     showStockText.prop("checked", false);
+                    showStockQuantity.val(1);
+                    showStockText.val(0);
+                    hideStock.val(0);
                     hideStock.prop("checked", false);
                 }
             });
@@ -390,6 +400,9 @@
             showStockText.on("change", function() {
                 if ($(this).prop('checked')) {
                     showStockQuantity.prop("checked", false);
+                    showStockQuantity.val(0);
+                    showStockText.val(1);
+                    hideStock.val(0);
                     hideStock.prop("checked", false);
                 }
             });
@@ -398,14 +411,18 @@
             hideStock.on("change", function() {
                 if ($(this).prop('checked')) {
                     showStockQuantity.prop("checked", false);
+                    showStockQuantity.val(0);
+                    showStockText.val(0);
+                    hideStock.val(1);
                     showStockText.prop("checked", false);
                 }
             });
         });
     </script>
+
+    {{-- Shipping Configuration --}}
     <script>
         $(document).ready(function() {
-            // Get references to the checkboxes and the input field
             const freeShippingCheckbox = $('#free_shipping_status');
             const flatRateCheckbox = $('#flat_rate_status');
             const flatRateInput = $('#flatRateInput');
@@ -424,59 +441,54 @@
             freeShippingCheckbox.on("change", function() {
                 if ($(this).prop("checked")) {
                     flatRateCheckbox.prop("checked", false);
+                    freeShippingCheckbox.val(1);
                     flatRateInput.hide();
+                } else {
+                    freeShippingCheckbox.val(0);
                 }
             });
 
         });
     </script>
+
+    {{-- Cash On Delivery --}}
     <script>
         $(document).ready(function() {
-            const tagContainer = $('.tag-container');
-            const tagInput = $('#product-tags');
-            const addedTags = new Set();
-            let maxTags = 8; // Maximum number of tags allowed
+            let cash_on_delivery_status = $('#cash_on_delivery_status');
 
-            // Function to update the countdown display
-            function updateCountdown() {
-                $('#countdown').text(maxTags + ' tags are remaining');
-            }
-
-            updateCountdown(); // Initial display of the countdown
-
-            function addTag(tagValue) {
-                if (maxTags > 0 && tagValue.length >= 2) {
-                    const tagBadge = $('<span>').addClass('badge bg-primary tag-badge').text(tagValue);
-                    const removeButton = $('<span>').addClass('badge tag-badge-remove').attr('id', 'crox-badge')
-                        .text('x');
-
-                    tagBadge.append(removeButton);
-                    tagContainer.append(tagBadge);
-                    addedTags.add(tagValue);
-                    maxTags--;
-
-                    updateCountdown(); // Update the countdown display
-
-                    removeButton.click(function() {
-                        tagBadge.remove();
-                        addedTags.delete(tagValue);
-                        maxTags++;
-
-                        updateCountdown(); // Update the countdown display
-                    });
+            cash_on_delivery_status.on('change', function() {
+                if ($(this).prop('checked')) {
+                    cash_on_delivery_status.val(1);
+                } else {
+                    cash_on_delivery_status.val(0);
                 }
-            }
+            });
+        });
+    </script>
 
-            tagInput.keypress(function(event) {
-                if (event.which === 13) { // Check if the Enter key (key code 13) is pressed
-                    const tagValue = tagInput.val().trim();
+    {{-- Featured --}}
+    <script>
+        $(document).ready(function() {
+            let featured = $('#featured');
 
-                    if (tagValue !== '' && !addedTags.has(tagValue) && maxTags > 0) {
-                        addTag(tagValue);
-                        tagInput.val('');
-                    } else {
-                        tagInput.val('');
-                    }
+            featured.on('change', function() {
+                if ($(this).prop('checked')) {
+                    featured.val(1);
+                }
+            });
+        });
+    </script>
+
+    {{-- Todays Deal --}}
+    <script>
+        $(document).ready(function() {
+            let todays_deal = $('#todays_deal');
+
+            todays_deal.on('change', function() {
+                if ($(this).prop('checked')) {
+                    todays_deal.val(1);
+                } else {
+                    todays_deal.val(0);
                 }
             });
         });
@@ -528,6 +540,49 @@
 
 
 
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            const $tagsList = $('#tags');
+            const $input = $('#input-tag');
+            const $tagsInput = $('#tags-input');
+
+            function updateTagsInput() {
+                const tags = $tagsList.find('li').map(function() {
+                    return $(this).text().trim();
+                }).get();
+                $tagsInput.val(JSON.stringify(tags));
+            }
+
+            $input.on('keydown', function(event) {
+                if (event.key === 'Enter') {
+                    event.preventDefault();
+
+                    const tagContent = $input.val().trim();
+
+                    if (tagContent !== '') {
+                        // Check if the tag already exists
+                        if (!$tagsList.find('li:contains("' + tagContent + '")').length) {
+                            const $tag = $('<li></li>');
+                            $tag.text(tagContent);
+                            $tag.append('<button class="delete-button">X</button>');
+                            $tagsList.append($tag);
+                            $input.val('');
+                            updateTagsInput(); // Update the hidden input
+                        } else {
+                            // Tag already exists, clear the input
+                            $input.val('');
+                        }
+                    }
+                }
+            });
+
+            $tagsList.on('click', '.delete-button', function() {
+                $(this).parent().remove();
+                updateTagsInput(); // Update the hidden input
+            });
         });
     </script>
 @endpush

@@ -8,7 +8,10 @@ use App\Models\Admin\Category;
 use App\Models\Admin\Color;
 use App\Models\Admin\Attribute;
 use App\Models\Admin\AttributeValue;
+use App\Models\Admin\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
@@ -51,7 +54,67 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request->all());
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'category' => 'required|exists:categories,id',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
+            'tags.*' => 'string|max:255',
+        ]);
+
+        $product = Product::create([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name, '_'),
+            'category_id' => $request->category,
+            'subcategory_id' => $request->subcategory,
+            'brand' => $request->brand,
+            'unit' => $request->unit,
+            'tags' => json_encode($request->tags),
+            'unit_price' => $request->unit_price,
+            'discount_date' => $request->discount_date,
+            'discount_price' => $request->discount_price,
+            'quantity' => $request->quantity,
+            'color' => json_encode($request->color),
+            'attattribute_valuesributes' => json_encode($request->attribute_values),
+            'description' => $request->description,
+            'free_shipping_status' => $request->free_shipping_status,
+            'flat_rate_status' => $request->flat_rate_status,
+            'flat_rate' => $request->flat_rate,
+            'cash_on_delivery_status' => $request->cash_on_delivery_status,
+            'warning_quantity' => $request->warning_quantity,
+            'show_stock_quantity' => $request->show_stock_quantity,
+            'show_stock_text' => $request->show_stock_text,
+            'hide_stock' => $request->hide_stock,
+            'featured' => $request->featured,
+            'todays_deal' => $request->todays_deal,
+            'shipping_day' => $request->shipping_day,
+        ]);
+        // Thumbnail image
+        if ($request->hasFile('thumbnail')) {
+            $thumbnail_file = $request->file('thumbnail');
+            $thumbnail_filename = time() . '_' . uniqid() . '.' . $thumbnail_file->getClientOriginalExtension();
+            $thumbnail_file->move('storage/images/product/thumbnail', $thumbnail_filename);
+            $product->thumbnail = 'storage/images/product/thumbnail/' . $thumbnail_filename;
+        }
+
+        // Multiple product images
+        $imagesArray = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $productImagesExtension = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move('storage/images/product/images', $productImagesExtension);
+                $imagesArray[] = 'storage/images/product/images/' . $productImagesExtension;
+            }
+        }
+
+        $imagesJson = json_encode($imagesArray);
+        $product->images = $imagesJson;
+
+        $product->save();
+
+
+        return response()->json(['success', 'Product Added successfull']);
+        return redirect()->back();
     }
 
     /**
@@ -60,6 +123,8 @@ class ProductController extends Controller
     public function show(string $id)
     {
         //
+
+
     }
 
     /**
