@@ -19,7 +19,10 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->string('brand')->nullable();
+            $table->string('sku')->nullable();
             $table->string('unit')->nullable();
+            $table->float('weight')->nullable();
+            $table->string('barcode')->unique()->nullable();
             $table->json('tags')->nullable();
             $table->decimal('unit_price', 10, 2)->default(0.00);
             $table->dateTime('discount_date')->nullable();

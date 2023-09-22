@@ -63,12 +63,22 @@
                                 <input type="input" class="form-control" id="unit" name="unit"
                                     placeholder="Unit (e.g KG, Pc etc)">
                             </div>
+                            <div class="form-group mb-3">
+                                <label for="weight" class="form-label">Weight(In Kg)</label>
+                                <input type="input" class="form-control" name="weight" min="0"
+                                step="0.01">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="barcode" class="form-label">Barcode</label>
+                                <input type="input" class="form-control" name="barcode"
+                                    placeholder="Barcode">
+                            </div>
                             <div class="form-group">
                                 <label for="tags" class="form-label">Tags</label>
                                 <div class="tags-input">
                                     <ul id="tags"></ul>
                                     <input type="text" class="form-control" id="input-tag"
-                                        placeholder="Enter tag name" />
+                                        placeholder="Type and hit enter to add a tag" />
                                     <input type="hidden" name="tags[]" id="tags-input" />
 
                                 </div>
@@ -144,6 +154,10 @@
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
                                 </div>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label for="sku" class="form-label">SKU</label>
+                                <input type="input" class="form-control" name="sku" placeholder="SKU">
                             </div>
                             <div class="form-group mb-2">
                                 <label class="form-label">Quantity<span class="text-danger fs-6">*</span></label>
