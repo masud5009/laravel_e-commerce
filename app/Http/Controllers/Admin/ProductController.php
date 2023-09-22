@@ -55,12 +55,10 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|unique:products',
             'category' => 'required|exists:categories,id',
-            'images.*' => 'image|mimes:jpeg,png,jpg,gif|max:2048',
-            'tags.*' => 'string|max:255',
         ]);
-
+        //  dd($request->cash_on_delivery_status);
         $product = Product::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name,
@@ -78,7 +76,6 @@ class ProductController extends Controller
             'attattribute_valuesributes' => json_encode($request->attribute_values),
             'description' => $request->description,
             'free_shipping_status' => $request->free_shipping_status,
-            'flat_rate_status' => $request->flat_rate_status,
             'flat_rate' => $request->flat_rate,
             'cash_on_delivery_status' => $request->cash_on_delivery_status,
             'warning_quantity' => $request->warning_quantity,
@@ -114,7 +111,6 @@ class ProductController extends Controller
 
 
         return response()->json(['success', 'Product Added successfull']);
-        return redirect()->back();
     }
 
     /**

@@ -24,7 +24,6 @@ class Product extends Model
         'attribute_values',
         'description',
         'free_shipping_status',
-        'flat_rate_status',
         'flat_rate',
         'cash_on_delivery_status',
         'warning_quantity',

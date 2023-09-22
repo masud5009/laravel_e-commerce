@@ -30,7 +30,7 @@
                             <div class="form-group mb-3">
                                 <label for="name" class="form-label">Product Name <span
                                         class="text-danger fs-6">*</span></label>
-                                <input type="input" class="form-control" id="name" name="name"
+                                <input value="{{old('name')}}" type="input" class="form-control" id="name" name="name"
                                     placeholder="Product Name">
                             </div>
                             <div class="form-group mb-2">
@@ -125,21 +125,21 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input type="text" value="0.00" name="unit_price" class="form-control"
+                                    <input value="{{old('unit_price')}}" type="text" name="unit_price" class="form-control"
                                         placeholder="100" aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
                                 </div>
                             </div>
                             <div class="form-group mb-2">
                                 <label class="form-label">Discount Date Range</label>
-                                <input class="form-control" type="datetime-local" id="discunt_date" name="discount_date">
+                                <input value="{{old('discunt_date')}}" class="form-control" type="datetime-local" id="discunt_date" name="discount_date">
                             </div>
                             <div class="form-group mb-2">
                                 <label for="unit_price" class="form-label">Discount price<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input name="discount_price" type="number" value="0" min="0"
+                                    <input value="{{old('discount_price')}}" name="discount_price" type="number" min="0"
                                         step="0.01" class="form-control no-spin" placeholder="100"
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
@@ -148,7 +148,7 @@
                             <div class="form-group mb-2">
                                 <label class="form-label">Quantity<span class="text-danger fs-6">*</span></label>
                                 <input class="form-control no-spin" min="0" type="number" id="quantity"
-                                    name="quantity">
+                                    name="quantity" value="{{old('quantity')}}">
                             </div>
                         </div>
                     </div>
@@ -215,7 +215,7 @@
                         <div class="card-body">
                             <div class="form-group mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="10"></textarea>
+                                <textarea name="description" id="description" cols="30" rows="10">{{old('description')}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -239,13 +239,13 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Flat Rate</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="flat_rate_status" name="flat_rate_status">
+                                    <input type="checkbox" id="flat_rate_status">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
                             <div class="form-group" id="flatRateInput" style="display: none;">
                                 <label for="flat_rate" class="form-label">Flat Rate</label>
-                                <input type="number" min="0" step="0.01" value="0"
+                                <input type="number" min="0" step="0.01"
                                     class="form-control no-spin" id="flat_rate" name="flat_rate">
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                             <div class="form-group">
                                 <label for="warningQuantity" class="form-label">Quantity </label>
                                 <input type="number" min="0" class="form-control no-spin" id="warning_quantity"
-                                    name="warning_quantity">
+                                    name="warning_quantity" value="{{old('warning_quantity')}}">
                             </div>
                         </div>
                     </div>
@@ -291,7 +291,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Show Stock Quantity</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="show_stock_quantity" name="show_stock_quantity">
+                                    <input   type="checkbox" id="show_stock_quantity" name="show_stock_quantity">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -299,7 +299,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Show Stock With Text Only</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="show_stock_text" name="show_stock_text">
+                                    <input   type="checkbox" id="show_stock_text" name="show_stock_text">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -307,7 +307,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Hide Stock</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="hide_stock" name="hide_stock">
+                                    <input   type="checkbox" id="hide_stock" name="hide_stock">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -323,7 +323,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="featured" name="featured">
+                                    <input   type="checkbox" id="featured" name="featured">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -357,7 +357,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Shipping Days </label>
                                 <input type="number" min="1" class="form-control no-spin" id="shipping_day"
-                                    name="shipping_day">
+                                    name="shipping_day" value="{{old('shipping_day')}}">
                             </div>
                         </div>
                     </div>
@@ -431,6 +431,7 @@
             flatRateCheckbox.on('change', function() {
                 if ($(this).prop('checked')) {
                     freeShippingCheckbox.prop("checked", false);
+                    freeShippingCheckbox.val(1);
                     flatRateInput.show();
                 } else {
                     flatRateInput.hide();
@@ -443,8 +444,6 @@
                     flatRateCheckbox.prop("checked", false);
                     freeShippingCheckbox.val(1);
                     flatRateInput.hide();
-                } else {
-                    freeShippingCheckbox.val(0);
                 }
             });
 
@@ -459,8 +458,6 @@
             cash_on_delivery_status.on('change', function() {
                 if ($(this).prop('checked')) {
                     cash_on_delivery_status.val(1);
-                } else {
-                    cash_on_delivery_status.val(0);
                 }
             });
         });
@@ -487,8 +484,6 @@
             todays_deal.on('change', function() {
                 if ($(this).prop('checked')) {
                     todays_deal.val(1);
-                } else {
-                    todays_deal.val(0);
                 }
             });
         });
