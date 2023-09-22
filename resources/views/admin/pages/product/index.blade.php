@@ -20,6 +20,7 @@
             <tr>
                 <th>SL</th>
                 <th>Name</th>
+                <th>Image</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -54,6 +55,17 @@
                     },
                     {
                         data: 'name'
+                    },
+                    {
+                        data: 'thumbnail',
+                        render: function(data, type, full, meta) {
+                            if (data) {
+                                return '<img src="{{ asset('storage/images/product/thumbnail') }}/' + data +
+                                    '" width="50" height="50">';
+                            } else {
+                                return '';
+                            }
+                        },
                     },
                     {
                         data: 'action',

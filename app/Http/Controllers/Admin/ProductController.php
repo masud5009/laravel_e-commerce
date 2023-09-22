@@ -29,10 +29,10 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
-                    return '<a href="javascript::void()" class="btn-sm btn btn-success deletBtn" data-id="' . $row->id . '">
+                    return '<a href="javascript::void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
                             <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a href="javascript::void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
+                            <a href="" class="btn-sm btn btn-primary editBtn">
                                 <i class="bx bx-edit"></i>
                             </a>
                             <a href="javascript::void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
