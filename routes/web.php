@@ -9,6 +9,7 @@ use App\Http\Controllers\Admin\{
     ChilCategoryController,
     ColorController,
     CouponController,
+    GeneralSettingController,
     PageController,
     ProductController,
     ProfileController,
@@ -29,7 +30,6 @@ use Illuminate\Support\Facades\Route;
  * Frontend Route
  */
 Route::get('/',[IndexpageController::class,'index'])->name('website.home');
-
 
 /**
  * SUPPER ADMIN ALL ROUTE
@@ -73,6 +73,9 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     //Profile Routes
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
+
+    //General setting route
+    Route::get('general-setting',[GeneralSettingController::class,'index'])->name('generalsetting.index');
 });
 
 Auth::routes();

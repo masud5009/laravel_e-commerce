@@ -162,6 +162,11 @@
 
             <ul class="menu-sub">
                 <li class="menu-item">
+                    <a href="{{ route('generalsetting.index') }}" class="menu-link">
+                        <div data-i18n="Without menu">General Settings</div>
+                    </a>
+                </li>
+                <li class="menu-item">
                     <a href="{{ route('seo.index') }}" class="menu-link">
                         <div data-i18n="Without menu">SEO Setting</div>
                     </a>

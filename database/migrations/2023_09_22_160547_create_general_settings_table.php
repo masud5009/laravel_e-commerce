@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('site_name')->nullable();
             $table->string('site_logo')->nullable();
-            $table->date('time_zone')->nullable();
+            $table->string('facebook')->nullable();
+            $table->string('instagram')->nullable();
+            $table->string('linkedin')->nullable();
             $table->timestamps();
         });
     }
