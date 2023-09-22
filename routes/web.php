@@ -76,6 +76,7 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
 
     //General setting route
     Route::get('general-setting',[GeneralSettingController::class,'index'])->name('generalsetting.index');
+    Route::post('general-setting',[GeneralSettingController::class,'store'])->name('generalsetting.store');
 });
 
 Auth::routes();

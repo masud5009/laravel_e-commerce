@@ -15,22 +15,56 @@
                     <h5 class="card-title border-bottom py-2">General Settings</h5>
                 </div>
                 <div class="card-body">
-                    <form action="{{ route('attribute.store') }}" method="POST">
+                    <form action="{{ route('generalsetting.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
-                        <div class="form-group row">
+                        <div class="form-group row mb-4 ">
+                            <div class="col-lg-3">
+                                <label for="logo" class="form-label">Website Logo</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input type="file" name="logo" class="form-control">
+                            </div>
+                            @if ($generalSetting)
+                                <img src="{{ asset('storage/images/generalSetting/' . $generalSetting->site_logo) }}"
+                                    alt="" style="max-width: 100px;max-height:100px">
+                            @endif
+                        </div>
+                        <div class="form-group row mb-4 ">
                             <div class="col-lg-3">
                                 <label for="name" class="form-label">Name</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" name="name" id="name" class="form-control">
+                                <input value="@if ($generalSetting) {{ $generalSetting->site_name }} @endif"
+                                    type="text" name="name" class="form-control" placeholder="Your site name">
                             </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row mb-4 ">
                             <div class="col-lg-3">
-                                <label for="name" class="form-label">Name</label>
+                                <label for="facebook" class="form-label">Facebook Page</label>
                             </div>
                             <div class="col-lg-9">
-                                <input type="text" name="name" id="name" class="form-control">
+                                <input value="@if ($generalSetting) {{ $generalSetting->facebook }} @endif"
+                                    type="url" name="facebook" class="form-control"
+                                    placeholder="Your facebook page url">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4 ">
+                            <div class="col-lg-3">
+                                <label for="instagram" class="form-label">instagram</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input value="@if ($generalSetting) {{ $generalSetting->instagram }} @endif"
+                                    type="url" name="instagram" class="form-control"
+                                    placeholder="Your instagram profile">
+                            </div>
+                        </div>
+                        <div class="form-group row mb-4 ">
+                            <div class="col-lg-3">
+                                <label for="linkedin" class="form-label">linkedin</label>
+                            </div>
+                            <div class="col-lg-9">
+                                <input value="@if ($generalSetting) {{ $generalSetting->linkedin }} @endif"
+                                    type="url" name="linkedin" class="form-control" placeholder="Your linkedin url">
                             </div>
                         </div>
                         <button type="submit" class="btn btn-success float-end mt-3">Save</button>
