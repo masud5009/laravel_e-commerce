@@ -29,14 +29,14 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
-                    return '<a href="javascript::void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
+                    return '<a href="javascript::void()" class="btn-sm btn btn-success deletBtn" data-id="' . $row->id . '">
+                            <i class="fa-solid fa-eye"></i>
+                            </a>
+                            <a href="javascript::void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-edit"></i>
                             </a>
                             <a href="javascript::void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-trash"></i>
-                            </a>
-                            <a href="javascript::void()" class="btn-sm btn btn-success deletBtn" data-id="' . $row->id . '">
-                                <i class="bx bx-eye"></i>
                             </a>';
                 })
                 ->rawColumns(['action'])
@@ -170,6 +170,12 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $product = Product::destroy($id);
+
+        if (!$product) {
+            abort(404);
+        }
+
+        return response()->json(['success' => 'Product deleted successfully']);
     }
 }

@@ -68,4 +68,47 @@
             });
         });
     </script>
+    <script>
+        //Delete Color
+        $('body').on('click', '.deletBtn', function() {
+            var id = $(this).data('id');
+            const csrfToken = $('meta[name="csrf-token"]').attr('content');
+            Swal.fire({
+                title: "Are you sure?",
+                text: "Once deleted, you will not be able to recover this product!",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#DD6B55",
+                cancelButtonText: "Cancel",
+                confirmButtonText: "OK",
+                closeOnConfirm: false,
+                closeOnCancel: false
+            }).then((willDelete) => {
+                if (willDelete.value) {
+                    $.ajax({
+                        type: 'DELETE',
+                        url: '{{ route('product.destroy', ['product' => '__product__']) }}'
+                            .replace(
+                                '__product__', id),
+                        headers: {
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        success: function(response) {
+                            $(`[data-id="${id}"]`).closest('tr').remove();
+                            Swal.fire("Success", response.success, "success");
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle errors here, if necessary
+                            swal("Error",
+                                "An error occurred while deleting the product.",
+                                "error");
+                            console.error(xhr.responseText);
+                        }
+                    });
+                } else {
+                    Swal.fire("Cancelled", "Your data is safe!", "info");
+                }
+            });
+        });
+    </script>
 @endpush
