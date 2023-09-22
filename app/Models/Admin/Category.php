@@ -16,4 +16,9 @@ class Category extends Model
         'description',
         'created_at'
     ];
+
+    public function subcategory()
+    {
+        return $this->hasMany(Subcategory::class);
+    }
 }

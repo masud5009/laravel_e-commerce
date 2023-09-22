@@ -17,13 +17,23 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
-
+use App\Http\Controllers\Frontend\{
+    IndexpageController
+};
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-// SUPPER ADMIN ALL ROUTE
+/**
+ * Frontend Route
+ */
+Route::get('/',[IndexpageController::class,'index'])->name('website.home');
+
+
+/**
+ * SUPPER ADMIN ALL ROUTE
+ */
 Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function () {
     Route::get('/', [AdminController::class, 'admin'])->name('admin.index');
     //category all route
@@ -64,12 +74,6 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
 });
-
-
-Route::get('/', function () {
-    return view('frontend.index');
-});
-
 
 Auth::routes();
 
