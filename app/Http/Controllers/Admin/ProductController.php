@@ -12,14 +12,36 @@ use App\Models\Admin\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Yajra\DataTables\Facades\DataTables;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+
+        if ($request->ajax()) {
+
+
+            $products = Product::query();
+
+            return DataTables::of($products)
+                ->addColumn('action', function ($row) {
+                    return '<a href="javascript::void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
+                                <i class="bx bx-edit"></i>
+                            </a>
+                            <a href="javascript::void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
+                                <i class="bx bx-trash"></i>
+                            </a>
+                            <a href="javascript::void()" class="btn-sm btn btn-success deletBtn" data-id="' . $row->id . '">
+                                <i class="bx bx-eye"></i>
+                            </a>';
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
         return view('admin.pages.product.index');
     }
 
@@ -131,7 +153,8 @@ class ProductController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $product = Product::find($id);
+        return view('admin.pages.product.edit', compact('product'));
     }
 
     /**

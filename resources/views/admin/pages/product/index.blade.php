@@ -9,21 +9,21 @@
 
 
 @section('content')
-    <div class="d-flex justify-content-center mb-5">
-        <a href="{{ route('product.create') }}" class="btn btn-success">Add Product</a>
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mt-3">
+            All Products
+        </h5>
+        <a href="{{ route('product.create') }}" class="btn btn-primary">Add Product</a>
     </div>
-
     <table id="myTable" class="table">
         <thead class="header">
             <tr>
                 <th>SL</th>
-                <th>Page name</th>
-                <th>Page Title</th>
-                <th>Actions</th>
+                <th>Name</th>
+                <th>Action</th>
             </tr>
         </thead>
         <tbody>
-
         </tbody>
     </table>
 @endsection
@@ -41,24 +41,19 @@
                 $('#summernote').summernote();
             });
 
-            $('#add_page').click(function() {
-                $('#modal-title').html('Add Page');
-                $('#saveBtn').html('Add');
-            });
-
             // Load data form serverside
             var table = $('#myTable').DataTable({
                 processing: true,
                 serverSide: true,
-                ajax: '{{ route('page.index') }}',
+                ajax: '{{ route('product.index') }}',
                 columns: [{
-                        data: 'id'
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1;
+                        }
                     },
                     {
-                        data: 'page_name'
-                    },
-                    {
-                        data: 'page_title'
+                        data: 'name'
                     },
                     {
                         data: 'action',
@@ -66,6 +61,9 @@
                         searchable: false,
                         orderable: false
                     }
+                ],
+                order: [
+                    [1, 'dsc']
                 ]
             });
         });
