@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend;
 
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
+use App\Models\Admin\GeneralSetting;
 use App\Models\Admin\Product;
 use Illuminate\Http\Request;
 
@@ -16,6 +17,7 @@ class IndexpageController extends Controller
      {
         $categories = Category::all();
         $products = Product::all();
-        return view('frontend.index',compact('categories','products'));
+        $generalSetting = GeneralSetting::find(1);
+        return view('frontend.index',compact('categories','products','generalSetting'));
      }
 }
