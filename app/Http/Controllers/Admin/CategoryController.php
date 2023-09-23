@@ -43,78 +43,43 @@ class CategoryController extends Controller
                     'slug' => Str::slug($request->name, '_'),
                     'description' => $request->description,
                 ]);
-                $currentBannerPath = 'storage/images/category_img/' . $category->banner;
-                $currentIconPath = 'storage/images/category_img/' . $category->icon;
-                $currentCoverImgPath = 'storage/images/category_img/' . $category->cover_img;
+                //unlink the old path of image and upate new image
+                $uploadFields = ['banner', 'icon', 'cover_img'];
+                $basePath = 'storage/images/category_img/';
 
-                $category->name = $request->name;
-                $category->slug = Str::slug($request->name, '_');
-                $category->description = $request->description;
+                foreach ($uploadFields as $field) {
+                    if ($request->hasFile($field)) {
+                        $currentPath = $basePath . $category->$field;
+                        if (file_exists($currentPath)) {
+                            unlink($currentPath);
+                        }
 
-                if ($request->hasFile('banner')) {
-                    // Delete the current banner image file
-                    if (file_exists($currentBannerPath)) {
-                        unlink($currentBannerPath);
+                        $file = $request->file($field);
+                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                        $file->move($basePath, $filename);
+                        $category->$field = $filename;
                     }
-
-                    $banner_file = $request->file('banner');
-                    $banner_filename = time() . '_' . uniqid() . '.' . $banner_file->getClientOriginalExtension();
-                    $banner_file->move('storage/images/category_img', $banner_filename);
-                    $category->banner = $banner_filename;
-                }
-
-                if ($request->hasFile('icon')) {
-                    // Delete the current icon image file
-                    if (file_exists($currentIconPath)) {
-                        unlink($currentIconPath);
-                    }
-
-                    $icon_file = $request->file('icon');
-                    $icon_filename = time() . '_' . uniqid() . '.' . $icon_file->getClientOriginalExtension();
-                    $icon_file->move('storage/images/category_img', $icon_filename);
-                    $category->icon = $icon_filename;
-                }
-
-                if ($request->hasFile('cover_img')) {
-                    // Delete the current cover image file
-                    if (file_exists($currentCoverImgPath)) {
-                        unlink($currentCoverImgPath);
-                    }
-
-                    $coverImg_file = $request->file('cover_img');
-                    $coverImg_filename = time() . '_' . uniqid() . '.' . $coverImg_file->getClientOriginalExtension();
-                    $coverImg_file->move('storage/images/category_img', $coverImg_filename);
-                    $category->cover_img = $coverImg_filename;
                 }
                 $category->update();
-
-                return response()->json(['success' => 'Category update success']);
+                return redirect()->back();
             }
         } else {
             $category = new Category();
             $category->name = $request->name;
-            $category->slug = Str::slug($request->name, '_');
-            $category->description = $request->description;
+            $category->slug =  Str::slug($request->name, '_');
+            $category->description =  $request->description;
 
-            if ($request->hasFile('banner')) {
-                $banner_file = $request->file('banner');
-                $banner_filename = time() . '_' . uniqid() . '.' . $banner_file->getClientOriginalExtension();
-                $banner_file->move('storage/images/category_img', $banner_filename);
-                $category->banner = $banner_filename;
-            }
-            if ($request->hasFile('icon')) {
-                $icon_file = $request->file('icon');
-                $icon_filename = time() . '_' . uniqid() . '.' . $icon_file->getClientOriginalExtension();
-                $icon_file->move('storage/images/category_img', $icon_filename);
-                $category->icon = $icon_filename;
-            }
-            if ($request->hasFile('cover_img')) {
-                $coverImg_file = $request->file('cover_img');
-                $coverImg_filename = time() . '_' . uniqid() . '.' . $coverImg_file->getClientOriginalExtension();
-                $coverImg_file->move('storage/images/category_img', $coverImg_filename);
-                $category->cover_img = $coverImg_filename;
-            }
+            $uploadFields = ['banner', 'icon', 'cover_img'];
+            $basePath = 'storage/images/category_img/';
 
+            foreach ($uploadFields as $field) {
+                if ($request->hasFile($field)) {
+                    $file = $request->file($field);
+                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                    $file->move($basePath, $filename);
+                    $category->$field = $filename;
+                }
+            }
             $category->save();
             return response()->json(['success' => 'Category create success']);
         }
@@ -138,13 +103,28 @@ class CategoryController extends Controller
      */
     public function destroy(string $id)
     {
-        $category = Category::destroy($id);
-        if (!$category) {
+        $category = Category::find($id);
+
+        if ($category) {
+            $uploadFields = ['banner', 'icon', 'cover_img'];
+            $basePath = 'storage/images/category_img/';
+
+            // Delete files associated with the category
+            foreach ($uploadFields as $field) {
+                $currentPath = $basePath . $category->$field;
+                if(File::exists($currentPath)){
+                    File::delete($currentPath);
+                }
+                $category->delete();
+            }
+        } else {
             abort(404);
         }
 
+
         return response()->json(['success' => 'Category deleted successfully']);
     }
+
 
     /**
      * Display the pagination data
@@ -159,13 +139,13 @@ class CategoryController extends Controller
      */
     public function search(Request $req)
     {
-        $categories = Category::where('name', 'like', '%'.$req->Searchdata.'%')
+        $categories = Category::where('name', 'like', '%' . $req->Searchdata . '%')
             ->orderBy('id', 'desc')
             ->paginate(3);
 
         if ($categories->count() >= 1) {
             return view('admin.pages.category.data', compact('categories'))->render();
-        }else{
+        } else {
             return response()->json([
                 'status' => 'nothing found !'
             ]);

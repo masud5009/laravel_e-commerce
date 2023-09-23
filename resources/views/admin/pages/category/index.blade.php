@@ -1,5 +1,6 @@
 @extends('admin.layouts.app')
 @push('css')
+<link rel="stylesheet" href="{{asset('asset/admin/css/my.css')}}">
     <!-- Ajax Cdn -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- sweetalert -->
@@ -78,6 +79,7 @@
                 </div>
             </div>
             <div class="card-body">
+
                 <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                     <span class="fs-6 text-dark">Name</span>
                     <span class="fs-6 text-dark me-4">Options</span>
@@ -133,11 +135,9 @@
                             </div>
                         </div>
                     @endforeach
-
                 </div>
             </div>
             <div id="pagination" class="d-flex justify-content-center align-items-center">
-
                 {{ $categories->links() }}
             </div>
         </div>
@@ -148,7 +148,8 @@
 @push('scripts')
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    <!-- store category -->
+
+
     <script>
         $(document).ready(function() {
             $('#add_category').click(function() {
@@ -156,6 +157,7 @@
                 $('#saveBtn').html('Add');
                 $('#ajaxform')[0].reset();
             });
+
 
             // Create & Update Category
             var form = $('#ajaxform')[0];
@@ -230,7 +232,7 @@
 
             //Delete category
             $('body').on('click', '.deletBtn', function() {
-                var id = $(this).data('id');
+                let id = $(this).data('id');
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 Swal.fire({
                     title: "Are you sure?",
@@ -253,14 +255,12 @@
                                 'X-CSRF-TOKEN': csrfToken
                             },
                             success: function(response) {
-                                Swal.fire("Success", response.success, "success");
                                 $('#data').load(location.href + ' #data');
-                                // $(`[data-id="${id}"]`).closest('tr').remove();
-
+                                Swal.fire("Success", response.success, "success");
                             },
                             error: function(xhr, status, error) {
                                 // Handle errors here, if necessary
-                                swal("Error",
+                                Swal.fire("Error",
                                     "An error occurred while deleting the category.",
                                     "error");
                                 console.error(xhr.responseText);
