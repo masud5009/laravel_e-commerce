@@ -113,7 +113,7 @@
                                     <div class="accordion-body">
                                         <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
                                             <span>#</span>
-                                            <h5>{{ $key + 1 }}</h5>
+                                            <h5>{{ $key++ }}</h5>
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
                                             <span>Banner</span>

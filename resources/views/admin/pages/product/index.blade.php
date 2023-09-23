@@ -55,9 +55,7 @@
                         data: 'thumbnail',
                         render: function(data, type, full, meta) {
                             if (data) {
-                                return '<img src="{{ asset('storage/images/product/thumbnail') }}/' +
-                                    data +
-                                    '" width="100" height="100">';
+                                return '<img src="' + data + '" width="100" height="100">';
                             } else {
                                 return '';
                             }
