@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Support\Facades\File;
 
 class ProductController extends Controller
 {
@@ -29,13 +30,13 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
-                    return '<a href="javascript::void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
+                    return '<a href="javascript:void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
                             <i class="fa-solid fa-eye"></i>
                             </a>
                             <a href="" class="btn-sm btn btn-primary editBtn">
                                 <i class="bx bx-edit"></i>
                             </a>
-                            <a href="javascript::void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
+                            <a href="javascript:void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-trash"></i>
                             </a>';
                 })
@@ -170,11 +171,32 @@ class ProductController extends Controller
      */
     public function destroy(string $id)
     {
-        $product = Product::destroy($id);
+        $product = Product::find($id);
 
         if (!$product) {
-            abort(404);
+            return response()->json(['error' => 'Product not found'], 404);
         }
+
+        $thumbnailPath = 'storage/images/product/thumbnail/' . $product->thumbnail;
+        $imagesPath = 'storage/images/product/images/' . $product->images;
+
+        if (File::exists($imagesPath)) {
+            if (File::delete($imagesPath)) {
+                // File deleted successfully
+            } else {
+                return response()->json(['error' => 'Failed to delete images file'], 500);
+            }
+        }
+
+        if (File::exists($thumbnailPath)) {
+            if (File::delete($thumbnailPath)) {
+                // File deleted successfully
+            } else {
+                return response()->json(['error' => 'Failed to delete thumbnail file'], 500);
+            }
+        }
+
+        $product->delete();
 
         return response()->json(['success' => 'Product deleted successfully']);
     }

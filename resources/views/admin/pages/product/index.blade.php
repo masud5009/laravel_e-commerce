@@ -37,11 +37,6 @@
     <!-- store category -->
     <script>
         $(document).ready(function() {
-
-            $(document).ready(function() {
-                $('#summernote').summernote();
-            });
-
             // Load data form serverside
             var table = $('#myTable').DataTable({
                 processing: true,
@@ -60,8 +55,9 @@
                         data: 'thumbnail',
                         render: function(data, type, full, meta) {
                             if (data) {
-                                return '<img src="{{ asset('storage/images/product/thumbnail') }}/' + data +
-                                    '" width="50" height="50">';
+                                return '<img src="{{ asset('storage/images/product/thumbnail') }}/' +
+                                    data +
+                                    '" width="100" height="100">';
                             } else {
                                 return '';
                             }
