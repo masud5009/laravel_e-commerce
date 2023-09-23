@@ -41,13 +41,16 @@
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-dark px-2" href="@if($generalSetting) {{ $generalSetting->facebook }} @endif">
+                    <a class="text-dark px-2"
+                        href="@if ($generalSetting) {{ $generalSetting->facebook }} @endif">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-dark px-2" href="@if($generalSetting) {{ $generalSetting->linkedin }} @endif">
+                    <a class="text-dark px-2"
+                        href="@if ($generalSetting) {{ $generalSetting->linkedin }} @endif">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a class="text-dark px-2" href="@if($generalSetting) {{ $generalSetting->instagram }} @endif">
+                    <a class="text-dark px-2"
+                        href="@if ($generalSetting) {{ $generalSetting->instagram }} @endif">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -87,12 +90,12 @@
     <!-- Topbar End -->
 
 
-    <!-- Navbar Start -->
-    @include('frontend.layouts.navbar')
-    <!-- Navbar End -->
 
 
     @yield('content')
+
+
+
 
     <!-- Footer Start -->
     <div class="container-fluid bg-secondary text-dark mt-5 pt-5">

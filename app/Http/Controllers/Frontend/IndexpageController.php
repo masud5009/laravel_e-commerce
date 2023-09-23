@@ -20,4 +20,13 @@ class IndexpageController extends Controller
         $generalSetting = GeneralSetting::find(1);
         return view('frontend.index',compact('categories','products','generalSetting'));
      }
+
+     /**
+      * Product Details page
+      */
+      public function details($slug)
+      {
+        $product = Product::where('slug',$slug)->first();
+        return view('frontend.product_detail_page',compact('product'));
+      }
 }

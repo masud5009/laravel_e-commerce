@@ -29,7 +29,10 @@ use Illuminate\Support\Facades\Route;
 /**
  * Frontend Route
  */
-Route::get('/',[IndexpageController::class,'index'])->name('website.home');
+Route::prefix('/')->group(function () {
+    Route::get('', [IndexpageController::class, 'index'])->name('website.home');
+    Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
+});
 
 /**
  * SUPPER ADMIN ALL ROUTE
@@ -75,8 +78,8 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
 
     //General setting route
-    Route::get('general-setting',[GeneralSettingController::class,'index'])->name('generalsetting.index');
-    Route::post('general-setting',[GeneralSettingController::class,'store'])->name('generalsetting.store');
+    Route::get('general-setting', [GeneralSettingController::class, 'index'])->name('generalsetting.index');
+    Route::post('general-setting', [GeneralSettingController::class, 'store'])->name('generalsetting.store');
 });
 
 Auth::routes();

@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Admin\Category;
+use App\Models\Admin\GeneralSetting;
 use App\Models\Admin\Smtp;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -22,6 +24,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
+        $generalSetting = GeneralSetting::find(1);
+        view()->share('generalSetting', $generalSetting);
+        $categories = Category::limit(3)->get();
+        view()->share('categories', $categories);
+
+
         Paginator::useBootstrap();
 
         $mailsetting = Smtp::first();
