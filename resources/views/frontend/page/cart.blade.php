@@ -1,4 +1,8 @@
 @extends('frontend.layouts.app')
+@push('css')
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+@endpush
 @section('content')
     @include('frontend.page.navbar')
 
@@ -20,10 +24,18 @@
                         @if (session('cart'))
                             @foreach (session('cart') as $id => $details)
                                 <tr rowId={{ $id }}>
-                                    <td class="align-middle"><img src="{{ $details['image'] }}" alt=""
-                                            style="width: 50px;">{{ $details['name'] }}</td>
+                                    <td class="align-middle">
+                                        <img src="{{ $details['image'] }}" alt=""
+                                            style="width: 50px;">{{ $details['name'] }}
+                                    </td>
+                                    @php
+                                        $unit_price = $details['unit_price'];
+                                        $discount_price = $details['discount_price'];
 
-                                    <td class="align-middle">${{ $details['price'] }}</td>
+                                        $amount = $unit_price - $discount_price;
+                                        $discount = ($amount / $unit_price) * 100;
+                                    @endphp
+                                    <td class="align-middle">${{ $discount }}</td>
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
@@ -31,9 +43,10 @@
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                            <input type="text"
+                                            <input min="1" type="text"
                                                 class="form-control form-control-sm bg-secondary text-center"
-                                                value="{{ $details['quantity'] }}">
+                                                value="{{ $details['quantity'] }}"
+                                                data-quantity="{{ $details['quantity'] }}" data-price="{{ $discount }}">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-sm btn-primary btn-plus">
                                                     <i class="fa fa-plus"></i>
@@ -41,16 +54,18 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="align-middle">$150</td>
-                                    <td class="align-middle"><button class="btn btn-sm btn-primary"><i
-                                                class="fa fa-times"></i></button></td>
+                                    <td class="align-middle">
+                                        <span class="price"></span>
+                                    </td>
+                                    <td class="align-middle"><button class="btn btn-sm btn-primary removeProduct">
+                                            <i class="fa fa-times"></i></button>
+                                    </td>
                                 </tr>
                             @endforeach
-
                         @else
-                        <tr>
-                            <td colspan="5"><a href="{{ route('product.shop') }}">Go to shop</a></td>
-                        </tr>
+                            <tr>
+                                <td colspan="5"><a href="{{ route('product.shop') }}">Go to shop</a></td>
+                            </tr>
                         @endif
                     </tbody>
                 </table>
@@ -91,3 +106,45 @@
     </div>
     <!-- Cart End -->
 @endsection
+@push('script')
+    <script>
+        // Product Quantity
+        $('.quantity button').on('click', function() {
+            var button = $(this);
+            var input = button.parent().parent().find('input');
+            var oldValue = parseFloat(input.val());
+
+            if (button.hasClass('btn-plus')) {
+                var newVal = oldValue + 1;
+            } else {
+                if (oldValue > 1) {
+                    var newVal = oldValue - 1;
+                } else {
+                    newVal = 1;
+                }
+            }
+
+            input.val(newVal);
+            input.data('quantity', newVal);
+
+            // Update the price and total based on the new quantity
+            updateItemTotal(input);
+        });
+
+        // Price update increment or decrement qunatity
+        function updateItemTotal(input) {
+            var quantity = parseFloat(input.data('quantity'));
+            var price = parseFloat(input.data('price'));
+            var total = quantity * price;
+            input.data('total', total); // Update the data-total attribute
+            input.closest('tr').find('.price').text('$' + total.toFixed(2));
+        }
+
+        $(document).ready(function() {
+            $('.quantity input').each(function() {
+                var input = $(this);
+                updateItemTotal(input);
+            });
+        });
+    </script>
+@endpush
