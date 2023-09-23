@@ -27,6 +27,17 @@ class IndexpageController extends Controller
       public function details($slug)
       {
         $product = Product::where('slug',$slug)->first();
-        return view('frontend.product_detail_page',compact('product'));
+        $randomProducts = Product::all()->random(9);
+        return view('frontend.page.product_detail_page',compact('product','randomProducts'));
       }
+
+      /**
+       * Dispaly product on shop page
+       */
+
+       public function shop()
+       {
+        $products = Product::paginate(9);
+        return view('frontend.page.shop',compact('products'));
+       }
 }

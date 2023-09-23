@@ -35,6 +35,7 @@
 
             <div class="col-lg-9">
                 <!-- Navbar Start-->
+                {{-- @include('frontend.layouts.navbar') --}}
                 @include('frontend.layouts.navbar')
                 <!-- Navbar End-->
 

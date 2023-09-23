@@ -32,6 +32,7 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
+    Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
 });
 
 /**
