@@ -18,6 +18,7 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\{
     IndexpageController
 };
@@ -33,6 +34,9 @@ Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
     Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
+    //cart route
+    Route::get('add/to/cart/{id}',[CartController::class,'addCart'])->name('add.cart');
+    Route::get('cart',[CartController::class,'index'])->name('cart.index');
 });
 
 /**

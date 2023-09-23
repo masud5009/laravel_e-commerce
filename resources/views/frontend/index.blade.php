@@ -1,4 +1,9 @@
 @extends('frontend.layouts.app')
+@push('css')
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+@endpush
 @section('content')
     @include('frontend.layouts.header')
     <!-- Featured Start -->
@@ -83,6 +88,11 @@
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
+            @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+            @endif
         </div>
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
@@ -105,8 +115,9 @@
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
+                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To
+                                Cart</a>
                         </div>
                     </div>
                 </div>
@@ -167,8 +178,9 @@
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
+                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add
+                                To Cart</a>
                         </div>
                     </div>
                 </div>

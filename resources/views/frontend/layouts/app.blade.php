@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('asset/frontend/css/style.css') }}" rel="stylesheet">
+    @stack('css')
 </head>
 
 <body>
@@ -81,9 +82,9 @@
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
-                <a href="" class="btn border">
+                <a href="{{ route('cart.index') }}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge">0</span>
+                    <span class="badge">{{ count((array) session('cart')) }}</span>
                 </a>
             </div>
         </div>
@@ -111,6 +112,7 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('asset/frontend/js/main.js')}}"></script>
+    @stack('script')
 </body>
 
 </html>
