@@ -262,7 +262,11 @@
                             <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                                 <h6 class="text-truncate mb-3">{{ $randomProduct->name }}</h6>
                                 <div class="d-flex justify-content-center">
-                                    <h6>$('realprice')</h6>
+                                    @php
+                                        $amount = $product->unit_price - $product->discount_price;
+                                        $discount = ($amount / $product->unit_price) * 100;
+                                    @endphp
+                                    <h6>${{ $discount }}</h6>
                                     <h6 class="text-muted ml-2"><del>${{ $randomProduct->unit_price }}</del></h6>
                                 </div>
                             </div>

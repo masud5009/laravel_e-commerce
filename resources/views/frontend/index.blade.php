@@ -94,7 +94,11 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                             <div class="d-flex justify-content-center">
-                                <h6>$(realpricehere)</h6>
+                                @php
+                                    $amount = $product->unit_price - $product->discount_price;
+                                    $discount = ($amount / $product->unit_price) * 100;
+                                @endphp
+                                <h6>${{ $discount }}</h6>
                                 <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
                             </div>
                         </div>
@@ -152,7 +156,11 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                             <div class="d-flex justify-content-center">
-                                <h6>$(realpricehere)</h6>
+                                @php
+                                    $amount = $product->unit_price - $product->discount_price;
+                                    $discount = ($amount / $product->unit_price) * 100;
+                                @endphp
+                                <h6>${{ $discount }}</h6>
                                 <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
                             </div>
                         </div>
