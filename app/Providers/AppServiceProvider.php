@@ -26,7 +26,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $generalSetting = GeneralSetting::find(1);
         view()->share('generalSetting', $generalSetting);
-        $categories = Category::limit(3)->get();
+        $categories = Category::all();
         view()->share('categories', $categories);
 
 
