@@ -187,4 +187,7 @@ input:checked+.slider:before {
     background : #d00906 !important;
 }
 
-
+/* footer css */
+.footer-bg{
+    background: #212129 !important;
+}
