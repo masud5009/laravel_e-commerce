@@ -8,10 +8,6 @@ use Cart;
 
 class CartController extends Controller
 {
-    public function index()
-    {
-        return view('frontend.page.cart');
-    }
     public function addCart($slug)
     {
         $product = Product::where('slug', $slug)->first();
@@ -30,5 +26,11 @@ class CartController extends Controller
         }
         session()->put('cart', $cart);
         return redirect()->back()->with('success', 'product add successfull');
+    }
+
+
+    public function viewcart()
+    {
+        return view('frontend.page.cart');
     }
 }
