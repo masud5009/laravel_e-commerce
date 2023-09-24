@@ -37,6 +37,7 @@ Route::prefix('/')->group(function () {
     //cart route
     Route::middleware('auth')->group(function () {
         Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+        Route::get('add-to-cart/{product}',[CartController::class,'addCart'])->name('add.cart');
     });
 });
 
