@@ -21,22 +21,13 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                        @if (session('cart'))
-                            @foreach (session('cart') as $id => $details)
-                                <tr rowId="{{ $id }}">
+                                <tr>
                                     <td class="align-middle">
-                                        <img src="{{ $details['image'] }}" alt="" style="width: 50px;">
-                                        {{ $details['name'] }}
+                                        <img src="" alt="" style="width: 50px;">
+
                                     </td>
-                                    @php
-                                        $unit_price = $details['unit_price'];
-                                        $discount_price = $details['discount_price'];
 
-                                        $amount = $unit_price - $discount_price;
-                                        $productPrice = ($amount / $unit_price) * 100;
-
-                                    @endphp
-                                    <td class="align-middle">${{ $productPrice }}</td>
+                                    <td class="align-middle">$</td>
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
@@ -45,9 +36,7 @@
                                                 </button>
                                             </div>
                                             <input min="1" type="text"
-                                                class="form-control form-control-sm bg-secondary text-center"
-                                                value="{{ $details['quantity'] }}"
-                                                data-quantity="{{ $details['quantity'] }}" data-price="{{ $productPrice }}">
+                                                class="form-control form-control-sm bg-secondary text-center">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-sm btn-primary btn-plus">
                                                     <i class="fa fa-plus"></i>
@@ -64,12 +53,9 @@
                                         </button>
                                     </td>
                                 </tr>
-                            @endforeach
-                        @else
                             <tr>
-                                <td colspan="5"><a href="{{ route('product.shop') }}">Go to shop</a></td>
+                                <td colspan="5"><a href="">Go to shop</a></td>
                             </tr>
-                        @endif
                     </tbody>
                 </table>
             </div>
@@ -94,7 +80,7 @@
 
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium">$10</h6>
+                            <h6 class="font-weight-medium" id="shipping_charge">$10</h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
@@ -111,67 +97,5 @@
     <!-- Cart End -->
 @endsection
 @push('script')
-    <script>
-        // Function to calculate and update total price
-        function updateSubTotalPrice() {
-            var subTotalPrice = 0;
 
-            // Loop through each row in the cart table
-            $('.table tbody tr').each(function() {
-                var row = $(this);
-                var price = parseFloat(row.find('.price').text().replace('$', ''));
-                subTotalPrice += price;
-            });
-
-            // Update the Total Price element with the calculated value
-            $('#subTotalPrice').text('$' + subTotalPrice.toFixed(2));
-        }
-
-        // Function to handle quantity changes
-        function handleQuantityChange(input) {
-            updateItemTotal(input);
-            updateSubTotalPrice(); // Update the total price after quantity change
-        }
-
-        // Product Quantity
-        $('.quantity button').on('click', function() {
-            var button = $(this);
-            var input = button.parent().parent().find('input');
-            var oldValue = parseFloat(input.val());
-
-            if (button.hasClass('btn-plus')) {
-                var newVal = oldValue + 1;
-            } else {
-                if (oldValue > 1) {
-                    var newVal = oldValue - 1;
-                } else {
-                    newVal = 1;
-                }
-            }
-
-            input.val(newVal);
-            input.data('quantity', newVal);
-
-            // Call the function to handle quantity change
-            handleQuantityChange(input);
-        });
-
-        // Price update increment or decrement quantity
-        function updateItemTotal(input) {
-            var quantity = parseFloat(input.data('quantity'));
-            var price = parseFloat(input.data('price'));
-            var total = quantity * price;
-            input.data('total', total); // Update the data-total attribute
-            input.closest('tr').find('.price').text('$' + total.toFixed(2));
-        }
-
-        $(document).ready(function() {
-            $('.quantity input').each(function() {
-                var input = $(this);
-                updateItemTotal(input);
-            });
-
-            updateSubTotalPrice(); // Call it initially
-        });
-    </script>
 @endpush

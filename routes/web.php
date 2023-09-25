@@ -35,10 +35,9 @@ Route::prefix('/')->group(function () {
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
     Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
     //cart route
-    Route::middleware('auth')->group(function () {
-        Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
-        Route::get('add-to-cart/{product}',[CartController::class,'addCart'])->name('add.cart');
-    });
+
+    Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+    Route::get('add-to-cart/{id}', [CartController::class, 'addCart'])->name('add.cart');
 });
 
 /**

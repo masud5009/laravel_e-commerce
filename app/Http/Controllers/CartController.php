@@ -2,32 +2,31 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin\Product;
 use Illuminate\Http\Request;
-use Cart;
+use App\Models\Admin\Product;
+use Darryldecode\Cart\Cart;
+use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class CartController extends Controller
 {
-    public function addCart($slug)
+
+    public function addCart($id,Cart $cart)
     {
-        $product = Product::where('slug', $slug)->first();
-        $cart = session()->get('cart', []);
+        $product = Product::find($id);
+        $amount = $product->unit_price - $product->discount_price;
+        $discount = ($amount / $product->unit_price) * 100;
+        $data = array();
+        $data['id'] = $product->id;
+        $data['name'] = $product->name;
+        $data['qty'] = 1;
+        $data['price'] = $discount;
+        $data['options']['image'] = $product->thumbnail;
 
-        if (isset($cart[$slug])) {
-            $cart[$slug]['quantity']++;
-        } else {
-            $cart[$slug] = [
-                'name' => $product->name,
-                'quantity' => 1,
-                'unit_price' => $product->unit_price,
-                'discount_price' => $product->discount_price,
-                'image' => $product->thumbnail,
-            ];
-        }
-        session()->put('cart', $cart);
-        return redirect()->back()->with('success', 'product add successfull');
+        $userId = auth()->user()->id;
+       Cart::session($userId)->add($data);
+        return response()->json('success','ok');
     }
-
 
     public function viewcart()
     {

@@ -89,9 +89,9 @@
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
             @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
             @endif
         </div>
         <div class="row px-xl-5 pb-3">
@@ -115,7 +115,8 @@
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="{{ route('add.cart',$product->slug)}}" class="btn btn-sm text-dark p-0 addCart"><i
+                            <a href="javascript:void(0)" data-id="{{ $product->id }}"
+                                class="btn btn-sm text-dark p-0 addCart"><i
                                     class="fas fa-shopping-cart text-primary mr-1"></i>Add To
                                 Cart</a>
                         </div>
@@ -178,7 +179,8 @@
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="" class="btn btn-sm text-dark p-0 addCart"><i
+                            <a href="javascript:void(0)" data-id="{{ $product->id }}"
+                                class="btn btn-sm text-dark p-0 addCart"><i
                                     class="fas fa-shopping-cart text-primary mr-1"></i>Add
                                 To Cart</a>
                         </div>
@@ -227,3 +229,22 @@
     </div>
     <!-- Vendor End -->
 @endsection
+@push('script')
+    <script>
+        $(document).ready(function() {
+            $('.addCart').on('click', function() {
+                let id = $(this).data('id');
+                if (id) {
+                    $.ajax({
+                        type: 'GET',
+                        url: '{{ route('add.cart', ['id' => '__id__']) }}'.replace('__id__', id),
+                        dataType: "json",
+                        success: function(response) {
+                            console.log(response);
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+@endpush
