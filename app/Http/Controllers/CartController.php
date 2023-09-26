@@ -28,7 +28,8 @@ class CartController extends Controller
             ];
         }
         session()->put('cart',$cart);
-        return redirect()->back()->with('success','Your product add to cart');
+        session()->flash('success','Your product add to cart');
+        return redirect()->back();
     }
 
     public function viewcart()

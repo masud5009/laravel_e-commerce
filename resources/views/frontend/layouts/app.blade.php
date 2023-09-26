@@ -111,8 +111,14 @@
     <script src="mail/contact.js"></script>
 
     <!-- Template Javascript -->
-    <script src="{{asset('asset/frontend/js/main.js')}}"></script>
+    <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
+    <script>
+        @if (Session::has('success'))
+            toastr.success('{{ Session::get('success') }}');
+        @endif
+    </script>
     @stack('script')
+
 </body>
 
 </html>
