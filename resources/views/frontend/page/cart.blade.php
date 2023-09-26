@@ -21,13 +21,17 @@
                         </tr>
                     </thead>
                     <tbody class="align-middle">
-                                <tr>
+                        @php
+                            $cart = (array) session('cart');
+                        @endphp
+                        @if ($cart)
+                            @foreach ($cart as $key => $product)
+                                <tr data-product-id="{{ $key }}">
                                     <td class="align-middle">
-                                        <img src="" alt="" style="width: 50px;">
-
+                                        <img src="{{ $product['image'] }}" alt="" style="width: 50px;">
+                                        {{ $product['name'] }}
                                     </td>
-
-                                    <td class="align-middle">$</td>
+                                    <td class="align-middle">${{ $product['price'] }}</td>
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
@@ -35,8 +39,8 @@
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
-                                            <input min="1" type="text"
-                                                class="form-control form-control-sm bg-secondary text-center">
+                                            <input min="1" type="text" value="{{ $product['qty'] }}"
+                                                class="form-control form-control-sm bg-secondary text-center qty">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-sm btn-primary btn-plus">
                                                     <i class="fa fa-plus"></i>
@@ -45,17 +49,21 @@
                                         </div>
                                     </td>
                                     <td class="align-middle">
+                                        <!-- here tototal price for very qunatity product -->
                                         <span class="price"></span>
                                     </td>
                                     <td class="align-middle">
                                         <button class="btn btn-sm btn-primary removeProduct">
-                                            <i class="fa fa-times"></i> Remove
+                                            <i class="fa fa-times"></i>
                                         </button>
                                     </td>
                                 </tr>
+                            @endforeach
+                        @else
                             <tr>
                                 <td colspan="5"><a href="">Go to shop</a></td>
                             </tr>
+                        @endif
                     </tbody>
                 </table>
             </div>
@@ -75,12 +83,13 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-3 pt-1">
                             <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium" id="subTotalPrice">$</h6>
+                            <h6 class="font-weight-medium" id="subTotalPrice"></h6>
                         </div>
 
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium" id="shipping_charge">$10</h6>
+                            <h6 class="font-weight-medium" id="shipping_charge"></h6>
+
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
@@ -97,5 +106,65 @@
     <!-- Cart End -->
 @endsection
 @push('script')
+    <script>
+        $(document).ready(function() {
+            //TotalPrice for Every Quantity Product
+            function updateTotalPrice(productId) {
+                var productRow = $("tr[data-product-id='" + productId + "']");
+                var quantity = parseInt(productRow.find(".qty").val());
+                var pricePerItem = parseFloat(productRow.find(".align-middle:eq(1)").text().replace("$", ""));
+                var ProductPricePerIncrement = quantity * pricePerItem;
+                productRow.find(".price").text('$' + ProductPricePerIncrement.toFixed(2));
 
+                //SubtotalPrice function
+                updateSubtotal();
+
+            }
+            // update subTotalPrice for all product that add Table
+            function updateSubtotal() {
+                let productRow = $("tr[data-product-id]");
+                let subtotal = 0;
+
+                productRow.each(function() {
+                    let productRow = $(this);
+                    let quantity = parseInt(productRow.find(".qty").val());
+                    let pricePerItem = parseFloat(productRow.find(".align-middle:eq(1)").text().replace("$",
+                        ""));
+                    let totalPrice = quantity * pricePerItem;
+                    subtotal += totalPrice;
+                });
+                $("#subTotalPrice").text("$" + subtotal.toFixed(2));
+
+            }
+            // TotalPrice with shipping charge
+            function TotalPriceWithCharge() {
+
+            }
+
+
+            $("tr[data-product-id").each(function() {
+                var productId = $(this).data("product-id");
+                updateTotalPrice(productId);
+            });
+
+            $('.btn-plus').on('click', function() {
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var productId = $(this).closest("tr").data("product-id");
+                var value = parseInt(quantity.val());
+                quantity.val(value + 1);
+                updateTotalPrice(productId);
+            });
+
+            $('.btn-minus').on('click', function() {
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var productId = $(this).closest("tr").data("product-id");
+                var value = parseInt(quantity.val());
+                if (value > 1) {
+                    quantity.val(value - 1);
+                    updateTotalPrice(productId);
+                }
+
+            });
+        });
+    </script>
 @endpush

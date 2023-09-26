@@ -84,7 +84,7 @@
                 </a>
                 <a href="{{ route('view.cart') }}" class="btn border">
                     <i class="fas fa-shopping-cart text-primary"></i>
-                    <span class="badge"></span>
+                    <span class="badge">{{ count((array) session('cart')) }}</span>
                 </a>
             </div>
         </div>

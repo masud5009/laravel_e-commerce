@@ -37,7 +37,7 @@ Route::prefix('/')->group(function () {
     //cart route
 
     Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
-    Route::get('add-to-cart/{id}', [CartController::class, 'addCart'])->name('add.cart');
+    Route::get('add-to-cart/{slug}', [CartController::class, 'addCart'])->name('add.cart');
 });
 
 /**
