@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Admin\Product;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
@@ -16,20 +17,24 @@ class CartController extends Controller
         $amount = $product->unit_price - $product->discount_price;
         $discount = ($amount / $product->unit_price) * 100;
         $cart = session()->get('cart', []);
-        if (isset($cart[$slug])) {
-            $cart[$slug]['qty']++;
+        if (!$product) {
+            abort(404);
         } else {
-            $cart[$slug] = [
-                'name' => $product->name,
-                'qty' => 1,
-                'price' => $discount,
-                'image' => $product->thumbnail,
-                'shipping_charge' => 10,
-            ];
+            if (isset($cart[$slug])) {
+                $cart[$slug]['qty']++;
+            } else {
+                $cart[$slug] = [
+                    'name' => $product->name,
+                    'qty' => 1,
+                    'price' => $discount,
+                    'image' => $product->thumbnail,
+                    'shipping_charge' => 10,
+                ];
+            }
+            session()->put('cart', $cart);
+            Session::flash('success', 'Your product has been added to the cart.');
+            return redirect()->back();
         }
-        session()->put('cart',$cart);
-        session()->flash('success','Your product add to cart');
-        return redirect()->back();
     }
 
     public function viewcart()

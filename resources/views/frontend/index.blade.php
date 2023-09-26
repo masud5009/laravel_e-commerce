@@ -88,11 +88,11 @@
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
-            @if (session('success'))
+            {{-- @if (session('success'))
                 <div class="alert alert-success">
                     {{ session('success') }}
                 </div>
-            @endif
+            @endif --}}
         </div>
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
@@ -232,7 +232,6 @@
     <!-- Vendor End -->
 @endsection
 @push('script')
-    <!--Toaster alert-->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
 
 @endpush

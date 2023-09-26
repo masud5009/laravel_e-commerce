@@ -21,11 +21,13 @@
 
     <!-- Libraries Stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
-
+    <!--Toaster alert-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('asset/frontend/css/style.css') }}" rel="stylesheet">
     @stack('css')
+
 </head>
 
 <body>
@@ -101,7 +103,7 @@
 
 
     <!-- JavaScript Libraries -->
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
@@ -112,12 +114,14 @@
 
     <!-- Template Javascript -->
     <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
+    <!-- Toaster alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    @stack('script')
     <script>
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');
         @endif
     </script>
-    @stack('script')
 
 </body>
 
