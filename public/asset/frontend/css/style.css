@@ -40,6 +40,8 @@
 *::before,
 *::after {
   box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 html {
@@ -9543,6 +9545,10 @@ a.text-dark:hover, a.text-dark:focus {
 
 .offer .text-md-left img {
   right: 0;
+}
+.product-item:hover {
+    box-shadow: 0px 0px 4px black;
+    cursor: pointer;
 }
 
 .cat-item .cat-img img,

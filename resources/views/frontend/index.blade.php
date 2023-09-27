@@ -88,36 +88,38 @@
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
-            {{-- @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif --}}
         </div>
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
-                <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                    <div class="card product-item border-0 mb-4">
-                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="{{ $product->thumbnail }}" alt="">
-                        </div>
-                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                            <div class="d-flex justify-content-center">
-                                @php
-                                    $unit_price = $product->unit_price;
-                                    $discount_price = $product->discount_price;
-                                    $price_real = $unit_price * ($discount_price / 100);
-                                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                                @endphp
-                                <h6>${{ $price }}</h6>
-                                <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card product-item border mb-4">
+                        <div class=" card-body text-center p-0">
+                            <div class="product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <a href="{{ route('product.details', $product->slug) }}">
+                                    <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
+                                </a>
+                            </div>
+                            <div class="pt-4">
+                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
+                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                                </a>
+                                <div class="d-flex justify-content-center">
+                                    @php
+                                        $unit_price = $product->unit_price;
+                                        $discount_price = $product->discount_price;
+                                        $price_real = $unit_price * ($discount_price / 100);
+                                        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                                    @endphp
+                                    <h6>${{ $price }}</h6>
+                                    <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
+                        <div class="d-flex justify-content-center align-items-center bg-light">
+                            {{-- <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
+                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a> --}}
+                            <a href="{{ route('add.cart', $product->slug) }}"
+                                class="btn btn-sm py-2 mb-2 text-dark addCart"><i
                                     class="fas fa-shopping-cart text-primary mr-1"></i>Add To
                                 Cart</a>
                         </div>
@@ -160,35 +162,44 @@
         </div>
 
         <div class="row px-xl-5 pb-3">
-            @foreach ($products as $product)
-                @php
-                    $unit_price = $product->unit_price;
-                    $discount_price = $product->discount_price;
-                    $price_real = $unit_price * ($discount_price / 100);
-                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                @endphp
-                <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
-                    <div class="card product-item border-0 mb-4">
-                        <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                            <img class="img-fluid w-100" src="{{ $product->thumbnail }}" alt="">
-                        </div>
-                        <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                            <div class="d-flex justify-content-center">
-                                <h6>${{ $price }}</h6>
-                                <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+            @forelse ($products as $product)
+                <div class="col-lg-3 col-md-6 col-sm-12">
+                    <div class="card product-item border mb-4">
+                        <div class=" card-body text-center p-0">
+                            <div class="product-img position-relative overflow-hidden bg-transparent border p-0">
+                                <a href="{{ route('product.details', $product->slug) }}">
+                                    <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
+                                </a>
+                            </div>
+                            <div class="pt-4">
+                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
+                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                                </a>
+                                <div class="d-flex justify-content-center">
+                                    @php
+                                        $unit_price = $product->unit_price;
+                                        $discount_price = $product->discount_price;
+                                        $price_real = $unit_price * ($discount_price / 100);
+                                        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                                    @endphp
+                                    <h6>${{ $price }}</h6>
+                                    <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+                                </div>
                             </div>
                         </div>
-                        <div class="card-footer d-flex justify-content-between bg-light border">
-                            <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add
-                                To Cart</a>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <a href="{{ route('add.cart', $product->slug) }}"
+                                class="btn btn-sm py-2 mb-2 text-dark addCart"><i
+                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To
+                                Cart</a>
                         </div>
                     </div>
                 </div>
-            @endforeach
+            @empty
+            @endforelse
+            <div class="m-auto">
+                {{ $products->links() }}
+            </div>
         </div>
         <div class="d-flex justify-content-center align-items-center">
             {{ $products->links() }}
