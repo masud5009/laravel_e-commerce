@@ -105,18 +105,19 @@
                             <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                             <div class="d-flex justify-content-center">
                                 @php
-                                    $amount = $product->unit_price - $product->discount_price;
-                                    $discount = ($amount / $product->unit_price) * 100;
+                                    $unit_price = $product->unit_price;
+                                    $discount_price = $product->discount_price;
+                                    $price_real = $unit_price * ($discount_price / 100);
+                                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
                                 @endphp
-                                <h6>${{ $discount }}</h6>
+                                <h6>${{ $price }}</h6>
                                 <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
                             </div>
                         </div>
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="{{ route('add.cart',$product->slug)}}"
-                                class="btn btn-sm text-dark p-0 addCart"><i
+                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
                                     class="fas fa-shopping-cart text-primary mr-1"></i>Add To
                                 Cart</a>
                         </div>
@@ -160,6 +161,12 @@
 
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
+                @php
+                    $unit_price = $product->unit_price;
+                    $discount_price = $product->discount_price;
+                    $price_real = $unit_price * ($discount_price / 100);
+                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                @endphp
                 <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                     <div class="card product-item border-0 mb-4">
                         <div class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
@@ -168,12 +175,6 @@
                         <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
                             <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                             <div class="d-flex justify-content-center">
-                                @php
-                                    $unit_price = $product->unit_price;
-                                    $discount_price = $product->discount_price;
-                                    $price_real = $unit_price * ($discount_price/100);
-                                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                                @endphp
                                 <h6>${{ $price }}</h6>
                                 <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
                             </div>
@@ -181,8 +182,7 @@
                         <div class="card-footer d-flex justify-content-between bg-light border">
                             <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
                                     class="fas fa-eye text-primary mr-1"></i>View Detail</a>
-                            <a href="{{ route('add.cart',$product->slug)}}"
-                                class="btn btn-sm text-dark p-0 addCart"><i
+                            <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-sm text-dark p-0 addCart"><i
                                     class="fas fa-shopping-cart text-primary mr-1"></i>Add
                                 To Cart</a>
                         </div>
@@ -232,6 +232,4 @@
     <!-- Vendor End -->
 @endsection
 @push('script')
-
-
 @endpush

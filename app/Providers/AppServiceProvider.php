@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\Admin\Category;
 use App\Models\Admin\GeneralSetting;
+use App\Models\Admin\Product;
 use App\Models\Admin\Smtp;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Pagination\Paginator;
@@ -29,6 +30,8 @@ class AppServiceProvider extends ServiceProvider
         $categories = Category::all();
         view()->share('categories', $categories);
 
+        // $ProductFlatRate = Product::pluck('flat_rate','free_shipping_status')->toArray();
+        // view()->share('ProductFlatRate',$ProductFlatRate);
 
         Paginator::useBootstrap();
 

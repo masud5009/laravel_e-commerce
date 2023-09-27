@@ -88,8 +88,11 @@
 
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            <h6 class="font-weight-medium" id="shipping_charge"></h6>
-
+                            {{-- @if($ProductFlatRate[0] === 1)
+                            <h6 class="font-weight-medium">Free Shipping</h6>
+                            @else
+                            <h6 class="font-weight-medium" id="shipping_charge">{{$ProductFlatRate[0]}}</h6>
+                            @endif --}}
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
