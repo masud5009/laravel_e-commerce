@@ -86,14 +86,14 @@
                     $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
                 @endphp
                 <!-- price -->
-                <div class="row mb-3">
+                <div class="row mb-3 priceDiv">
                     <div class="col-sm-2">
                         <div class="text-dark font-weight-medium mb-0">Price</div>
                     </div>
                     <div class="col-sm-10">
                         <div class="d-flex align-items-center">
                             <!-- Discount Price -->
-                            <strong class="fs-16 fw-700 text-danger">
+                            <strong id="discountPrice" class="fs-16 fw-700 text-danger">
                                 ${{ $price }}
                             </strong>
                             <!-- Unit -->
@@ -129,7 +129,7 @@
                                         <i class="fa fa-minus"></i>
                                     </button>
                                 </div>
-                                <input type="text" class="form-control form-control-sm text-dark text-center"
+                                <input type="text" class="form-control form-control-sm text-dark text-center qty"
                                     value="1">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-secondary btn-plus">
@@ -147,7 +147,10 @@
                             Total Price
                         </div>
                     </div>
-                    <div class="col-sm-10">
+                    <div class="col-sm-10 totalPrice">
+                        <strong id="totalPrice" class="fs-16 fw-700 text-danger">
+                            ${{ $price}}
+                        </strong>
                     </div>
                 </div>
                 <!-- Add cart & buy now  -->
@@ -155,8 +158,9 @@
                     <div class="d-flex justify-content-between">
                         <a href="" class="btn btn-warning rounded px-3 text-white"><i
                                 class="fas fa-shopping-bag"></i> Buy Now</a>
-                        <a href="{{ route('add.cart', $product->slug) }}" class="btn btn-danger rounded px-3 text-white"><i
-                                class="fa fa-shopping-cart"></i> Add To Cart</a>
+                        <a href="{{ route('add.cart', $product->slug) }}"
+                            class="btn btn-danger rounded px-3 text-white"><i class="fa fa-shopping-cart"></i> Add To
+                            Cart</a>
                     </div>
                 </div>
                 <!-- Share Product-->
@@ -338,3 +342,32 @@
     </div>
     <!-- Products End -->
 @endsection
+@push('script')
+    <script>
+        $(document).ready(function() {
+
+            function updatePrice() {
+                var pricePerUnit = parseFloat($("#discountPrice").text().replace('$', ''));
+                var quantity = parseInt($(".qty").val());
+                var totalPrice = pricePerUnit * quantity;
+                $("#totalPrice").text('$' + totalPrice.toFixed(2));
+            }
+            $('.btn-plus').on('click', function() {
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var value = parseInt(quantity.val());
+                quantity.val(value + 1);
+                updatePrice();
+            });
+
+            $('.btn-minus').on('click', function() {
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var value = parseInt(quantity.val());
+                if (value > 1) {
+                    quantity.val(value - 1);
+                    updatePrice();
+                }
+
+            });
+        });
+    </script>
+@endpush
