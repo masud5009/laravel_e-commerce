@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title></title>
+    <title>@yield('title')</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
     <meta content="Free HTML Templates" name="keywords">
     <meta content="Free HTML Templates" name="description">
@@ -33,27 +33,27 @@
 <body>
     <!-- Topbar Start -->
     <div class="container-fluid">
-        <div class="row topbar-bg py-2 px-xl-5">
+        <div class="row top-bg py-2 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-white" href="">FAQs</a>
+                    <a class="text-dark" href="">FAQs</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-white" href="">Help</a>
+                    <a class="text-dark" href="">Help</a>
                     <span class="text-muted px-2">|</span>
-                    <a class="text-white" href="">Support</a>
+                    <a class="text-dark" href="">Support</a>
                 </div>
             </div>
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
-                    <a class="text-white px-2"
+                    <a class="text-dark px-2"
                         href="@if ($generalSetting) {{ $generalSetting->facebook }} @endif">
                         <i class="fab fa-facebook-f"></i>
                     </a>
-                    <a class="text-white px-2"
+                    <a class="text-dark px-2"
                         href="@if ($generalSetting) {{ $generalSetting->linkedin }} @endif">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
-                    <a class="text-white px-2"
+                    <a class="text-dark px-2"
                         href="@if ($generalSetting) {{ $generalSetting->instagram }} @endif">
                         <i class="fab fa-instagram"></i>
                     </a>

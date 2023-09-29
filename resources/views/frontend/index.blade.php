@@ -109,10 +109,10 @@
         </div>
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
-                <div class="col-lg-3 col-md-6 col-sm-12">
-                    <div class="card product-item border mb-4">
-                        <div class=" card-body text-center p-0">
-                            <div class="product-img position-relative overflow-hidden bg-transparent border p-0">
+                <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="card product-item border position-relative">
+                        <div class="card-body product-body text-center p-3">
+                            <div class="product-img position-relative overflow-hidden bg-transparent border">
                                 <a href="{{ route('product.details', $product->slug) }}">
                                     <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
                                 </a>
@@ -132,7 +132,7 @@
                                 <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
                                     <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                                 </a>
-                                <a href="#" id="{{ $product->id }}" class="quick_view" data-toggle="modal"
+                                <a href="#" id="{{ $product->id }}" class="quick_view " data-toggle="modal"
                                     data-target="#exampleModal">Quick View
                                 </a>
                             </div>
@@ -177,7 +177,7 @@
 
         <div class="row px-xl-5 pb-3">
             @forelse ($products as $product)
-                <div class="col-lg-3 col-md-6 col-sm-12">
+                <div class="col-lg-3 col-md-4 col-sm-6">
                     <div class="card product-item border mb-4">
                         <div class=" card-body text-center p-0">
                             <div class="product-img position-relative overflow-hidden bg-transparent border p-0">

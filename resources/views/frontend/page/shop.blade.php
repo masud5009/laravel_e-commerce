@@ -1,6 +1,26 @@
 @extends('frontend.layouts.app')
+@section('title')
+@endsection
 @section('content')
     @include('frontend.page.navbar')
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add to Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="quick_view_modal">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Shop Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
@@ -152,29 +172,34 @@
                         </div>
                     </div>
                     @foreach ($products as $product)
-                        <div class="col-lg-4 col-md-6 col-sm-12 pb-1">
-                            <div class="card product-item border-0 mb-4">
-                                <div
-                                    class="card-header product-img position-relative overflow-hidden bg-transparent border p-0">
-                                    <img class="img-fluid w-100" src="{{ $product->thumbnail }}" alt="">
-                                </div>
-                                <div class="card-body border-left border-right text-center p-0 pt-4 pb-3">
-                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                                    <div class="d-flex justify-content-center">
-                                        @php
-                                            $amount = $product->unit_price - $product->discount_price;
-                                            $discount = ($amount / $product->unit_price) * 100;
-                                        @endphp
-                                        <h6>${{ $discount }}</h6>
-                                        <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+                        <div class="col-lg-3 col-md-4 col-sm-6">
+                            <div class="card product-item border position-relative">
+                                <div class="card-body product-body text-center p-3">
+                                    <div class="product-img position-relative overflow-hidden bg-transparent border">
+                                        <a href="{{ route('product.details', $product->slug) }}">
+                                            <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
+                                        </a>
                                     </div>
-                                </div>
-                                <div class="card-footer d-flex justify-content-between bg-light border">
-                                    <a href="{{ route('product.details', $product->slug) }}"
-                                        class="btn btn-sm text-dark p-0"><i class="fas fa-eye text-primary mr-1"></i>View
-                                        Detail</a>
-                                    <a href="{{ route('add.cart',$product->slug)}}" class="btn btn-sm text-dark p-0"><i
-                                            class="fas fa-shopping-cart text-primary mr-1"></i>Add To Cart</a>
+                                    <div class="pt-4">
+                                        <div class="d-flex justify-content-center">
+                                            @php
+                                                $unit_price = $product->unit_price;
+                                                $discount_value = $product->discount_price;
+                                                $discountPrecente = $unit_price * ($discount_value / 100);
+                                                $price_real = $unit_price - $discountPrecente;
+                                                $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                                            @endphp
+                                            <h6>${{ $price }}</h6>
+                                            <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
+                                        </div>
+                                        <a href="{{ route('product.details', $product->slug) }}"
+                                            class="text-decoration-none">
+                                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                                        </a>
+                                        <a href="#" id="{{ $product->id }}" class="quick_view "
+                                            data-toggle="modal" data-target="#exampleModal">Quick View
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -189,3 +214,18 @@
     </div>
     <!-- Shop End -->
 @endsection
+@push('script')
+    <script>
+        $(document).on('click', '.quick_view', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                type: 'get',
+                url: '{{ route('cart.info', ['id' => '__id__']) }}'.replace(
+                    '__id__', id),
+                success: function(response) {
+                    $('#quick_view_modal').html(response);
+                }
+            });
+        });
+    </script>
+@endpush

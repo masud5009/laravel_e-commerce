@@ -1,4 +1,5 @@
 @extends('frontend.layouts.app')
+@section('title') {{ $product->name }}  @endsection
 @push('css')
     <style>
         #rating_pointer i {
@@ -74,49 +75,56 @@
                             $sumRating = App\Models\Admin\Review::where('product_id', $product->id)->sum('rating');
                             $countRating = App\Models\Admin\Review::where('product_id', $product->id)->count('rating');
                         @endphp
-                        @if (intval($sumRating / $countRating) == 5)
-                            <div class="rating_color_set mr-2">
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                {{-- <small class="fas fa-star-half-alt"></small> --}}
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                            </div>
-                        @elseif (intval($sumRating / $countRating) >= 4 && intval($sumRating / 5) < $countRating)
-                            <div class="rating_color_set mr-2">
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star"></span>
-                            </div>
-                        @elseif (intval($sumRating / $countRating) >= 3 && intval($sumRating / 5) < $countRating)
-                            <div class="rating_color_set mr-2">
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                            </div>
-                        @elseif (intval($sumRating / $countRating) >= 2 && intval($sumRating / 5) < $countRating)
-                            <div class="rating_color_set mr-2">
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                            </div>
-                        @else
-                            <div class="rating_color_set mr-2">
-                                <span class="fas fa-star checked"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                                <span class="fas fa-star"></span>
-                            </div>
+
+                        @if ($countRating > 0)
+                            @if (intval($sumRating / $countRating) == 5)
+                                <div class="rating_color_set mr-2">
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    {{-- <small class="fas fa-star-half-alt"></small> --}}
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                </div>
+                            @elseif (intval($sumRating / $countRating) >= 4 && intval($sumRating / 5) < $countRating)
+                                <div class="rating_color_set mr-2">
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star"></span>
+                                </div>
+                            @elseif (intval($sumRating / $countRating) >= 3 && intval($sumRating / 5) < $countRating)
+                                <div class="rating_color_set mr-2">
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                </div>
+                            @elseif (intval($sumRating / $countRating) >= 2 && intval($sumRating / 5) < $countRating)
+                                <div class="rating_color_set mr-2">
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                </div>
+                            @else
+                                <div class="rating_color_set mr-2">
+                                    <span class="fas fa-star checked"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                    <span class="fas fa-star"></span>
+                                </div>
+                            @endif
                         @endif
-                        <small class="pt-1">({{ intval($sumRating / 5) }} Reviews)</small>
+                        @if (intval($sumRating / 5) > 0)
+                            <small class="pt-1">({{ intval($sumRating / 5) }} Reviews)</small>
+                        @else
+                            <small class="pt-1">(No Reviews)</small>
+                        @endif
                     </div>
                     <p>Estimate Shipping Time : <span class="text-dark">{{ $product->shipping_day }} Days</span></p>
                     <div class="row">
@@ -161,10 +169,10 @@
                     <hr>
                     <!-- price -->
                     <div class="row mb-3 priceDiv">
-                        <div class="col-sm-2">
+                        <div class="col-sm-12 col-lg-2">
                             <div class="text-dark font-weight-medium mb-0">Price</div>
                         </div>
-                        <div class="col-sm-10">
+                        <div class="col-sm-12 col-lg-10">
                             <div class="d-flex align-items-center">
                                 <!-- Discount Price -->
                                 <strong id="discountPrice" class="fs-16 fw-700 text-danger">
@@ -459,47 +467,47 @@
 @endsection
 @push('script')
     <script>
-    $(document).ready(function() {
-        function updatePrice() {
-            var pricePerUnit = parseFloat($("#discountPrice").text().replace('$', ''));
-            var quantity = parseInt($(".qty").val());
-            var totalPrice = pricePerUnit * quantity;
-            $("#totalPrice").text('$' + totalPrice.toFixed(2));
-        }
-
-        $('.btn-plus').on('click', function(e) {
-            e.preventDefault();
-            var quantity = $(this).closest(".quantity").find(".qty");
-            var value = parseInt(quantity.val());
-            quantity.val(value + 1);
-            updatePrice();
-        });
-
-        $('.btn-minus').on('click', function(e) {
-            e.preventDefault();
-            var quantity = $(this).closest(".quantity").find(".qty");
-            var value = parseInt(quantity.val());
-            if (value > 1) {
-                quantity.val(value - 1);
-                updatePrice();
+        $(document).ready(function() {
+            function updatePrice() {
+                var pricePerUnit = parseFloat($("#discountPrice").text().replace('$', ''));
+                var quantity = parseInt($(".qty").val());
+                var totalPrice = pricePerUnit * quantity;
+                $("#totalPrice").text('$' + totalPrice.toFixed(2));
             }
-        });
 
-        $('body').on('submit', '#add-cart-form', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url: url,
-                type: "post",
-                data: request,
-                success: function(response) {
-                    $('#add-cart-form')[0].reset();
-                    $('.modal').modal('hide');
+            $('.btn-plus').on('click', function(e) {
+                e.preventDefault();
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var value = parseInt(quantity.val());
+                quantity.val(value + 1);
+                updatePrice();
+            });
+
+            $('.btn-minus').on('click', function(e) {
+                e.preventDefault();
+                var quantity = $(this).closest(".quantity").find(".qty");
+                var value = parseInt(quantity.val());
+                if (value > 1) {
+                    quantity.val(value - 1);
+                    updatePrice();
                 }
             });
+
+            $('body').on('submit', '#add-cart-form', function(e) {
+                e.preventDefault();
+                var url = $(this).attr('action');
+                var request = $(this).serialize();
+                $.ajax({
+                    url: url,
+                    type: "post",
+                    data: request,
+                    success: function(response) {
+                        $('#add-cart-form')[0].reset();
+                        $('.modal').modal('hide');
+                    }
+                });
+            });
         });
-    });
     </script>
     <script>
         // JavaScript (script.js)
