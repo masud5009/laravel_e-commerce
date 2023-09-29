@@ -118,9 +118,6 @@
                                 </a>
                             </div>
                             <div class="pt-4">
-                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
-                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                                </a>
                                 <div class="d-flex justify-content-center">
                                     @php
                                         $unit_price = $product->unit_price;
@@ -132,15 +129,13 @@
                                     <h6>${{ $price }}</h6>
                                     <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
                                 </div>
+                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
+                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                                </a>
+                                <a href="#" id="{{ $product->id }}" class="quick_view" data-toggle="modal"
+                                    data-target="#exampleModal">Quick View
+                                </a>
                             </div>
-                        </div>
-                        <div class="d-flex justify-content-center align-items-center bg-light">
-                            <a href="#" id="{{ $product->id }}" class="btn btn-primary quick_view"
-                                data-toggle="modal" data-target="#exampleModal">
-                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To
-                                Cart
-                            </a>
-
                         </div>
                     </div>
                 </div>

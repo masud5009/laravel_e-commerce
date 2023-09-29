@@ -18,10 +18,12 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
-use App\Http\Controllers\CartController;
 use App\Http\Controllers\Frontend\{
-    IndexpageController
+    IndexpageController,
+    ReviewController
 };
+use App\Http\Controllers\CartController;
+
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -34,11 +36,14 @@ Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
     Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
-    //cart route
-
-    Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
-    Route::get('quick-view/{id}',[CartController::class,'cartInfo'])->name('cart.info');
-    Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.quickview');
+    Route::middleware('auth', 'verified')->group(function () {
+        //Add To Cart
+        Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+        Route::get('quick-view/{id}', [CartController::class, 'cartInfo'])->name('cart.info');
+        Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.quickview');
+        // Product Review
+        Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
+    });
 });
 
 /**

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Admin\Category;
 use App\Models\Admin\GeneralSetting;
 use App\Models\Admin\Product;
+use App\Models\Admin\Review;
 use Illuminate\Http\Request;
 
 class IndexpageController extends Controller
@@ -28,7 +29,8 @@ class IndexpageController extends Controller
       {
         $product = Product::where('slug',$slug)->first();
         $randomProducts = Product::all();
-        return view('frontend.page.product_detail_page',compact('product','randomProducts'));
+        $reviews = Review::all();
+        return view('frontend.page.product_detail_page',compact('product','randomProducts','reviews'));
       }
 
       /**

@@ -1,17 +1,29 @@
 @extends('frontend.layouts.app')
+@push('css')
+    <style>
+        #rating_pointer i {
+            cursor: pointer;
+            font-size: 20px;
+        }
+
+        .checked {
+            color: #ffc107 !important;
+        }
+    </style>
+@endpush
 @section('content')
     @include('frontend.page.navbar')
 
-    <!-- Shop Detail Start -->
+    <!-- Product Details -->
     <form action="{{ route('add.cart.quickview') }}" method="post" id="add-cart-form">
         @csrf
         @php
-        $unit_price = $product->unit_price;
-        $discount_value = $product->discount_price;
-        $discountPrecente = $unit_price * ($discount_value / 100);
-        $price_real = $unit_price - $discountPrecente;
-        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-    @endphp
+            $unit_price = $product->unit_price;
+            $discount_value = $product->discount_price;
+            $discountPrecente = $unit_price * ($discount_value / 100);
+            $price_real = $unit_price - $discountPrecente;
+            $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+        @endphp
         <input type="hidden" name="id" value="{{ $product->id }}">
         <input type="hidden" name="name" value="{{ $product->name }}">
         <input type="hidden" name="price" value="{{ $price }}">
@@ -42,14 +54,69 @@
                 <div class="col-lg-7 pb-5">
                     <h3 class="font-weight-semi-bold" id="ProductName">{{ $product->name }}</h3>
                     <div class="d-flex mb-3">
-                        <div class="text-warning mr-2">
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star"></small>
-                            <small class="fas fa-star-half-alt"></small>
-                            <small class="far fa-star"></small>
-                        </div>
-                        <small class="pt-1">(50 Reviews)</small>
+                        @php
+                            $rating_5 = App\Models\Admin\Review::where('product_id', $product->id)
+                                ->where('rating', 5)
+                                ->count();
+                            $rating_4 = App\Models\Admin\Review::where('product_id', $product->id)
+                                ->where('rating', 4)
+                                ->count();
+                            $rating_3 = App\Models\Admin\Review::where('product_id', $product->id)
+                                ->where('rating', 3)
+                                ->count();
+                            $rating_2 = App\Models\Admin\Review::where('product_id', $product->id)
+                                ->where('rating', 2)
+                                ->count();
+                            $rating_1 = App\Models\Admin\Review::where('product_id', $product->id)
+                                ->where('rating', 1)
+                                ->count();
+
+                            $sumRating = App\Models\Admin\Review::where('product_id', $product->id)->sum('rating');
+                            $countRating = App\Models\Admin\Review::where('product_id', $product->id)->count('rating');
+                        @endphp
+                        @if (intval($sumRating / $countRating) == 5)
+                            <div class="rating_color_set mr-2">
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                {{-- <small class="fas fa-star-half-alt"></small> --}}
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                            </div>
+                        @elseif (intval($sumRating / $countRating) >= 4 && intval($sumRating / 5) < $countRating)
+                            <div class="rating_color_set mr-2">
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star"></span>
+                            </div>
+                        @elseif (intval($sumRating / $countRating) >= 3 && intval($sumRating / 5) < $countRating)
+                            <div class="rating_color_set mr-2">
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                            </div>
+                        @elseif (intval($sumRating / $countRating) >= 2 && intval($sumRating / 5) < $countRating)
+                            <div class="rating_color_set mr-2">
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                            </div>
+                        @else
+                            <div class="rating_color_set mr-2">
+                                <span class="fas fa-star checked"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                                <span class="fas fa-star"></span>
+                            </div>
+                        @endif
+                        <small class="pt-1">({{ intval($sumRating / 5) }} Reviews)</small>
                     </div>
                     <p>Estimate Shipping Time : <span class="text-dark">{{ $product->shipping_day }} Days</span></p>
                     <div class="row">
@@ -183,149 +250,169 @@
                             @endif
                         </div>
                     </div>
-                    <!-- Share Product-->
-                    <div class="d-flex mt-4">
-                        <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
-                        <div class="d-inline-flex">
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-facebook-f"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                            <a class="text-dark px-2" href="">
-                                <i class="fab fa-pinterest"></i>
-                            </a>
-                        </div>
-                    </div>
-                </div>
+    </form>
+    <!-- Share Product-->
+    <div class="d-flex mt-4">
+        <p class="text-dark font-weight-medium mb-0 mr-2">Share on:</p>
+        <div class="d-inline-flex">
+            <a class="text-dark px-2" href="">
+                <i class="fab fa-facebook-f"></i>
+            </a>
+            <a class="text-dark px-2" href="">
+                <i class="fab fa-twitter"></i>
+            </a>
+            <a class="text-dark px-2" href="">
+                <i class="fab fa-linkedin-in"></i>
+            </a>
+            <a class="text-dark px-2" href="">
+                <i class="fab fa-pinterest"></i>
+            </a>
+        </div>
+    </div>
+    </div>
+    </div>
+    <div class="row px-xl-5">
+        <div class="col">
+            <div class="nav nav-tabs justify-content-center border-secondary mb-4">
+                <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
+                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
             </div>
-            <div class="row px-xl-5">
-                <div class="col">
-                    <div class="nav nav-tabs justify-content-center border-secondary mb-4">
-                        <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
-                        <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
-                    </div>
-                    <div class="tab-content">
-                        <div class="tab-pane fade show active" id="tab-pane-1">
-                            <h4 class="mb-3">Product Description</h4>
-                            <p>{{ $product->description }}</p>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-2">
-                            <h4 class="mb-3">Additional Information</h4>
-                            <p>Eos no lorem eirmod diam diam, eos elitr et gubergren diam sea. Consetetur vero aliquyam
-                                invidunt
-                                duo dolores et duo sit. Vero diam ea vero et dolore rebum, dolor rebum eirmod consetetur
-                                invidunt sed sed et, lorem duo et eos elitr, sadipscing kasd ipsum rebum diam. Dolore diam
-                                stet
-                                rebum sed tempor kasd eirmod. Takimata kasd ipsum accusam sadipscing, eos dolores sit no ut
-                                diam
-                                consetetur duo justo est, sit sanctus diam tempor aliquyam eirmod nonumy rebum dolor
-                                accusam,
-                                ipsum kasd eos consetetur at sit rebum, diam kasd invidunt tempor lorem, ipsum lorem elitr
-                                sanctus eirmod takimata dolor ea invidunt.</p>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item px-0">
-                                            Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                        </li>
-                                    </ul>
+            <div class="tab-content">
+                <div class="tab-pane fade show active" id="tab-pane-1">
+                    <h4 class="mb-3">Product Description</h4>
+                    <p>{{ $product->description }}</p>
+                </div>
+                <div class="tab-pane fade" id="tab-pane-2">
+                    <h4 class="mb-3">Additional Information</h4>
+
+                </div>
+                <div class="tab-pane fade" id="tab-pane-3">
+                    <div class="row">
+                        <!-- Reveiw Details Start-->
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <div class="d-flex flex-column">
+                                <div class="d-flex">
+                                    <h4 class="mb-4" id="review_product_name">Total Review : </h4>
+
+                                    <div class="all-rating-view ml-3">
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span> {{ $rating_5 }} reviews</span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span> {{ $rating_4 }} reviews </span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span> {{ $rating_3 }} reviews </span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span> {{ $rating_2 }} reviews </span>
+                                        </div>
+                                        <div class="d-flex align-items-center">
+                                            <div class="text-warning">
+                                                <i class="fas fa-star"></i>
+                                            </div>
+                                            <span> {{ $rating_1 }} reviews </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-md-6">
-                                    <ul class="list-group list-group-flush">
-                                        <li class="list-group-item px-0">
-                                            Sit erat duo lorem duo ea consetetur, et eirmod takimata.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Amet kasd gubergren sit sanctus et lorem eos sadipscing at.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Duo amet accusam eirmod nonumy stet et et stet eirmod.
-                                        </li>
-                                        <li class="list-group-item px-0">
-                                            Takimata ea clita labore amet ipsum erat justo voluptua. Nonumy.
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="tab-pane fade" id="tab-pane-3">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <h4 class="mb-4">1 review for "Colorful Stylish Shirt"</h4>
+                                @foreach ($reviews as $review)
                                     <div class="media mb-4">
                                         <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
                                             style="width: 45px;">
                                         <div class="media-body">
-                                            <h6>John Doe<small> - <i>01 Jan 2045</i></small></h6>
-                                            <div class="text-primary mb-2">
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star"></i>
-                                                <i class="fas fa-star-half-alt"></i>
-                                                <i class="far fa-star"></i>
+                                            <h6>{{ $review->user->name }}<small> - <i>01 {{ $review->review_month }}
+                                                        {{ $review->review_year }}</i></small></h6>
+                                            <div class="text-warning mb-2">
+                                                @if ($review->rating == 1)
+                                                    <i class="fas fa-star"></i>
+                                                @elseif ($review->rating == 2)
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                @elseif ($review->rating == 3)
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                @elseif ($review->rating == 4)
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                @elseif ($review->rating == 5)
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                    <i class="fas fa-star"></i>
+                                                @endif
                                             </div>
-                                            <p>Diam amet duo labore stet elitr ea clita ipsum, tempor labore accusam ipsum
-                                                et no
-                                                at. Kasd diam tempor rebum magna dolores sed sed eirmod ipsum.</p>
+                                            <p>{!! $review->review !!}</p>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <h4 class="mb-4">Leave a review</h4>
-                                    <small>Your email address will not be published. Required fields are marked *</small>
-                                    <div class="d-flex my-3">
-                                        <p class="mb-0 mr-2">Your Rating * :</p>
-                                        <div class="text-primary">
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                            <i class="far fa-star"></i>
-                                        </div>
-                                    </div>
-                                    <form>
-                                        <div class="form-group">
-                                            <label for="message">Your Review *</label>
-                                            <textarea id="message" cols="30" rows="5" class="form-control"></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="name">Your Name *</label>
-                                            <input type="text" class="form-control" id="name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="email">Your Email *</label>
-                                            <input type="email" class="form-control" id="email">
-                                        </div>
-                                        <div class="form-group mb-0">
-                                            <input type="submit" value="Leave Your Review" class="btn btn-primary px-3">
-                                        </div>
-                                    </form>
-                                </div>
+                                @endforeach
                             </div>
                         </div>
+                        <!-- Reveiw Details End-->
+
+                        <!-- Review Form Start -->
+                        <div class="col-md-6 col-lg-6 col-sm-12">
+                            <h4 class="mb-4">Leave a review</h4>
+                            <form action="{{ route('store.review') }}" method="post" id="review-form">
+                                @csrf
+                                <input type="hidden" value="{{ $product->id }}" name="product_id">
+                                <div class="d-flex my-3">
+                                    <p class="mb-0 mr-2">Your Rating * :</p>
+                                    <div class="text-warning star-rating" id="rating_pointer">
+                                        <i class="far fa-star" data-rating="1"></i>
+                                        <i class="far fa-star" data-rating="2"></i>
+                                        <i class="far fa-star" data-rating="3"></i>
+                                        <i class="far fa-star" data-rating="4"></i>
+                                        <i class="far fa-star" data-rating="5"></i>
+                                    </div>
+                                </div>
+                                <input type="hidden" name="rating" id="rating-input" value="0">
+                                <div class="form-group">
+                                    <label for="message">Your Review *</label>
+                                    <textarea id="message" name="review" cols="30" rows="5" class="form-control"></textarea>
+                                </div>
+                                <div class="form-group mb-0">
+                                    <button type="submit" class="btn btn-primary px-3">Leave Your Review</button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Review Form End -->
                     </div>
                 </div>
+
             </div>
         </div>
-    </form>
-    <!-- Shop Detail End -->
+    </div>
+    </div>
 
-    <!-- Products Start -->
+    <!-- Product Details End -->
+
+    <!-- Related Products Start -->
     <div class="container-fluid py-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">You May Also Like</span></h2>
@@ -368,49 +455,77 @@
             </div>
         </div>
     </div>
-    <!-- Products End -->
+    <!-- Related Products End -->
 @endsection
 @push('script')
     <script>
-        $(document).ready(function() {
+    $(document).ready(function() {
+        function updatePrice() {
+            var pricePerUnit = parseFloat($("#discountPrice").text().replace('$', ''));
+            var quantity = parseInt($(".qty").val());
+            var totalPrice = pricePerUnit * quantity;
+            $("#totalPrice").text('$' + totalPrice.toFixed(2));
+        }
 
-            function updatePrice() {
-                var pricePerUnit = parseFloat($("#discountPrice").text().replace('$', ''));
-                var quantity = parseInt($(".qty").val());
-                var totalPrice = pricePerUnit * quantity;
-                $("#totalPrice").text('$' + totalPrice.toFixed(2));
-            }
-            $('.btn-plus').on('click', function() {
-                var quantity = $(this).closest(".quantity").find(".qty");
-                var value = parseInt(quantity.val());
-                quantity.val(value + 1);
+        $('.btn-plus').on('click', function(e) {
+            e.preventDefault();
+            var quantity = $(this).closest(".quantity").find(".qty");
+            var value = parseInt(quantity.val());
+            quantity.val(value + 1);
+            updatePrice();
+        });
+
+        $('.btn-minus').on('click', function(e) {
+            e.preventDefault();
+            var quantity = $(this).closest(".quantity").find(".qty");
+            var value = parseInt(quantity.val());
+            if (value > 1) {
+                quantity.val(value - 1);
                 updatePrice();
-            });
+            }
+        });
 
-            $('.btn-minus').on('click', function() {
-                var quantity = $(this).closest(".quantity").find(".qty");
-                var value = parseInt(quantity.val());
-                if (value > 1) {
-                    quantity.val(value - 1);
-                    updatePrice();
+        $('body').on('submit', '#add-cart-form', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('action');
+            var request = $(this).serialize();
+            $.ajax({
+                url: url,
+                type: "post",
+                data: request,
+                success: function(response) {
+                    $('#add-cart-form')[0].reset();
+                    $('.modal').modal('hide');
                 }
-
             });
+        });
+    });
+    </script>
+    <script>
+        // JavaScript (script.js)
+        document.addEventListener("DOMContentLoaded", function() {
+            const starIcons = document.querySelectorAll(".star-rating i");
+            const ratingInput = document.querySelector("#rating-input");
 
-            $('body').on('submit', '#add-cart-form', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                $.ajax({
-                    url: url,
-                    type: "post",
-                    data: request,
-                    success: function(response) {
-                        $('#add-cart-form')[0].reset();
-                        $('.modal').modal('hide');
-                    }
+            starIcons.forEach((star) => {
+                star.addEventListener("click", () => {
+                    const rating = parseInt(star.getAttribute("data-rating"));
+                    ratingInput.value = rating;
+                    highlightStars(rating);
                 });
             });
+
+            function highlightStars(rating) {
+                starIcons.forEach((star, index) => {
+                    if (index < rating) {
+                        star.classList.add("fas");
+                        star.classList.remove("far");
+                    } else {
+                        star.classList.remove("fas");
+                        star.classList.add("far");
+                    }
+                });
+            }
         });
     </script>
 @endpush
