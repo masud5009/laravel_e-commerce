@@ -37,7 +37,8 @@ Route::prefix('/')->group(function () {
     //cart route
 
     Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
-    Route::get('add-to-cart/{slug}', [CartController::class, 'addCart'])->name('add.cart');
+    Route::get('quick-view/{id}',[CartController::class,'cartInfo'])->name('cart.info');
+    Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.quickview');
 });
 
 /**

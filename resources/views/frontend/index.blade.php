@@ -6,6 +6,24 @@
 @endpush
 @section('content')
     @include('frontend.layouts.header')
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add to Cart</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="quick_view_modal">
+
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Featured Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">
@@ -106,8 +124,9 @@
                                 <div class="d-flex justify-content-center">
                                     @php
                                         $unit_price = $product->unit_price;
-                                        $discount_price = $product->discount_price;
-                                        $price_real = $unit_price * ($discount_price / 100);
+                                        $discount_value = $product->discount_price;
+                                        $discountPrecente = $unit_price * ($discount_value / 100);
+                                        $price_real = $unit_price - $discountPrecente;
                                         $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
                                     @endphp
                                     <h6>${{ $price }}</h6>
@@ -116,12 +135,12 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center align-items-center bg-light">
-                            {{-- <a href="{{ route('product.details', $product->slug) }}" class="btn btn-sm text-dark p-0"><i
-                                    class="fas fa-eye text-primary mr-1"></i>View Detail</a> --}}
-                            <a href="{{ route('add.cart', $product->slug) }}"
-                                class="btn btn-sm py-2 mb-2 text-dark addCart"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To
-                                Cart</a>
+                            <a href="#" id="{{ $product->id }}" class="btn btn-primary quick_view"
+                                data-toggle="modal" data-target="#exampleModal">
+                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To
+                                Cart
+                            </a>
+
                         </div>
                     </div>
                 </div>
@@ -178,8 +197,9 @@
                                 <div class="d-flex justify-content-center">
                                     @php
                                         $unit_price = $product->unit_price;
-                                        $discount_price = $product->discount_price;
-                                        $price_real = $unit_price * ($discount_price / 100);
+                                        $discount_value = $product->discount_price;
+                                        $discountPrecente = $unit_price * ($discount_value / 100);
+                                        $price_real = $unit_price - $discountPrecente;
                                         $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
                                     @endphp
                                     <h6>${{ $price }}</h6>
@@ -188,16 +208,17 @@
                             </div>
                         </div>
                         <div class="d-flex justify-content-center align-items-center">
-                            <a href="{{ route('add.cart', $product->slug) }}"
-                                class="btn btn-sm py-2 mb-2 text-dark addCart"><i
-                                    class="fas fa-shopping-cart text-primary mr-1"></i>Add To
-                                Cart</a>
+                            <a href="#" id="{{ $product->id }}" class="btn btn-primary quick_view"
+                                data-toggle="modal" data-target="#exampleModal">
+                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To
+                                Cart
+                            </a>
                         </div>
                     </div>
                 </div>
             @empty
             @endforelse
-            <div class="m-auto">
+            <div class="d-flex justify-content-center align-items-center">
                 {{ $products->links() }}
             </div>
         </div>
@@ -243,4 +264,17 @@
     <!-- Vendor End -->
 @endsection
 @push('script')
+    <script>
+        $(document).on('click', '.quick_view', function() {
+            var id = $(this).attr('id');
+            $.ajax({
+                type: 'get',
+                url: '{{ route('cart.info', ['id' => '__id__']) }}'.replace(
+                    '__id__', id),
+                success: function(response) {
+                    $('#quick_view_modal').html(response);
+                }
+            });
+        });
+    </script>
 @endpush

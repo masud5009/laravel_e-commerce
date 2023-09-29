@@ -27,7 +27,7 @@ class IndexpageController extends Controller
       public function details($slug)
       {
         $product = Product::where('slug',$slug)->first();
-        $randomProducts = Product::all()->random(9);
+        $randomProducts = Product::all();
         return view('frontend.page.product_detail_page',compact('product','randomProducts'));
       }
 

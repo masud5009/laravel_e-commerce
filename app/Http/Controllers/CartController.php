@@ -11,34 +11,37 @@ use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
 
-    public function addCart($slug)
+    public function addCartQuickView(Request $req)
     {
-        $product = Product::where('slug', $slug)->first();
-        $amount = $product->unit_price - $product->discount_price;
-        $discount = ($amount / $product->unit_price) * 100;
+        $product = Product::find($req->id);
         $cart = session()->get('cart', []);
-        if (!$product) {
-            abort(404);
+
+
+        if (isset($cart[$req->id])) {
+            $cart[$req->id]['qty']++;
         } else {
-            if (isset($cart[$slug])) {
-                $cart[$slug]['qty']++;
-            } else {
-                $cart[$slug] = [
-                    'name' => $product->name,
-                    'qty' => 1,
-                    'price' => $discount,
-                    'image' => $product->thumbnail,
-                    'shipping_charge' => 10,
-                ];
-            }
+            $cart[$req->id] = [
+                'id' => $req->id,
+                'name' => $product->name,
+                'qty' => $req->quantity,
+                'price' => $req->price,
+                'shipping_charge' => 50,
+            ];
             session()->put('cart', $cart);
-            Session::flash('success', 'Your product has been added to the cart.');
-            return redirect()->back();
+            return response()->json('success','Product add your cart');
         }
     }
+
+    // public function
 
     public function viewcart()
     {
         return view('frontend.page.cart');
+    }
+
+    public function cartInfo($id)
+    {
+        $product = Product::where('id', $id)->first();
+        return view('frontend.page.product.quickview', compact('product'));
     }
 }

@@ -13,6 +13,7 @@
                 <table class="table table-bordered text-center mb-0">
                     <thead class="bg-secondary text-dark">
                         <tr>
+
                             <th>Products</th>
                             <th>Price</th>
                             <th>Quantity</th>
@@ -28,7 +29,7 @@
                             @foreach ($cart as $key => $product)
                                 <tr data-product-id="{{ $key }}">
                                     <td class="align-middle">
-                                        <img src="{{ $product['image'] }}" alt="" style="width: 50px;">
+                                        {{-- <img src="{{ $product['image'] }}" alt="" style="width: 50px;"> --}}
                                         {{ $product['name'] }}
                                     </td>
                                     <td class="align-middle">${{ $product['price'] }}</td>
@@ -40,6 +41,7 @@
                                                 </button>
                                             </div>
                                             <input min="1" type="text" value="{{ $product['qty'] }}"
+                                                name="qty"
                                                 class="form-control form-control-sm bg-secondary text-center qty">
                                             <div class="input-group-btn">
                                                 <button class="btn btn-sm btn-primary btn-plus">
@@ -88,7 +90,7 @@
 
                         <div class="d-flex justify-content-between">
                             <h6 class="font-weight-medium">Shipping</h6>
-                            {{-- @if($ProductFlatRate[0] === 1)
+                            {{-- @if ($ProductFlatRate[0] === 1)
                             <h6 class="font-weight-medium">Free Shipping</h6>
                             @else
                             <h6 class="font-weight-medium" id="shipping_charge">{{$ProductFlatRate[0]}}</h6>
