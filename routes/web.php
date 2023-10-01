@@ -36,14 +36,14 @@ Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
     Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
-    Route::middleware('auth', 'verified')->group(function () {
+    // Route::middleware('auth', 'verified')->group(function () {
         //Add To Cart
         Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
         Route::get('quick-view/{id}', [CartController::class, 'cartInfo'])->name('cart.info');
         Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.quickview');
         // Product Review
         Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
-    });
+    // });
 });
 
 /**

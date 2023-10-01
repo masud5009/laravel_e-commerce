@@ -1,5 +1,24 @@
 @extends('frontend.layouts.app')
 @push('css')
+    <style>
+        /* Define the animation */
+        @keyframes md-effect {
+            0% {
+                transform: translateY(-200%);
+                opacity: 0;
+            }
+
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Apply the animation to the modal content */
+        .modal.fade.md-effect .modal-content {
+            animation: md-effect 0.5s 0.1s both;
+        }
+    </style>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
@@ -7,8 +26,8 @@
 @section('content')
     @include('frontend.layouts.header')
 
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <!-- Product Quick View Modal -->
+    <div class="modal fade md-effect" id="quickViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -24,6 +43,24 @@
             </div>
         </div>
     </div>
+    <!-- Product Wishlist View Modal -->
+    <div class="modal fade md-effect" id="wishlist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">View Wishlist</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="wishlist">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Featured Start -->
     <div class="container-fluid pt-5">
         <div class="row px-xl-5 pb-3">
@@ -133,7 +170,7 @@
                                     <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
                                 </a>
                                 <a href="#" id="{{ $product->id }}" class="quick_view " data-toggle="modal"
-                                    data-target="#exampleModal">Quick View
+                                    data-target="#quickViewModal">Quick View
                                 </a>
                             </div>
                         </div>
@@ -269,6 +306,32 @@
                 success: function(response) {
                     $('#quick_view_modal').html(response);
                 }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Show the modal with animation when it's opened
+            $('#quickViewModal').on('show.bs.modal', function() {
+                $(this).find('.modal-content').addClass('slip-from-top');
+            });
+
+            // Remove the animation class when the modal is closed
+            $('#quickViewModal').on('hidden.bs.modal', function() {
+                $(this).find('.modal-content').removeClass('slip-from-top');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#quickViewModal').on('show.bs.modal', function() {
+                // Add animation class when the modal is shown
+                $(this).find('.modal-content').addClass('md-effect');
+            });
+
+            $('#quickViewModal').on('hidden.bs.modal', function() {
+                // Remove animation class when the modal is hidden
+                $(this).find('.modal-content').removeClass('md-effect');
             });
         });
     </script>

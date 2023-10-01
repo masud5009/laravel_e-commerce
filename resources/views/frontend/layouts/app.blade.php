@@ -80,7 +80,8 @@
                 </form>
             </div>
             <div class="col-lg-3 col-6 text-right">
-                <a href="" class="btn border">
+
+                <a href="#" data-toggle="modal" data-target="#wishlist">
                     <i class="fas fa-heart text-primary"></i>
                     <span class="badge">0</span>
                 </a>
@@ -104,8 +105,9 @@
 
     <!-- JavaScript Libraries -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="lib/easing/easing.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/2.11.6/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {{-- <script src="lib/easing/easing.min.js"></script> --}}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
     <!-- Contact Javascript File -->
@@ -121,8 +123,10 @@
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');
         @endif
+        @if(Session::has('error'))
+        toastr.error('{{ Session::get('error') }}');
+        @endif
     </script>
-
 </body>
 
 </html>
