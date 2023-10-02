@@ -13,6 +13,8 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->boolean('trandy')->default(false)->nullable();
+            $table->unsignedBigInteger('childcategory_id')->nullable();
+            $table->foreign('childcategory_id')->references('id')->on('child_categories')->onDelete('cascade');
         });
     }
 
@@ -23,6 +25,7 @@ return new class extends Migration
     {
         Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('trandy');
+            $table->dropColumn('childcategory_id');
         });
     }
 };

@@ -9,6 +9,7 @@ use App\Models\Admin\Color;
 use App\Models\Admin\Attribute;
 use App\Models\Admin\AttributeValue;
 use App\Models\Admin\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -79,9 +80,10 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255|unique:products',
-            'category' => 'required|exists:categories,id',
+            // 'category' => 'required|exists:categories,id',
         ]);
-        //  dd($request->cash_on_delivery_status);
+
+
         $product = Product::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name,
@@ -135,8 +137,7 @@ class ProductController extends Controller
 
         $product->save();
 
-
-        return response()->json(['success', 'Product Added successfull']);
+        session()->flash('success', 'Your Product Added successfull');
     }
 
     /**

@@ -50,7 +50,6 @@ class SubcategoryController extends Controller
             } else {
                 $this->validate($request, [
                     'name' => 'required|unique:subcategories',
-                    'description' => 'nullable',
                     'category_name' => 'required'
                 ]);
 

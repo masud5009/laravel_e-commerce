@@ -36,4 +36,9 @@ class Product extends Model
         'images',
         'thumbnail',
     ];
+
+    public function subcategories()
+    {
+        return $this->belongsTo(Subcategory::class);
+    }
 }

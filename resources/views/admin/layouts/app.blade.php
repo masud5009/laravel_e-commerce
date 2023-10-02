@@ -33,7 +33,8 @@
     <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/my.css" />
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
-
+ <!--Toaster alert-->
+ <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('asset/admin') }}/lib/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
@@ -92,10 +93,19 @@
 
     <!-- Main JS -->
     <script src="{{ asset('asset/admin') }}/js/main.js"></script>
-
+    <!-- Toaster alert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Page JS -->
     {{-- <script src="../assets/js/dashboards-analytics.js"></script> --}}
     @stack('scripts')
+    <script>
+        @if (Session::has('success'))
+            toastr.success('{{ Session::get('success') }}');
+        @endif
+        @if(Session::has('error'))
+        toastr.error('{{ Session::get('error') }}');
+        @endif
+    </script>
 </body>
 
 </html>
