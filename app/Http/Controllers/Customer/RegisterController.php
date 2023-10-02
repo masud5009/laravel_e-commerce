@@ -8,10 +8,14 @@ use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /**
-     * Login page Dispaly
+     * Registration page Dispaly
      */
     public function register()
     {
-        return view('frontend.page.login-register.register');
+        if (!auth()->check()) {
+            return view('frontend.page.login-register.register');
+        } else {
+            return redirect()->route('customer.profile');
+        }
     }
 }

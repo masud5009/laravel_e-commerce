@@ -3,6 +3,7 @@
     Create New Customer Account
 @endsection
 @section('content')
+@include('frontend.page.navbar')
     <div class="container">
         <div class="d-flex justify-content-center align-items-center py-5">
             <div class="col-lg-10">

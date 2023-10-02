@@ -41,12 +41,7 @@ class CartController extends Controller
 
     public function viewcart()
     {
-        if (Auth::check()) {
-            return view('frontend.page.cart');
-        } else {
-            session()->flash('error', 'At first login your account');
-            return redirect()->back();
-        }
+        return view('frontend.page.cart');
     }
 
     public function cartInfo($id)

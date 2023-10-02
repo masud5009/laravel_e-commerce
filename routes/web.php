@@ -18,7 +18,7 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
-
+use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Frontend\{
     IndexpageController,
     ReviewController
@@ -38,15 +38,19 @@ Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
     Route::get('shop', [IndexpageController::class, 'shop'])->name('product.shop');
+    Route::middleware('customer')->group(function () {
+        // Product Review
+        Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
+        //Cart view
+        Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+        Route::get('profile',[LoginController::class,'customerProfile'])->name('customer.profile');
+    });
     //Add To Cart
-    Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
     Route::get('quick-view/{id}', [CartController::class, 'cartInfo'])->name('cart.info');
     Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.quickview');
-    // Product Review
-    Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
-
     //Customer Login & Registration
-    Route::get('customer/account/create',[RegisterController::class,'register'])->name('customer.account.create');
+    Route::get('customer/account/create', [RegisterController::class, 'register'])->name('customer.account.create');
+    Route::get('customer/account/login', [LoginController::class, 'login'])->name('customer.account.login');
 });
 
 /**

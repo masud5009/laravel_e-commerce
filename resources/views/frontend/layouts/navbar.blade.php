@@ -21,8 +21,18 @@
                 <a href="contact.html" class="nav-item nav-link">Contact</a>
             </div>
             <div class="navbar-nav ml-auto py-0">
-                <a href="" class="nav-item nav-link">Login</a>
+                @if(auth()->user())
+                <a href="" class="nav-item nav-link">Profile</a>
+                <a class="d-flex justify-center align-items-center" href="{{ route('logout') }}"
+                onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                <span class="align-middle">Log Out</span>
+                <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                    @csrf
+                </form></a>
+                @else
+                <a href="{{ route('customer.account.login') }}" class="nav-item nav-link">Login</a>
                 <a href="{{ route('customer.account.create') }}" class="nav-item nav-link">Register</a>
+                @endif
             </div>
         </div>
     </nav>
