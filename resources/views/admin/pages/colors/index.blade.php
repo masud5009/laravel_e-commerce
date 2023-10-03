@@ -91,7 +91,10 @@
                 serverSide: true,
                 ajax: '{{ route('color.index') }}',
                 columns: [{
-                        data: 'id'
+                        data: null,
+                        render: function(data, type, row, meta) {
+                            return meta.row + 1;
+                        },
                     },
                     {
                         data: 'name'
