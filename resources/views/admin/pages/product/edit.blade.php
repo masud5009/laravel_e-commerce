@@ -39,7 +39,11 @@
                                     <label class="input-group-text">Brand</label>
                                     <select class="form-select" id="brand" name="brand">
                                         <option selected>Select Brand</option>
-                                        <option value="">barnd name</option>
+                                        @foreach ($brands as $brand)
+                                            <option value="{{ $brand->id }}"
+                                                {{ $product->brand == $brand->id ? 'checked' : '' }}>{{ $brand->name }}
+                                            </option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -324,7 +328,7 @@
                             <div class="form-group">
                                 <label for="warningQuantity" class="form-label">Quantity </label>
                                 <input type="number" min="0" class="form-control no-spin" id="warning_quantity"
-                                    name="warning_quantity" value="{{ old('warning_quantity') }}">
+                                    name="warning_quantity" value="{{ $product->warning_quantity }}">
                             </div>
                         </div>
                     </div>
@@ -354,7 +358,8 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Hide Stock</span>
                                 <label class="switch">
-                                    <input  value="{{ $product->hide_stock}}" type="checkbox" id="hide_stock" name="hide_stock">
+                                    <input value="{{ $product->hide_stock }}" type="checkbox" id="hide_stock"
+                                        name="hide_stock">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -370,7 +375,8 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input value="{{ $product->featured}}" type="checkbox" id="featured" name="featured">
+                                    <input value="{{ $product->featured }}" type="checkbox" id="featured"
+                                        name="featured">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -388,7 +394,8 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input value="{{ $product->todays_deal}}" type="checkbox" id="todays_deal" name="todays_deal">
+                                    <input value="{{ $product->todays_deal }}" type="checkbox" id="todays_deal"
+                                        name="todays_deal">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -473,7 +480,8 @@
             const freeShippingCheckbox = $('#free_shipping_status');
             const flatRateCheckbox = $('#flat_rate_status');
             const flatRateInput = $('#flatRateInput');
-
+            // shipping configuration checked & unchecked form database
+            checkedStatus();
             // Add an event listener to the "Flat Rate" checkbox
             flatRateCheckbox.on('change', function() {
                 if ($(this).prop('checked')) {
@@ -494,6 +502,18 @@
                 }
             });
 
+            function checkedStatus() {
+                let freeshippingStatus = {{ $product->free_shipping_status }};
+                if (freeshippingStatus == 1) {
+                    freeShippingCheckbox.prop('checked', true);
+                    flatRateCheckbox.prop('checked', false);
+                    flatRateInput.hide();
+                } else {
+                    flatRateCheckbox.prop('checked', true);
+                    freeShippingCheckbox.prop('checked', false);
+                    flatRateInput.show();
+                }
+            }
         });
     </script>
 
@@ -501,6 +521,11 @@
     <script>
         $(document).ready(function() {
             let cash_on_delivery_status = $('#cash_on_delivery_status');
+
+            //if cash on delivery status 1 then selected
+            let productCashOnDeliveryStatus = {{ $product->cash_on_delivery_status }};
+            cash_on_delivery_status.prop('checked', productCashOnDeliveryStatus == 1);
+
             cash_on_delivery_status.on('change', function() {
                 if ($(this).prop('checked')) {
                     cash_on_delivery_status.val(1);
@@ -514,6 +539,10 @@
         $(document).ready(function() {
             let featured = $('#featured');
 
+            //if Featured status 1 then selected
+            let featuredStatus = {{ $product->featured }};
+            featured.prop('checked', featuredStatus == 1);
+
             featured.on('change', function() {
                 if ($(this).prop('checked')) {
                     featured.val(1);
@@ -526,6 +555,10 @@
     <script>
         $(document).ready(function() {
             let todays_deal = $('#todays_deal');
+
+            //if Todays Deal status 1 then selected
+            let todaysDealStatus = {{ $product->todays_deal }};
+            todays_deal.prop('checked', todaysDealStatus);
 
             todays_deal.on('change', function() {
                 if ($(this).prop('checked')) {
