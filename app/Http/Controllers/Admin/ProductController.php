@@ -38,7 +38,7 @@ class ProductController extends Controller
                     return '<a href="javascript:void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
                             <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a href="'.$editUrl.'" class="btn-sm btn btn-primary editBtn">
+                            <a href="' . $editUrl . '" class="btn-sm btn btn-primary editBtn">
                                 <i class="bx bx-edit"></i>
                             </a>
                             <a href="javascript:void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
@@ -89,7 +89,7 @@ class ProductController extends Controller
         $product = Product::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name,
-            'slug' => Str::slug($request->name, '_'),
+            'slug' => Str::slug($request->name, '-'),
             'category_id' => $request->category,
             'subcategory_id' => $request->subcategory,
             'childcategory_id' => $request->childcategory,
@@ -106,16 +106,16 @@ class ProductController extends Controller
             'color' => json_encode($request->color),
             'attattribute_valuesributes' => json_encode($request->attribute_values),
             'description' => $request->description,
-            'free_shipping_status' => $request->free_shipping_status,
             'flat_rate' => $request->flat_rate,
-            'cash_on_delivery_status' => $request->cash_on_delivery_status,
-            'warning_quantity' => $request->warning_quantity,
-            'show_stock_quantity' => $request->show_stock_quantity,
-            'show_stock_text' => $request->show_stock_text,
-            'hide_stock' => $request->hide_stock,
-            'featured' => $request->featured,
-            'todays_deal' => $request->todays_deal,
-            'shipping_day' => $request->shipping_day,
+            'free_shipping_status' => $request->has('free_shipping_status') ? 1 : 0,
+            'cash_on_delivery_status' => $request->has('cash_on_delivery_status') ? 1 : 0,
+            'warning_quantity' => $request->has('warning_quantity') ? 1 : 0,
+            'show_stock_quantity' => $request->has('show_stock_quantity') ? 1 : 0,
+            'show_stock_text' => $request->has('show_stock_text') ? 1 : 0,
+            'hide_stock' => $request->has('hide_stock') ? 1 : 0,
+            'featured' => $request->has('featured') ? 1 : 0,
+            'todays_deal' => $request->has('todays_deal') ? 1 : 0,
+            'shipping_day' => $request->has('shipping_day') ? 1 : 0,
         ]);
         // Thumbnail image
         if ($request->hasFile('thumbnail')) {
@@ -164,7 +164,7 @@ class ProductController extends Controller
         $brands = Brand::all();
         $colors = Color::select('name')->get();
         $attributes = Attribute::all();
-        return view('admin.pages.product.edit', compact('product','brands','subcategories','colors','attributes'));
+        return view('admin.pages.product.edit', compact('product', 'brands', 'subcategories', 'colors', 'attributes'));
     }
 
     /**

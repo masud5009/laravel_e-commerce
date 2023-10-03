@@ -14,10 +14,11 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->integer('user_id');
+            $table->unsignedBigInteger('category_id');
+            $table->unsignedBigInteger('subcategory_id');
+            $table->unsignedBigInteger('childcategory_id');
             $table->string('name');
             $table->string('slug');
-            $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('subcategory_id')->nullable();
             $table->string('brand')->nullable();
             $table->string('sku')->nullable();
             $table->string('unit')->nullable();
@@ -31,20 +32,23 @@ return new class extends Migration
             $table->json('color')->nullable();
             $table->json('attribute_values')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('free_shipping_status')->default(0)->nullable();
+            $table->boolean('free_shipping_status');
             $table->decimal('flat_rate', 10, 2)->default(0.00)->nullable();
-            $table->boolean('cash_on_delivery_status')->default(false)->nullable();
-            $table->integer('warning_quantity')->default(false)->nullable();
-            $table->boolean('show_stock_quantity')->default(false)->nullable();
-            $table->boolean('show_stock_text')->default(false)->nullable();
-            $table->boolean('hide_stock')->default(false)->nullable();
-            $table->boolean('featured')->default(false)->nullable();
-            $table->boolean('todays_deal')->default(false)->nullable();
-            $table->integer('shipping_day')->nullable();
+            $table->boolean('cash_on_delivery_status');
+            $table->integer('warning_quantity');
+            $table->boolean('show_stock_quantity');
+            $table->boolean('show_stock_text');
+            $table->boolean('active_status');
+            $table->boolean('trandy');
+            $table->boolean('hide_stock');
+            $table->boolean('featured');
+            $table->boolean('todays_deal');
+            $table->integer('shipping_day');
             $table->json('images')->nullable();
             $table->string('thumbnail')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
             $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
+            $table->foreign('childcategory_id')->references('id')->on('child_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }
