@@ -46,11 +46,11 @@ class CategoryController extends Controller
                 //unlink the old path of image and upate new image
                 $uploadFields = ['banner', 'icon', 'cover_img'];
                 $basePath = 'storage/images/category_img/';
-
                 foreach ($uploadFields as $field) {
+
                     if ($request->hasFile($field)) {
                         $currentPath = $basePath . $category->$field;
-                        if (file_exists($currentPath)) {
+                        if (file_exists($currentPath) && is_file($currentPath)) {
                             unlink($currentPath);
                         }
 
@@ -112,7 +112,7 @@ class CategoryController extends Controller
             // Delete files associated with the category
             foreach ($uploadFields as $field) {
                 $currentPath = $basePath . $category->$field;
-                if(File::exists($currentPath)){
+                if (File::exists($currentPath)) {
                     File::delete($currentPath);
                 }
                 $category->delete();

@@ -8,8 +8,11 @@ use App\Models\Admin\Category;
 use App\Models\Admin\Color;
 use App\Models\Admin\Attribute;
 use App\Models\Admin\AttributeValue;
+use App\Models\Admin\ChildCategory;
 use App\Models\Admin\Product;
+use App\Models\Admin\Subcategory;
 use Exception;
+use Illuminate\Database\Eloquent\Casts\Json;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -41,6 +44,11 @@ class ProductController extends Controller
                                 <i class="bx bx-trash"></i>
                             </a>';
                 })
+                // ->addColumn('image', function ($row) {
+                //     $url = asset($row->thumbnail);
+                //     return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
+                // })
+
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -82,14 +90,13 @@ class ProductController extends Controller
             'name' => 'required|string|max:255|unique:products',
             // 'category' => 'required|exists:categories,id',
         ]);
-
-
         $product = Product::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name,
             'slug' => Str::slug($request->name, '_'),
             'category_id' => $request->category,
             'subcategory_id' => $request->subcategory,
+            'childcategory_id' => $request->childcategory,
             'brand' => $request->brand,
             'sku' => $request->sku,
             'weight' => $request->weight,
@@ -138,6 +145,7 @@ class ProductController extends Controller
         $product->save();
 
         session()->flash('success', 'Your Product Added successfull');
+        return redirect()->back();
     }
 
     /**
@@ -200,5 +208,16 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['success' => 'Product deleted successfully']);
+    }
+
+    public function getSelectedSubcategory($id)
+    {
+        $subcategories = Subcategory::where('category_id', $id)->get();
+        return json_encode($subcategories);
+    }
+    public function getSelectedChildcategory($id)
+    {
+        $childcategories = ChildCategory::where('subcategory_id', $id)->get();
+        return json_encode($childcategories);
     }
 }

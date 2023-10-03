@@ -23,7 +23,7 @@
             $discount_value = $product->discount_price;
             $discountPrecente = $unit_price * ($discount_value / 100);
             $price_real = $unit_price - $discountPrecente;
-            $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+            $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN),2);
         @endphp
         <input type="hidden" name="id" value="{{ $product->id }}">
         <input type="hidden" name="name" value="{{ $product->name }}">
@@ -39,7 +39,7 @@
                             @endphp
                             @foreach ($images as $key => $image)
                                 <div class="carousel-item {{ $key === 1 ? 'active' : '' }}">
-                                    <img class="w-100 h-100" src="{{ $image }}" alt="Image">
+                                    <img class="w-100 h-100" src="{{ asset($image)}}" alt="Image">
                                 </div>
                             @endforeach
                         </div>
@@ -165,6 +165,9 @@
                             <p>Brand : {{ $product->brand }}</p>
                         </div>
                     @else
+                    <div class="brand">
+                        <p>Brand : Unknown</p>
+                    </div>
                     @endif
                     <hr>
                     <!-- price -->
@@ -289,7 +292,7 @@
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Product Description</h4>
-                    <p>{{ $product->description }}</p>
+                    <p>{!! $product->description !!}</p>
                 </div>
                 <div class="tab-pane fade" id="tab-pane-2">
                     <h4 class="mb-3">Additional Information</h4>

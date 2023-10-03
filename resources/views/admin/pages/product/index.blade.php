@@ -46,16 +46,17 @@
                         data: null,
                         render: function(data, type, row, meta) {
                             return meta.row + 1;
-                        }
+                        },
                     },
                     {
-                        data: 'name'
+                        data: 'name',
                     },
                     {
                         data: 'thumbnail',
                         render: function(data, type, full, meta) {
                             if (data) {
-                                return '<img src="' + data + '" width="100" height="100">';
+                                var imageUrl = "{{ asset('') }}" + data;
+                                return '<img src="' + imageUrl + '" height="50" />';
                             } else {
                                 return '';
                             }
@@ -65,12 +66,12 @@
                         data: 'action',
                         name: 'action',
                         searchable: false,
-                        orderable: false
-                    }
+                        orderable: false,
+                    },
                 ],
                 order: [
-                    [1, 'dsc']
-                ]
+                    [1, 'dsc'],
+                ],
             });
         });
     </script>

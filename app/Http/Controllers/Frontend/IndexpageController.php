@@ -17,7 +17,7 @@ class IndexpageController extends Controller
      public function index()
      {
         $categoriesWithImage = Category::limit(3)->get();
-        $products = Product::paginate(12);
+        $products = Product::orderBy('created_at', 'desc')->paginate(12);
         $generalSetting = GeneralSetting::find(1);
         return view('frontend.index',compact('categoriesWithImage','products','generalSetting'));
      }

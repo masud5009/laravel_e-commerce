@@ -16,11 +16,15 @@
             <div class="col-lg-5 pb-5">
                 <div id="product-carousel" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner border">
-
-                        <div class="carousel-item">
-                            <img id="productImage" class="w-100 h-100" src="" alt="Image">
-                        </div>
-
+                        @php
+                            $image = $product->images;
+                            $images = json_decode($image);
+                        @endphp
+                        @foreach ($images as $key => $image)
+                            <div class="carousel-item {{ $key === 1 ? 'active' : '' }}">
+                                <img class="w-100 h-100" src="{{ asset($image) }}" alt="Image">
+                            </div>
+                        @endforeach
                     </div>
                     <a class="carousel-control-prev" href="#product-carousel" data-slide="prev">
                         <i class="fa fa-2x fa-angle-left text-dark"></i>
@@ -36,7 +40,12 @@
                 <p>Estimate Shipping Time : <span class="text-dark">{{ $product->shipping_day }} Days</span></p>
                 <div class="brand">
 
-                    <p>Brand :  @if($product->brand){{ $product->brand }} @else Unknown @endif</p>
+                    <p>Brand : @if ($product->brand)
+                            {{ $product->brand }}
+                        @else
+                            Unknown
+                        @endif
+                    </p>
                 </div>
                 <hr>
                 <!-- price -->
@@ -108,16 +117,17 @@
                 </div>
                 <!-- Add to cart -->
                 <div class="col-lg-5 p-0 mt-4">
-                    @if($product->quantity > 1)
-                    <button class="btn btn-danger rounded px-3 text-white" id="addProductOnCart" data-id="">
-                        <i class="fa fa-shopping-cart"></i> Add To
-                        Cart
-                    </button>
+                    @if ($product->quantity > 1)
+                        <button class="btn btn-danger rounded px-3 text-white" id="addProductOnCart" data-id="">
+                            <i class="fa fa-shopping-cart"></i> Add To
+                            Cart
+                        </button>
                     @else
-                    <button class="btn btn-danger rounded px-3 text-white" id="addProductOnCart" data-id="" disabled>
-                        <i class="fa fa-shopping-cart"></i> Add To
-                        Cart
-                    </button>
+                        <button class="btn btn-danger rounded px-3 text-white" id="addProductOnCart" data-id=""
+                            disabled>
+                            <i class="fa fa-shopping-cart"></i> Add To
+                            Cart
+                        </button>
                     @endif
 
                 </div>

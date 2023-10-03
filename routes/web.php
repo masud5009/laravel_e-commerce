@@ -73,6 +73,8 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::resource('product', ProductController::class);
     //GET Attribute value form product  controller
     Route::get('attribute-value/{id}', [ProductController::class, 'getAttributeValue'])->name('attribute.value');
+    Route::get('selected/subcategory{id}',[ProductController::class,'getSelectedSubcategory'])->name('selected.subcategory');
+    Route::get('selected/childcategory/{id}',[ProductController::class,'getSelectedChildcategory'])->name('selected.childcategory');
 
     Route::resource('color', ColorController::class);
     Route::resource('attribute', AttributeController::class);
