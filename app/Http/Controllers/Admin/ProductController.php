@@ -34,21 +34,17 @@ class ProductController extends Controller
 
             return DataTables::of($products)
                 ->addColumn('action', function ($row) {
+                    $editUrl = route('product.edit', ['product' => $row->id]);
                     return '<a href="javascript:void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
                             <i class="fa-solid fa-eye"></i>
                             </a>
-                            <a href="" class="btn-sm btn btn-primary editBtn">
+                            <a href="'.$editUrl.'" class="btn-sm btn btn-primary editBtn">
                                 <i class="bx bx-edit"></i>
                             </a>
                             <a href="javascript:void()" class="btn-sm btn btn-danger deletBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-trash"></i>
                             </a>';
                 })
-                // ->addColumn('image', function ($row) {
-                //     $url = asset($row->thumbnail);
-                //     return '<img src="' . $url . '" border="0" width="40" class="img-rounded" align="center" />';
-                // })
-
                 ->rawColumns(['action'])
                 ->make(true);
         }
@@ -164,7 +160,11 @@ class ProductController extends Controller
     public function edit(string $id)
     {
         $product = Product::find($id);
-        return view('admin.pages.product.edit', compact('product'));
+        $subcategories = Subcategory::all();
+        $brands = Brand::all();
+        $colors = Color::select('name')->get();
+        $attributes = Attribute::all();
+        return view('admin.pages.product.edit', compact('product','brands','subcategories','colors','attributes'));
     }
 
     /**

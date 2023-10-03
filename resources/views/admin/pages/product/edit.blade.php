@@ -30,7 +30,7 @@
                             <div class="form-group mb-3">
                                 <label for="name" class="form-label">Product Name <span
                                         class="text-danger fs-6">*</span></label>
-                                <input value="{{ old('name') }}" type="input" class="form-control" id="name"
+                                <input value="{{ $product->name }}" type="input" class="form-control" id="name"
                                     name="name" placeholder="Product Name">
                             </div>
                             <div class="form-group mb-2">
@@ -39,24 +39,24 @@
                                     <label class="input-group-text">Brand</label>
                                     <select class="form-select" id="brand" name="brand">
                                         <option selected>Select Brand</option>
-                                        @foreach ($brands as $brand)
-                                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
-                                        @endforeach
+                                        <option value="">barnd name</option>
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group mb-3">
                                 <label for="unit" class="form-label">Unit</label>
-                                <input type="input" class="form-control" id="unit" name="unit"
-                                    placeholder="Unit (e.g KG, Pc etc)">
+                                <input value="{{ $product->unit }}" type="input" class="form-control" id="unit"
+                                    name="unit" placeholder="Unit (e.g KG, Pc etc)">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="weight" class="form-label">Weight(In Kg)</label>
-                                <input type="input" class="form-control" name="weight" min="0" step="0.01">
+                                <input value="{{ $product->weight }}" type="input" class="form-control" name="weight"
+                                    min="0" step="0.01">
                             </div>
                             <div class="form-group mb-3">
                                 <label for="barcode" class="form-label">Barcode</label>
-                                <input type="input" class="form-control" name="barcode" placeholder="Barcode">
+                                <input value="{{ $product->barcode }}" type="input" class="form-control" name="barcode"
+                                    placeholder="Barcode">
                             </div>
                             <div class="form-group">
                                 <label for="tags" class="form-label">Tags</label>
@@ -89,6 +89,16 @@
                                 <div class="form-text">
                                     These images are visible in product details page gallery. Use 600x600 sizes images.
                                 </div>
+                                @php
+                                    $image = $product->images;
+                                    $images = json_decode($image);
+                                @endphp
+                                <div class="d-flex">
+                                    @foreach ($images as $image)
+                                        <img src="{{ asset($image) }}" alt="{{ $product->name }}"
+                                            style="max-width: 100px;padding:10px">
+                                    @endforeach
+                                </div>
                             </div>
 
                             <div class="form-group mb-3">
@@ -104,6 +114,8 @@
                                     make it
                                     responsive.
                                 </div>
+                                <img src="{{ asset($product->thumbnail) }}" alt="{{ $product->name }}"
+                                    style="max-width: 100px;padding:10px">
                             </div>
                         </div>
                     </div>
@@ -120,7 +132,7 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input value="{{ old('unit_price') }}" type="text" name="unit_price"
+                                    <input value="{{ $product->unit_price }}" type="text" name="unit_price"
                                         class="form-control" placeholder="100"
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
@@ -128,7 +140,7 @@
                             </div>
                             <div class="form-group mb-2">
                                 <label class="form-label">Discount Date Range</label>
-                                <input value="{{ old('discunt_date') }}" class="form-control" type="datetime-local"
+                                <input value="{{ $product->discunt_date }}" class="form-control" type="datetime-local"
                                     id="discunt_date" name="discount_date">
                             </div>
                             <div class="form-group mb-2">
@@ -136,7 +148,7 @@
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
-                                    <input value="{{ old('discount_price') }}" name="discount_price" type="number"
+                                    <input value="{{ $product->discount_price }}" name="discount_price" type="number"
                                         min="0" step="0.01" class="form-control no-spin" placeholder="100"
                                         aria-label="Amount (to the nearest dollar)">
                                     <span class="input-group-text">.00</span>
@@ -144,12 +156,13 @@
                             </div>
                             <div class="form-group mb-3">
                                 <label for="sku" class="form-label">SKU</label>
-                                <input type="input" class="form-control" name="sku" placeholder="SKU">
+                                <input value="{{ $product->sku }}" type="input" class="form-control" name="sku"
+                                    placeholder="SKU">
                             </div>
                             <div class="form-group mb-2">
                                 <label class="form-label">Quantity<span class="text-danger fs-6">*</span></label>
                                 <input class="form-control no-spin" min="0" type="number" id="quantity"
-                                    name="quantity" value="{{ old('quantity') }}">
+                                    name="quantity" value="{{ $product->quantity }}">
                             </div>
                         </div>
                     </div>
@@ -170,9 +183,7 @@
                                 <div class="col-md-8">
                                     <select name="color" id="color" class="form-select" disabled>
                                         <option selected>Nothing selected</option>
-                                        @foreach ($colors as $color)
-                                            <option value="{{ $color->id }}">{{ $color->name }}</option>
-                                        @endforeach
+                                        <option value="">color name</option>
                                     </select>
                                 </div>
                                 <label class="switch">
@@ -216,7 +227,7 @@
                         <div class="card-body">
                             <div class="form-group mb-3">
                                 <label for="description" class="form-label">Description</label>
-                                <textarea name="description" id="description" cols="30" rows="10">{{ old('description') }}</textarea>
+                                <textarea name="description" id="description" cols="30" rows="10">{!! $product->description !!}</textarea>
                             </div>
                         </div>
                     </div>
@@ -235,9 +246,10 @@
                                         *</span></label>
                                 <select class="form-select" id="category" name="category">
                                     <option selected>Select Category</option>
-                                    @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">
-                                            {{ $cat->name }} </option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}"
+                                            {{ $product->category_id == $category->id ? 'selected' : '' }}>
+                                            {{ $category->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
@@ -342,7 +354,7 @@
                             <div class="d-flex justify-content-between align-items-center mb-4">
                                 <span>Hide Stock</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="hide_stock" name="hide_stock">
+                                    <input  value="{{ $product->hide_stock}}" type="checkbox" id="hide_stock" name="hide_stock">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -358,7 +370,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="featured" name="featured">
+                                    <input value="{{ $product->featured}}" type="checkbox" id="featured" name="featured">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -376,7 +388,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 <span>Status</span>
                                 <label class="switch">
-                                    <input type="checkbox" id="todays_deal" name="todays_deal">
+                                    <input value="{{ $product->todays_deal}}" type="checkbox" id="todays_deal" name="todays_deal">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -392,7 +404,7 @@
                             <div class="form-group">
                                 <label for="" class="form-label">Shipping Days </label>
                                 <input type="number" min="1" class="form-control no-spin" id="shipping_day"
-                                    name="shipping_day" value="{{ old('shipping_day') }}">
+                                    name="shipping_day" value="{{ $product->shipping_day }}">
                             </div>
                         </div>
                     </div>
@@ -489,7 +501,6 @@
     <script>
         $(document).ready(function() {
             let cash_on_delivery_status = $('#cash_on_delivery_status');
-
             cash_on_delivery_status.on('change', function() {
                 if ($(this).prop('checked')) {
                     cash_on_delivery_status.val(1);
@@ -573,57 +584,62 @@
 
         });
     </script>
-<script>
-    $(document).ready(function() {
-    $('#category').change(function() {
-        var categoryId = $(this).val();
-        updateSubcategories(categoryId);
-    });
-
-    $('#subcategory').change(function() {
-        var subcategoryId = $(this).val();
-        updateChildcategories(subcategoryId);
-    });
-});
-
-function updateSubcategories(categoryId) {
-    $.ajax({
-        url: '{{ route('selected.subcategory', ['id' => '__id__']) }}'.replace(
-            '__id__', categoryId),
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#subcategory').html('<option value="">Select Subcategory</option>'); // Clear subcategory options
-            $('#childcategory').html('<option value="">Select Childcategory</option>'); // Clear childcategory options
-            $.each(data, function(index, subcategory) {
-                $('#subcategory').append('<option value="' + subcategory.id + '">' + subcategory.name + '</option>');
+    <script>
+        $(document).ready(function() {
+            $('#category').change(function() {
+                var categoryId = $(this).val();
+                updateSubcategories(categoryId);
             });
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
 
-function updateChildcategories(subcategoryId) {
-    $.ajax({
-        url: '{{ route('selected.childcategory', ['id' => '__id__']) }}'.replace(
-            '__id__', subcategoryId),
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#childcategory').html('<option value="">Select Childcategory</option>'); // Clear childcategory options
-            $.each(data, function(index, childcategory) {
-                $('#childcategory').append('<option value="' + childcategory.id + '">' + childcategory.name + '</option>');
+            $('#subcategory').change(function() {
+                var subcategoryId = $(this).val();
+                updateChildcategories(subcategoryId);
             });
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
+        });
 
-</script>
+        function updateSubcategories(categoryId) {
+            $.ajax({
+                url: '{{ route('selected.subcategory', ['id' => '__id__']) }}'.replace(
+                    '__id__', categoryId),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#subcategory').html(
+                        '<option value="">Select Subcategory</option>'); // Clear subcategory options
+                    $('#childcategory').html(
+                        '<option value="">Select Childcategory</option>'); // Clear childcategory options
+                    $.each(data, function(index, subcategory) {
+                        $('#subcategory').append('<option value="' + subcategory.id + '">' + subcategory
+                            .name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function updateChildcategories(subcategoryId) {
+            $.ajax({
+                url: '{{ route('selected.childcategory', ['id' => '__id__']) }}'.replace(
+                    '__id__', subcategoryId),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#childcategory').html(
+                        '<option value="">Select Childcategory</option>'); // Clear childcategory options
+                    $.each(data, function(index, childcategory) {
+                        $('#childcategory').append('<option value="' + childcategory.id + '">' +
+                            childcategory.name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
+    {{-- tags  --}}
     <script>
         $(document).ready(function() {
             const $tagsList = $('#tags');
