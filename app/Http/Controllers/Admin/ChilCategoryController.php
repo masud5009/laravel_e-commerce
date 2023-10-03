@@ -19,7 +19,7 @@ class ChilCategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $childcategories = ChildCategory::with('category', 'subcategory')->get(); // category & subcategory is foreignKey
+            $childcategories = ChildCategory::with('category', 'subcategory')->orderBy('created_at','desc')->get(); // category & subcategory is foreignKey
             return DataTables::of($childcategories)
                 ->addColumn('action', function ($row) {
                     return '<a href="javascript:void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
@@ -98,5 +98,11 @@ class ChilCategoryController extends Controller
         }
 
         return response()->json(['success' => 'Child Category deleted successfully']);
+    }
+
+    public function getSelectedSubcategory($id)
+    {
+        $subcategories = Subcategory::where('category_id', $id)->get();
+        return json_encode($subcategories);
     }
 }

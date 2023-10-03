@@ -17,7 +17,7 @@ class SubcategoryController extends Controller
     public function index(Request $request)
     {
         if ($request->ajax()) {
-            $subcategories = Subcategory::with('category')->get();
+            $subcategories = Subcategory::with('category')->orderBy('created_at','desc')->get();
             return DataTables::of($subcategories)
                 ->addColumn('action', function ($row) {
                     return '<a href="javascript:void()" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">

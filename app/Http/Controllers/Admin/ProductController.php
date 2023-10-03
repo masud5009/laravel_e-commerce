@@ -84,7 +84,8 @@ class ProductController extends Controller
     {
         $this->validate($request, [
             'name' => 'required|string|max:255|unique:products',
-            // 'category' => 'required|exists:categories,id',
+            'category_id' => 'required',
+            'unit_price' => 'required',
         ]);
         $product = Product::create([
             'user_id' => Auth::user()->id,
@@ -137,7 +138,7 @@ class ProductController extends Controller
 
         $imagesJson = json_encode($imagesArray);
         $product->images = $imagesJson;
-
+dd($product);
         $product->save();
 
         session()->flash('success', 'Your Product Added successfull');
@@ -210,14 +211,17 @@ class ProductController extends Controller
         return response()->json(['success' => 'Product deleted successfully']);
     }
 
+    /**
+     * realtime change value of suvcategory and child category on change Category
+     */
     public function getSelectedSubcategory($id)
     {
-        $subcategories = Subcategory::where('category_id', $id)->get();
+        $subcategories = Subcategory::where('category_id', $id)->orderBy('created_at', 'desc')->get();
         return json_encode($subcategories);
     }
     public function getSelectedChildcategory($id)
     {
-        $childcategories = ChildCategory::where('subcategory_id', $id)->get();
+        $childcategories = ChildCategory::where('subcategory_id', $id)->orderBy('created_at', 'desc')->get();
         return json_encode($childcategories);
     }
 }

@@ -51,7 +51,9 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         if ($request->coupon_id) {
-
+            $this->validate($request, [
+                'code' => 'required|unique:coupons,code' . $request->coupon_id,
+            ]);
             $coupon = Coupon::find($request->coupon_id);
 
             if (!$coupon) {
@@ -66,6 +68,12 @@ class CouponController extends Controller
                 return response()->json(['success' => 'Coupon update success']);
             }
         } else {
+            $this->validate($request, [
+                'code' => 'required|unique:coupons,code' . $request->coupon_id,
+                'date' => 'required|date',
+                'amount' => 'required',
+                'type' => 'required'
+            ]);
             $coupon = new Coupon();
             $coupon->create([
                 'code' => $request->code,

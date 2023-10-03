@@ -176,7 +176,7 @@
                                     </select>
                                 </div>
                                 <label class="switch">
-                                    <input type="checkbox" id="variation" name="variation">
+                                    <input type="checkbox" id="variation">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -233,7 +233,7 @@
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
                                         *</span></label>
-                                <select class="form-select" id="category" name="category">
+                                <select class="form-select" name="category">
                                     <option selected>Select Category</option>
                                     @foreach ($categories as $cat)
                                         <option value="{{ $cat->id }}">
@@ -243,13 +243,13 @@
                             </div>
                             <div class="form-group mb-2">
                                 <label for="subcategory" class="form-label">Select Sub-category</label>
-                                <select class="form-select" id="subcategory" name="subcategory">
+                                <select class="form-select" name="subcategory">
                                     <option selected>Select Subcategory</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Child-category</label>
-                                <select class="form-select" id="childcategory" name="childcategory">
+                                <select class="form-select" name="childcategory">
                                     <option selected>Select Childcategory</option>
                                 </select>
                             </div>
@@ -573,57 +573,55 @@
 
         });
     </script>
-<script>
-    $(document).ready(function() {
-    $('#category').change(function() {
-        var categoryId = $(this).val();
-        updateSubcategories(categoryId);
-    });
-
-    $('#subcategory').change(function() {
-        var subcategoryId = $(this).val();
-        updateChildcategories(subcategoryId);
-    });
-});
-
-function updateSubcategories(categoryId) {
-    $.ajax({
-        url: '{{ route('selected.subcategory', ['id' => '__id__']) }}'.replace(
-            '__id__', categoryId),
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#subcategory').html('<option value="">Select Subcategory</option>'); // Clear subcategory options
-            $('#childcategory').html('<option value="">Select Childcategory</option>'); // Clear childcategory options
-            $.each(data, function(index, subcategory) {
-                $('#subcategory').append('<option value="' + subcategory.id + '">' + subcategory.name + '</option>');
+    <script>
+        $(document).ready(function() {
+            $('[name="category"]').change(function() {
+                var categoryId = $(this).val();
+                updateSubcategories(categoryId);
             });
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
 
-function updateChildcategories(subcategoryId) {
-    $.ajax({
-        url: '{{ route('selected.childcategory', ['id' => '__id__']) }}'.replace(
-            '__id__', subcategoryId),
-        type: 'GET',
-        dataType: 'json',
-        success: function(data) {
-            $('#childcategory').html('<option value="">Select Childcategory</option>'); // Clear childcategory options
-            $.each(data, function(index, childcategory) {
-                $('#childcategory').append('<option value="' + childcategory.id + '">' + childcategory.name + '</option>');
+            $('[name="subcategory"]').change(function() {
+                var subcategoryId = $(this).val();
+                updateChildcategories(subcategoryId);
             });
-        },
-        error: function(xhr, status, error) {
-            console.error(xhr.responseText);
-        }
-    });
-}
+        });
 
-</script>
+        function updateSubcategories(categoryId) {
+            $.ajax({
+                url: '{{ route('selected.subcategory', ['id' => '__id__']) }}'.replace(
+                    '__id__', categoryId),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(index, subcategory) {
+                        $('[name="subcategory"]').append('<option value="' + subcategory.id + '">' + subcategory
+                            .name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+
+        function updateChildcategories(subcategoryId) {
+            $.ajax({
+                url: '{{ route('selected.childcategory', ['id' => '__id__']) }}'.replace(
+                    '__id__', subcategoryId),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $.each(data, function(index, childcategory) {
+                        $('[name="childcategory"]').append('<option value="' + childcategory.id + '">' +
+                            childcategory.name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
+    </script>
     <script>
         $(document).ready(function() {
             const $tagsList = $('#tags');

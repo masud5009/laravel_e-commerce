@@ -42,19 +42,16 @@
                             <select class="form-select" aria-label="Default select example" name="category_name"
                                 id="select_category">
                                 <option selected disabled>Choose Option</option>
-                                @foreach ($category as $cat)
-                                    <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                                @foreach ($categories as $category)
+                                    <option value="{{ $category->id }}">{{ $category->name }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group mb-2">
                             <label class="form-label">Select Sub Category <span class="text-danger">*</span></label>
                             <select class="form-select" aria-label="Default select example" name="subcategory_name"
-                                id="select_subcategory">
+                                id="subcategory">
                                 <option selected disabled>Choose Option</option>
-                                @foreach ($subcategory as $subcat)
-                                    <option value="{{ $subcat->id }}">{{ $subcat->name }}</option>
-                                @endforeach
                             </select>
                         </div>
                         <div class="form-group">
@@ -143,7 +140,6 @@
                         orderable: false
                     }
                 ]
-
             });
 
             // Create Sub-category
@@ -216,8 +212,6 @@
                 });
             });
 
-
-
             //Delete category
             $('body').on('click', '.deletBtn', function() {
                 var id = $(this).data('id');
@@ -260,5 +254,35 @@
                 });
             });
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#select_category').change(function() {
+                var categoryId = $(this).val();
+                updateSubcategories(categoryId);
+            });
+        });
+
+        function updateSubcategories(categoryId) {
+            $.ajax({
+                url: '{{ route('childcategory.selected.subcategory', ['id' => '__id__']) }}'.replace(
+                    '__id__', categoryId),
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $('#subcategory').html(
+                        '<option value="" disabled>Select Subcategory</option>'); // Clear subcategory options
+                    $('#childcategory').html(
+                        '<option value="">Select Childcategory</option>'); // Clear childcategory options
+                    $.each(data, function(index, subcategory) {
+                        $('#subcategory').append('<option value="' + subcategory.id + '">' + subcategory
+                            .name + '</option>');
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error(xhr.responseText);
+                }
+            });
+        }
     </script>
 @endpush

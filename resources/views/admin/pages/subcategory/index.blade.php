@@ -124,11 +124,7 @@
                         searchable: false,
                         orderable: false
                     }
-                ],
-
-                order: [
-                    [1, 'dsc'],
-                ],
+                ]
             });
 
             // Create Sub-category

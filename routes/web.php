@@ -64,7 +64,10 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::get('category/search', [CategoryController::class, 'search'])->name('category.search');
 
     Route::resource('sub-category', SubcategoryController::class);
+    //childcategory route
     Route::resource('child-category', ChilCategoryController::class);
+    Route::get('selected/subcategory/onchildcategory/{id}',[ChilCategoryController::class,'getSelectedSubcategory'])->name('childcategory.selected.subcategory');
+
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
     /**
