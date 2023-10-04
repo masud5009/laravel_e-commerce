@@ -86,14 +86,16 @@ class ProductController extends Controller
             'name' => 'required|string|max:255|unique:products',
             'category_id' => 'required',
             'unit_price' => 'required',
+            'quantity' => 'required',
+            'shipping_day' => 'required'
         ]);
         $product = Product::create([
             'user_id' => Auth::user()->id,
             'name' => $request->name,
             'slug' => Str::slug($request->name, '-'),
-            'category_id' => $request->category,
-            'subcategory_id' => $request->subcategory,
-            'childcategory_id' => $request->childcategory,
+            'category_id' => $request->category_id,
+            'subcategory_id' => $request->subcategory_id,
+            'childcategory_id' => $request->childcategory_id,
             'brand' => $request->brand,
             'sku' => $request->sku,
             'weight' => $request->weight,
@@ -108,6 +110,8 @@ class ProductController extends Controller
             'attattribute_valuesributes' => json_encode($request->attribute_values),
             'description' => $request->description,
             'flat_rate' => $request->flat_rate,
+            'trandy' => $request->has('trandy') ? 1 : 0,
+            'active_status' => $request->has('product_active_status') ? 1 : 0,
             'free_shipping_status' => $request->has('free_shipping_status') ? 1 : 0,
             'cash_on_delivery_status' => $request->has('cash_on_delivery_status') ? 1 : 0,
             'warning_quantity' => $request->has('warning_quantity') ? 1 : 0,
@@ -138,7 +142,6 @@ class ProductController extends Controller
 
         $imagesJson = json_encode($imagesArray);
         $product->images = $imagesJson;
-dd($product);
         $product->save();
 
         session()->flash('success', 'Your Product Added successfull');

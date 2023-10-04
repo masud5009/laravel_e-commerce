@@ -233,29 +233,43 @@
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
                                         *</span></label>
-                                <select class="form-select" name="category">
+                                <select class="form-select" name="category_id">
                                     <option selected>Select Category</option>
-                                    @foreach ($categories as $cat)
-                                        <option value="{{ $cat->id }}">
-                                            {{ $cat->name }} </option>
+                                    @foreach ($categories as $category)
+                                        <option value="{{ $category->id }}">{{ $category->name }} </option>
                                     @endforeach
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="subcategory" class="form-label">Select Sub-category</label>
-                                <select class="form-select" name="subcategory">
+                                <select class="form-select" name="subcategory_id">
                                     <option selected>Select Subcategory</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Child-category</label>
-                                <select class="form-select" name="childcategory">
+                                <select class="form-select" name="childcategory_id">
                                     <option selected>Select Childcategory</option>
                                 </select>
                             </div>
                         </div>
                     </div>
-
+                    <!-- Product Active status -->
+                    <div class="card mb-3">
+                        <div class="card-header">
+                            <h5 class="card-title">Product Active Status</h5>
+                            <hr>
+                        </div>
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span id="active_status_text">Disable</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="product_active_status" name="product_active_status">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <!-- Shipping Configuration -->
                     <div class="card mb-3">
                         <div class="card-header">
@@ -294,7 +308,7 @@
                         </div>
                         <div class="card-body">
                             <div class="d-flex justify-content-between align-items-center">
-                                <span>Status</span>
+                                <span id="cashon_delivery_text">Disable</span>
                                 <label class="switch">
                                     <input type="checkbox" id="cash_on_delivery_status" name="cash_on_delivery_status">
                                     <span class="slider round"></span>
@@ -351,14 +365,21 @@
                     <!-- Featured -->
                     <div class="card mb-3">
                         <div class="card-header">
-                            <h5 class="card-title">Featured</h5>
+                            <h5 class="card-title">Featured & Trandy Status</h5>
                             <hr>
                         </div>
                         <div class="card-body">
-                            <div class="d-flex justify-content-between align-items-center">
-                                <span>Status</span>
+                            <div class="d-flex justify-content-between align-items-center mb-4">
+                                <span>Featured</span>
                                 <label class="switch">
                                     <input type="checkbox" id="featured" name="featured">
+                                    <span class="slider round"></span>
+                                </label>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span>Trandy</span>
+                                <label class="switch">
+                                    <input type="checkbox" id="trandy" name="trandy">
                                     <span class="slider round"></span>
                                 </label>
                             </div>
@@ -493,6 +514,24 @@
             cash_on_delivery_status.on('change', function() {
                 if ($(this).prop('checked')) {
                     cash_on_delivery_status.val(1);
+                    $('#cashon_delivery_text').text('Active');
+                }else{
+                    $('#cashon_delivery_text').text('Disable');
+                }
+            });
+        });
+    </script>
+    {{-- Product Active Status --}}
+    <script>
+        $(document).ready(function() {
+            let product_active_status = $('#product_active_status');
+
+            product_active_status.on('change', function() {
+                if ($(this).prop('checked')) {
+                    product_active_status.val(1);
+                    $('#active_status_text').text('Active');
+                }else{
+                    $('#active_status_text').text('Disable');
                 }
             });
         });
@@ -502,10 +541,15 @@
     <script>
         $(document).ready(function() {
             let featured = $('#featured');
-
+            let trandy = $('#trandy');
             featured.on('change', function() {
                 if ($(this).prop('checked')) {
                     featured.val(1);
+                }
+            });
+            trandy.on('change', function() {
+                if ($(this).prop('checked')) {
+                    trandy.val(1);
                 }
             });
         });
@@ -575,12 +619,12 @@
     </script>
     <script>
         $(document).ready(function() {
-            $('[name="category"]').change(function() {
+            $('[name="category_id"]').change(function() {
                 var categoryId = $(this).val();
                 updateSubcategories(categoryId);
             });
 
-            $('[name="subcategory"]').change(function() {
+            $('[name="subcategory_id"]').change(function() {
                 var subcategoryId = $(this).val();
                 updateChildcategories(subcategoryId);
             });
@@ -594,8 +638,10 @@
                 dataType: 'json',
                 success: function(data) {
                     $.each(data, function(index, subcategory) {
-                        $('[name="subcategory"]').append('<option value="' + subcategory.id + '">' + subcategory
+                        $('[name="subcategory_id"]').append('<option value="' + subcategory.id + '">' +
+                            subcategory
                             .name + '</option>');
+                            console.log(subcategory.id + subcategory.name);
                     });
                 },
                 error: function(xhr, status, error) {
@@ -612,8 +658,9 @@
                 dataType: 'json',
                 success: function(data) {
                     $.each(data, function(index, childcategory) {
-                        $('[name="childcategory"]').append('<option value="' + childcategory.id + '">' +
+                        $('[name="childcategory_id"]').append('<option value="' + childcategory.id + '">' +
                             childcategory.name + '</option>');
+                            console.log(childcategory.id + childcategory.name);
                     });
                 },
                 error: function(xhr, status, error) {
