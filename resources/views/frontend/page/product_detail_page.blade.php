@@ -181,8 +181,12 @@
                                 <strong id="discountPrice" class="fs-16 fw-700 text-danger">
                                     ${{ $price }}
                                 </strong>
+                                <span class="opacity-70" id="unit">/{{ $product->unit }}</span>
+                                <br>
                                 <!-- Unit -->
-                                <span class="opacity-70">/{{ $product->unit }}</span>
+                                <del class="px-2">${{ $unit_price }}</del>
+                                <span>-{{$discount_value}}%</span>
+
                             </div>
                         </div>
                     </div>
@@ -286,17 +290,12 @@
         <div class="col">
             <div class="nav nav-tabs justify-content-center border-secondary mb-4">
                 <a class="nav-item nav-link active" data-toggle="tab" href="#tab-pane-1">Description</a>
-                <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-2">Information</a>
                 <a class="nav-item nav-link" data-toggle="tab" href="#tab-pane-3">Reviews (0)</a>
             </div>
             <div class="tab-content">
                 <div class="tab-pane fade show active" id="tab-pane-1">
                     <h4 class="mb-3">Product Description</h4>
                     <p>{!! $product->description !!}</p>
-                </div>
-                <div class="tab-pane fade" id="tab-pane-2">
-                    <h4 class="mb-3">Additional Information</h4>
-
                 </div>
                 <div class="tab-pane fade" id="tab-pane-3">
                     <div class="row">
