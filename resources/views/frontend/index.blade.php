@@ -1,6 +1,25 @@
 @extends('frontend.layouts.app')
 @push('css')
     <style>
+        /* Add this CSS to your stylesheet or in a <style> tag in the document head */
+        .discount-percentage {
+            position: absolute;
+            top: 10px;
+            /* Adjust the top position as needed */
+            right: 10px;
+            /* Adjust the right position as needed */
+            background-color: red;
+            /* Example background color */
+            color: white;
+            /* Example text color */
+            padding: 5px 10px;
+            /* Adjust padding as needed */
+            border-radius: 5px;
+            /* Add border-radius for rounded corners */
+            font-size: 14px;
+            /* Adjust font size as needed */
+        }
+
         /* Define the animation */
         @keyframes md-effect {
             0% {
@@ -55,7 +74,7 @@
                     </button>
                 </div>
                 <div class="modal-body" id="wishlist">
-                    
+
                 </div>
             </div>
         </div>
@@ -146,32 +165,32 @@
         </div>
         <div class="row px-xl-5 pb-3">
             @foreach ($products as $product)
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card product-item border position-relative">
-                        <div class="card-body product-body text-center p-3">
+                @php
+                    $unit_price = $product->unit_price;
+                    $discount_value = $product->discount_price;
+                    $discountPrecente = $unit_price * ($discount_value / 100);
+                    $price_real = $unit_price - $discountPrecente;
+                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                @endphp
+                <div class="col-lg-2 p-0 col-md-4 col-sm-6">
+                    <div class="card product-item">
+                        <div class="card-body product-body">
                             <div class="product-img position-relative overflow-hidden bg-transparent border">
                                 <a href="{{ route('product.details', $product->slug) }}">
                                     <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
                                 </a>
                             </div>
-                            <div class="pt-4">
-                                <div class="d-flex justify-content-center">
-                                    @php
-                                        $unit_price = $product->unit_price;
-                                        $discount_value = $product->discount_price;
-                                        $discountPrecente = $unit_price * ($discount_value / 100);
-                                        $price_real = $unit_price - $discountPrecente;
-                                        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                                    @endphp
-                                    <h6>${{ $price }}</h6>
-                                    <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
-                                </div>
-                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
-                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
+                            <div class="pt-1">
+                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none p-0">
+                                    <p class="text-dark p-0" style="font-size: 15px">{{ Str::limit($product->name, 40) }}
+                                    </p>
                                 </a>
-                                <a href="#" id="{{ $product->id }}" class="quick_view " data-toggle="modal"
-                                    data-target="#quickViewModal">Quick View
-                                </a>
+                                <h6 class="text-danger">${{ $price }}<del
+                                        class="text-muted px-1">${{ $product->unit_price }}</del></h6>
+                                <div class="discount-percentage">-{{ $discount_value }}%</div>
+                                <button id="{{ $product->id }}" class="quick_view btn btn-sm btn-info"
+                                    data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                    View</button>
                             </div>
                         </div>
                     </div>

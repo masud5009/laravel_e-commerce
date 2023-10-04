@@ -6,7 +6,7 @@
         $discount_value = $product->discount_price;
         $discountPrecente = $unit_price * ($discount_value / 100);
         $price_real = $unit_price - $discountPrecente;
-        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+        $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
     @endphp
     <input type="hidden" name="id" value="{{ $product->id }}">
     <input type="hidden" name="name" value="{{ $product->name }}">
@@ -59,8 +59,12 @@
                             <strong id="discountPrice" class="fs-16 fw-700 text-danger">
                                 ${{ $price }}
                             </strong>
-                            <!-- Unit -->
                             <span class="opacity-70" id="unit">/{{ $product->unit }}</span>
+                            <br>
+                            <!-- Unit -->
+                            <del class="px-2">${{ $unit_price }}</del>
+                            <span>-{{$discount_value}}%</span>
+
                         </div>
                     </div>
                 </div>
