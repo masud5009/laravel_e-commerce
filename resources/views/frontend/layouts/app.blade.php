@@ -118,15 +118,16 @@
     <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
     <!-- Toaster alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
-    @stack('script')
+
     <script>
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');
         @endif
-        @if(Session::has('error'))
-        toastr.error('{{ Session::get('error') }}');
+        @if (Session::has('error'))
+            toastr.error('{{ Session::get('error') }}');
         @endif
     </script>
+    @stack('script')
 </body>
 
 </html>

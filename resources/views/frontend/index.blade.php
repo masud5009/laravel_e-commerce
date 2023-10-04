@@ -1,23 +1,15 @@
 @extends('frontend.layouts.app')
 @push('css')
     <style>
-        /* Add this CSS to your stylesheet or in a <style> tag in the document head */
         .discount-percentage {
             position: absolute;
             top: 10px;
-            /* Adjust the top position as needed */
             right: 10px;
-            /* Adjust the right position as needed */
             background-color: red;
-            /* Example background color */
             color: white;
-            /* Example text color */
             padding: 5px 10px;
-            /* Adjust padding as needed */
             border-radius: 5px;
-            /* Add border-radius for rounded corners */
             font-size: 14px;
-            /* Adjust font size as needed */
         }
 
         /* Define the animation */
@@ -112,17 +104,19 @@
     <!-- Featured End -->
 
     <!-- Categories Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid mb-5">
         <div class="row px-xl-5 pb-3">
-            @forelse ($categoriesWithImage as $categorie)
-                <div class="col-lg-4 col-md-6 pb-1">
-                    <div class="cat-item d-flex flex-column border mb-4" style="padding: 30px;">
-                        <p class="text-right">15 Products</p>
-                        <a href="" class="cat-img position-relative overflow-hidden mb-3">
-                            <img class="img-fluid" src="{{ asset('storage/images/category_img/' . $categorie->icon) }}"
-                                alt="">
-                        </a>
-                        <h5 class="font-weight-semi-bold m-0">{{ $categorie->name }}</h5>
+            @forelse ($categoriesWithImage as $category)
+                <div class="col-lg-2 col-md-3 col-sm-4 p-0 m-0" style="height: 250px">
+                    <div class="card" style="height: 100%">
+                        <div class="card-body overflow-hidden">
+                            <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                                <img class="img-fluid"
+                                    src="{{ asset('storage/images/category_img/' . $category->cover_img) }}" alt=""
+                                    style="height: 80%;width:100%">
+                                <h6 class="font-weight-semi-bold py-2 px-3">{{ $category->name }}</h6>
+                            </a>
+                        </div>
                     </div>
                 </div>
             @empty
@@ -132,7 +126,7 @@
     <!-- Categories End -->
 
     <!-- Offer Start -->
-    <div class="container-fluid offer pt-5">
+    <div class="container-fluid offer pt-1">
         <div class="row px-xl-5">
             <div class="col-md-6 pb-4">
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
@@ -158,126 +152,112 @@
     </div>
     <!-- Offer End -->
 
-    <!-- Products Start -->
+    <!-- Trandy Products Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
             <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
         </div>
         <div class="row px-xl-5 pb-3">
-            @foreach ($products as $product)
+            @foreach ($trendyProducts as $trendyProduct)
                 @php
-                    $unit_price = $product->unit_price;
-                    $discount_value = $product->discount_price;
+                    $unit_price = $trendyProduct->unit_price;
+                    $discount_value = $trendyProduct->discount_price;
                     $discountPrecente = $unit_price * ($discount_value / 100);
                     $price_real = $unit_price - $discountPrecente;
                     $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
                 @endphp
-                <div class="col-lg-2 p-0 col-md-4 col-sm-6">
-                    <div class="card product-item">
-                        <div class="card-body product-body">
-                            <div class="product-img position-relative overflow-hidden bg-transparent border">
-                                <a href="{{ route('product.details', $product->slug) }}">
-                                    <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
+                <div class="col-lg-2 p-0 col-md-4 col-sm-6 px-2">
+                    <div class="card product-item border-0">
+                        <div class="card-header bg-transparent border-0 p-0">
+                            <div class="product-img position-relative overflow-hidden bg-transparent">
+                                <a href="{{ route('product.details', $trendyProduct->slug) }}">
+                                    <img style="height: 190px;width:100%" src="{{ $trendyProduct->thumbnail }}"
+                                        alt="">
                                 </a>
                             </div>
-                            <div class="pt-1">
-                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none p-0">
-                                    <p class="text-dark p-0" style="font-size: 15px">{{ Str::limit($product->name, 40) }}
+                        </div>
+                        <div class="card-body">
+                            <div class="p-2">
+                                <a href="{{ route('product.details', $trendyProduct->slug) }}"
+                                    class="text-decoration-none p-0">
+                                    <p class="text-dark p-0" style="font-size: 15px">
+                                        {{ Str::limit($trendyProduct->name, 40) }}
                                     </p>
                                 </a>
                                 <h6 class="text-danger">${{ $price }}<del
-                                        class="text-muted px-1">${{ $product->unit_price }}</del></h6>
+                                        class="text-muted px-1">${{ $trendyProduct->unit_price }}</del></h6>
                                 <div class="discount-percentage">-{{ $discount_value }}%</div>
-                                <button id="{{ $product->id }}" class="quick_view btn btn-sm btn-info"
-                                    data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
-                                    View</button>
+
                             </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 d-flex justify-content-center">
+                            <button id="{{ $trendyProduct->id }}" class="quick_view btn btn-sm btn-info"
+                                data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                View</button>
                         </div>
                     </div>
                 </div>
             @endforeach
-            <div class="m-auto">
-                {{ $products->links() }}
-            </div>
+
         </div>
     </div>
-    <!-- Products End -->
+    <!-- Trandy Products End -->
 
-    <!-- Subscribe Start -->
-    <div class="container-fluid bg-secondary my-5">
-        <div class="row justify-content-md-center py-5 px-xl-5">
-            <div class="col-md-6 col-12 py-5">
-                <div class="text-center mb-2 pb-2">
-                    <h2 class="section-title px-5 mb-3"><span class="bg-secondary px-2">Stay Updated</span></h2>
-                    <p>Amet lorem at rebum amet dolores. Elitr lorem dolor sed amet diam labore at justo ipsum eirmod duo
-                        labore labore.</p>
-                </div>
-                <form action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control border-white p-4" placeholder="Email Goes Here">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary px-4">Subscribe</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <!-- Subscribe End -->
-
-    <!-- Products Start -->
+    <!-- Just For You Products Start -->
     <div class="container-fluid pt-5">
         <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Just Arrived</span></h2>
+            <h2 class="section-title px-5"><span class="px-2">
+                    Just For You
+                </span></h2>
         </div>
-
         <div class="row px-xl-5 pb-3">
-            @forelse ($products as $product)
-                <div class="col-lg-3 col-md-4 col-sm-6">
-                    <div class="card product-item border mb-4">
-                        <div class=" card-body text-center p-0">
-                            <div class="product-img position-relative overflow-hidden bg-transparent border p-0">
-                                <a href="{{ route('product.details', $product->slug) }}">
-                                    <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
+            @foreach ($justProducts as $justProduct)
+                @php
+                    $unit_price = $justProduct->unit_price;
+                    $discount_value = $justProduct->discount_price;
+                    $discountPrecente = $unit_price * ($discount_value / 100);
+                    $price_real = $unit_price - $discountPrecente;
+                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                @endphp
+                <div class="col-lg-2 p-0 col-md-4 col-sm-6 px-2">
+                    <div class="card product-item border-0">
+                        <div class="card-header bg-transparent border-0 p-0">
+                            <div class="product-img position-relative overflow-hidden bg-transparent border">
+                                <a href="{{ route('product.details', $justProduct->slug) }}">
+                                    <img style="height: 190px;width:100%" src="{{ $justProduct->thumbnail }}"
+                                        alt="" style="max-heigh:100px">
                                 </a>
-                            </div>
-                            <div class="pt-4">
-                                <a href="{{ route('product.details', $product->slug) }}" class="text-decoration-none">
-                                    <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                                </a>
-                                <div class="d-flex justify-content-center">
-                                    @php
-                                        $unit_price = $product->unit_price;
-                                        $discount_value = $product->discount_price;
-                                        $discountPrecente = $unit_price * ($discount_value / 100);
-                                        $price_real = $unit_price - $discountPrecente;
-                                        $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                                    @endphp
-                                    <h6>${{ $price }}</h6>
-                                    <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
-                                </div>
                             </div>
                         </div>
-                        <div class="d-flex justify-content-center align-items-center">
-                            <a href="#" id="{{ $product->id }}" class="btn btn-primary quick_view"
-                                data-toggle="modal" data-target="#exampleModal">
-                                <i class="fas fa-shopping-cart text-primary mr-1"></i>Add To
-                                Cart
-                            </a>
+                        <div class="card-body product-body border-0">
+                            <div class="p-2">
+                                <a href="{{ route('product.details', $justProduct->slug) }}"
+                                    class="text-decoration-none p-0">
+                                    <p class="text-dark p-0" style="font-size: 15px">
+                                        {{ Str::limit($justProduct->name, 40) }}
+                                    </p>
+                                </a>
+                                <h6 class="text-danger">${{ $price }}<del
+                                        class="text-muted px-1">${{ $justProduct->unit_price }}</del></h6>
+                                <div class="discount-percentage">-{{ $discount_value }}%</div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0">
+                            <button id="{{ $justProduct->id }}" class="quick_view btn btn-sm btn-info"
+                                data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                View</button>
                         </div>
                     </div>
                 </div>
-            @empty
-            @endforelse
-            <div class="d-flex justify-content-center align-items-center">
-                {{ $products->links() }}
-            </div>
+            @endforeach
+
         </div>
         <div class="d-flex justify-content-center align-items-center">
-            {{ $products->links() }}
+            {{ $trendyProducts->links() }}
         </div>
     </div>
-    <!-- Products End -->
+    <!-- Just For You Products End -->
 
     <!-- Vendor Start -->
     <div class="container-fluid py-5">

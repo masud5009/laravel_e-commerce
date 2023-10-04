@@ -16,10 +16,17 @@ class IndexpageController extends Controller
      */
      public function index()
      {
-        $categoriesWithImage = Category::limit(3)->get();
-        $products = Product::orderBy('created_at', 'desc')->paginate(12);
+        $categoriesWithImage = Category::take(6)->get();
+        $trendyProducts = Product::where('active_status',1)
+                          ->where('trandy',1)
+                          ->orderBy('created_at', 'desc')
+                          ->paginate(12);
+        $justProducts = Product::where('active_status',1)
+                        ->orderBy('created_at','desc')
+                        ->inRandomOrder()
+                        ->paginate(12);
         $generalSetting = GeneralSetting::find(1);
-        return view('frontend.index',compact('categoriesWithImage','products','generalSetting'));
+        return view('frontend.index',compact('categoriesWithImage','trendyProducts','generalSetting','justProducts'));
      }
 
      /**
