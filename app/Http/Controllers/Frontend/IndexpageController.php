@@ -26,7 +26,8 @@ class IndexpageController extends Controller
                         ->inRandomOrder()
                         ->paginate(12);
         $generalSetting = GeneralSetting::find(1);
-        return view('frontend.index',compact('categoriesWithImage','trendyProducts','generalSetting','justProducts'));
+        $todaysDealProducts = Product::where('todays_deal',1)->take(5)->get();
+        return view('frontend.index',compact('categoriesWithImage','trendyProducts','generalSetting','justProducts','todaysDealProducts'));
      }
 
      /**

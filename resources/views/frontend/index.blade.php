@@ -104,6 +104,58 @@
     </div>
     <!-- Featured End -->
 
+
+    <!-- Todays Deal End Start -->
+    <div class="container-fluid mb-5">
+        <h5 class="px-xl-5 py-3">Todays Deal</h5>
+        <div class="row px-xl-5">
+            {{-- <div class="col"> --}}
+                <div class="owl-carousel related-carousel">
+                    @forelse ($todaysDealProducts as $todaysDealProduct)
+                        @php
+                            $unit_price = $todaysDealProduct->unit_price;
+                            $discount_value = $todaysDealProduct->discount_price;
+                            $discountPrecente = $unit_price * ($discount_value / 100);
+                            $price_real = $unit_price - $discountPrecente;
+                            $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                        @endphp
+
+                        <div class="card product-item border-0 mb-5">
+                            <div class="card-header bg-transparent border-0 p-0">
+                                <div class="product-img position-relative overflow-hidden bg-transparent">
+                                    <a href="{{ route('product.details', $todaysDealProduct->slug) }}">
+                                        <img style="height: 190px;width:100%" src="{{ $todaysDealProduct->thumbnail }}"
+                                            alt="">
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="px-2">
+                                    <a href="{{ route('product.details', $todaysDealProduct->slug) }}"
+                                        class="text-decoration-none p-0">
+                                        <p class="text-dark p-0" style="font-size: 15px">
+                                            {{ Str::limit($todaysDealProduct->name, 40) }}
+                                        </p>
+                                    </a>
+                                    <h6 class="text-danger">${{ $price }}<del
+                                            class="text-muted px-1">${{ $todaysDealProduct->unit_price }}</del></h6>
+                                    <div class="discount-percentage">-{{ $discount_value }}%</div>
+
+                                </div>
+                            </div>
+                            <div class="card-footer bg-transparent border-0  d-flex justify-content-center">
+                                <button id="{{ $todaysDealProduct->id }}" class="quick_view btn btn-sm btn-info"
+                                    data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                    View</button>
+                            </div>
+                        </div>
+                    @empty
+                    @endforelse
+                </div>
+            {{-- </div> --}}
+        </div>
+    </div>
+    <!-- Todays Deal End -->
     <!-- Trandy Products Start -->
     <div class="container-fluid mb-5">
         <h5 class="px-xl-5 py-3">Trandy Products</h5>
@@ -141,8 +193,8 @@
                             </div>
                         </div>
                         <div class="card-footer bg-transparent border-0  d-flex justify-content-center">
-                            <button id="{{ $trendyProduct->id }}" class="quick_view btn btn-sm btn-info" data-toggle="modal"
-                                data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                            <button id="{{ $trendyProduct->id }}" class="quick_view btn btn-sm btn-info"
+                                data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
                                 View</button>
                         </div>
                     </div>

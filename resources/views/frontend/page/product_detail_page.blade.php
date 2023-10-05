@@ -1,5 +1,7 @@
 @extends('frontend.layouts.app')
-@section('title') {{ $product->name }}  @endsection
+@section('title')
+    {{ $product->name }}
+@endsection
 @push('css')
     <style>
         #rating_pointer i {
@@ -23,7 +25,7 @@
             $discount_value = $product->discount_price;
             $discountPrecente = $unit_price * ($discount_value / 100);
             $price_real = $unit_price - $discountPrecente;
-            $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN),2);
+            $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
         @endphp
         <input type="hidden" name="id" value="{{ $product->id }}">
         <input type="hidden" name="name" value="{{ $product->name }}">
@@ -39,7 +41,7 @@
                             @endphp
                             @foreach ($images as $key => $image)
                                 <div class="carousel-item {{ $key === 1 ? 'active' : '' }}">
-                                    <img class="w-100 h-100" src="{{ asset($image)}}" alt="Image">
+                                    <img class="w-100 h-100" src="{{ asset($image) }}" alt="Image">
                                 </div>
                             @endforeach
                         </div>
@@ -165,9 +167,9 @@
                             <p>Brand : {{ $product->brand }}</p>
                         </div>
                     @else
-                    <div class="brand">
-                        <p>Brand : Unknown</p>
-                    </div>
+                        <div class="brand">
+                            <p>Brand : Unknown</p>
+                        </div>
                     @endif
                     <hr>
                     <!-- price -->
@@ -185,7 +187,7 @@
                                 <br>
                                 <!-- Unit -->
                                 <del class="px-2">${{ $unit_price }}</del>
-                                <span>-{{$discount_value}}%</span>
+                                <span>-{{ $discount_value }}%</span>
 
                             </div>
                         </div>
