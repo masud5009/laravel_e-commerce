@@ -54,6 +54,7 @@
             </div>
         </div>
     </div>
+
     <!-- Product Wishlist View Modal -->
     <div class="modal fade md-effect" id="wishlist" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -73,7 +74,7 @@
     </div>
 
     <!-- Featured Start -->
-    <div class="container-fluid pt-5">
+    <div class="container-fluid">
         <div class="row px-xl-5 pb-3">
             <div class="col-lg-3 col-md-6 col-sm-12 pb-1">
                 <div class="d-flex align-items-center border mb-4" style="padding: 30px;">
@@ -103,30 +104,57 @@
     </div>
     <!-- Featured End -->
 
-    <!-- Categories Start -->
+    <!-- Trandy Products Start -->
     <div class="container-fluid mb-5">
+        <h5 class="px-xl-5 py-3">Trandy Products</h5>
         <div class="row px-xl-5 pb-3">
-            @forelse ($categoriesWithImage as $category)
-                <div class="col-lg-2 col-md-3 col-sm-4 p-0 m-0" style="height: 250px">
-                    <div class="card" style="height: 100%">
-                        <div class="card-body overflow-hidden">
-                            <a href="" class="cat-img position-relative overflow-hidden mb-3">
-                                <img class="img-fluid"
-                                    src="{{ asset('storage/images/category_img/' . $category->cover_img) }}" alt=""
-                                    style="height: 80%;width:100%">
-                                <h6 class="font-weight-semi-bold py-2 px-3">{{ $category->name }}</h6>
-                            </a>
+            @foreach ($trendyProducts as $trendyProduct)
+                @php
+                    $unit_price = $trendyProduct->unit_price;
+                    $discount_value = $trendyProduct->discount_price;
+                    $discountPrecente = $unit_price * ($discount_value / 100);
+                    $price_real = $unit_price - $discountPrecente;
+                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                @endphp
+                <div class="col-lg-2 p-0 col-md-4 col-sm-6 px-2">
+                    <div class="card product-item border-0">
+                        <div class="card-header bg-transparent border-0 p-0">
+                            <div class="product-img position-relative overflow-hidden bg-transparent">
+                                <a href="{{ route('product.details', $trendyProduct->slug) }}">
+                                    <img style="height: 190px;width:100%" src="{{ $trendyProduct->thumbnail }}"
+                                        alt="">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="px-2">
+                                <a href="{{ route('product.details', $trendyProduct->slug) }}"
+                                    class="text-decoration-none p-0">
+                                    <p class="text-dark p-0" style="font-size: 15px">
+                                        {{ Str::limit($trendyProduct->name, 40) }}
+                                    </p>
+                                </a>
+                                <h6 class="text-danger">${{ $price }}<del
+                                        class="text-muted px-1">${{ $trendyProduct->unit_price }}</del></h6>
+                                <div class="discount-percentage">-{{ $discount_value }}%</div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent border-0  d-flex justify-content-center">
+                            <button id="{{ $trendyProduct->id }}" class="quick_view btn btn-sm btn-info" data-toggle="modal"
+                                data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                View</button>
                         </div>
                     </div>
                 </div>
-            @empty
-            @endforelse ()
+            @endforeach
+
         </div>
     </div>
-    <!-- Categories End -->
+    <!-- Trandy Products End -->
 
     <!-- Offer Start -->
-    <div class="container-fluid offer pt-1">
+    <div class="container-fluid offer">
         <div class="row px-xl-5">
             <div class="col-md-6 pb-4">
                 <div class="position-relative bg-secondary text-center text-md-right text-white mb-2 py-5 px-5">
@@ -152,64 +180,32 @@
     </div>
     <!-- Offer End -->
 
-    <!-- Trandy Products Start -->
-    <div class="container-fluid pt-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">Trandy Products</span></h2>
-        </div>
+    <!-- Categories Start -->
+    <div class="container-fluid">
+        <h5 class="px-xl-5 py-3">Categories</h5>
         <div class="row px-xl-5 pb-3">
-            @foreach ($trendyProducts as $trendyProduct)
-                @php
-                    $unit_price = $trendyProduct->unit_price;
-                    $discount_value = $trendyProduct->discount_price;
-                    $discountPrecente = $unit_price * ($discount_value / 100);
-                    $price_real = $unit_price - $discountPrecente;
-                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                @endphp
-                <div class="col-lg-2 p-0 col-md-4 col-sm-6 px-2">
-                    <div class="card product-item border-0">
-                        <div class="card-header bg-transparent border-0 p-0">
-                            <div class="product-img position-relative overflow-hidden bg-transparent">
-                                <a href="{{ route('product.details', $trendyProduct->slug) }}">
-                                    <img style="height: 190px;width:100%" src="{{ $trendyProduct->thumbnail }}"
-                                        alt="">
-                                </a>
-                            </div>
-                        </div>
-                        <div class="card-body">
-                            <div class="p-2">
-                                <a href="{{ route('product.details', $trendyProduct->slug) }}"
-                                    class="text-decoration-none p-0">
-                                    <p class="text-dark p-0" style="font-size: 15px">
-                                        {{ Str::limit($trendyProduct->name, 40) }}
-                                    </p>
-                                </a>
-                                <h6 class="text-danger">${{ $price }}<del
-                                        class="text-muted px-1">${{ $trendyProduct->unit_price }}</del></h6>
-                                <div class="discount-percentage">-{{ $discount_value }}%</div>
-
-                            </div>
-                        </div>
-                        <div class="card-footer bg-transparent border-0 d-flex justify-content-center">
-                            <button id="{{ $trendyProduct->id }}" class="quick_view btn btn-sm btn-info"
-                                data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
-                                View</button>
+            @forelse ($categoriesWithImage as $category)
+                <div class="col-lg-2 col-md-3 col-sm-4 p-0 m-0" style="height: 250px">
+                    <div class="card" style="height: 100%">
+                        <div class="card-body overflow-hidden">
+                            <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                                <img class="img-fluid"
+                                    src="{{ asset('storage/images/category_img/' . $category->cover_img) }}"
+                                    alt="" style="height: 80%;width:100%">
+                                <h6 class="font-weight-semi-bold py-2 px-3">{{ $category->name }}</h6>
+                            </a>
                         </div>
                     </div>
                 </div>
-            @endforeach
-
+            @empty
+            @endforelse ()
         </div>
     </div>
-    <!-- Trandy Products End -->
+    <!-- Categories End -->
 
     <!-- Just For You Products Start -->
-    <div class="container-fluid pt-5">
-        <div class="text-center mb-4">
-            <h2 class="section-title px-5"><span class="px-2">
-                    Just For You
-                </span></h2>
-        </div>
+    <div class="container-fluid">
+        <h5 class="px-xl-5 py-3">Just For You</h5>
         <div class="row px-xl-5 pb-3">
             @foreach ($justProducts as $justProduct)
                 @php
@@ -217,7 +213,7 @@
                     $discount_value = $justProduct->discount_price;
                     $discountPrecente = $unit_price * ($discount_value / 100);
                     $price_real = $unit_price - $discountPrecente;
-                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                    $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN));
                 @endphp
                 <div class="col-lg-2 p-0 col-md-4 col-sm-6 px-2">
                     <div class="card product-item border-0">
@@ -230,7 +226,7 @@
                             </div>
                         </div>
                         <div class="card-body product-body border-0">
-                            <div class="p-2">
+                            <div class="px-2">
                                 <a href="{{ route('product.details', $justProduct->slug) }}"
                                     class="text-decoration-none p-0">
                                     <p class="text-dark p-0" style="font-size: 15px">
@@ -243,7 +239,7 @@
 
                             </div>
                         </div>
-                        <div class="card-footer bg-transparent border-0">
+                        <div class="card-footer bg-transparent border-0  d-flex justify-content-center">
                             <button id="{{ $justProduct->id }}" class="quick_view btn btn-sm btn-info"
                                 data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
                                 View</button>
@@ -260,7 +256,7 @@
     <!-- Just For You Products End -->
 
     <!-- Vendor Start -->
-    <div class="container-fluid py-5">
+    <div class="container-fluid">
         <div class="row px-xl-5">
             <div class="col">
                 <div class="owl-carousel vendor-carousel">

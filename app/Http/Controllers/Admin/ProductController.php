@@ -33,6 +33,58 @@ class ProductController extends Controller
             $products = Product::query();
 
             return DataTables::of($products)
+                ->editColumn('active_status', function ($row) {
+                    if ($row->active_status == 1) {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" checked type="checkbox" class="product_dactive">
+                        <span class="slider round"></span>
+                    </label>';
+                    } else {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" type="checkbox" class="product_active">
+                        <span class="slider round"></span>
+                    </label>';
+                    }
+                })
+                ->editColumn('trandy', function ($row) {
+                    if ($row->trandy == 1) {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" checked type="checkbox" class="trandy_dactive">
+                        <span class="slider round"></span>
+                    </label>';
+                    } else {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" type="checkbox" class="trandy_active">
+                        <span class="slider round"></span>
+                    </label>';
+                    }
+                })
+                ->editColumn('featured', function ($row) {
+                    if ($row->featured == 1) {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" checked type="checkbox" class="featured_dactive">
+                        <span class="slider round"></span>
+                    </label>';
+                    } else {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" type="checkbox" class="featured_active">
+                        <span class="slider round"></span>
+                    </label>';
+                    }
+                })
+                ->editColumn('todays_deal', function ($row) {
+                    if ($row->todays_deal == 1) {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" checked type="checkbox" class="todays_deal_dactive">
+                        <span class="slider round"></span>
+                    </label>';
+                    } else {
+                        return ' <label class="switch">
+                        <input data-id="' . $row->id . '" type="checkbox" class="todays_deal_active">
+                        <span class="slider round"></span>
+                    </label>';
+                    }
+                })
                 ->addColumn('action', function ($row) {
                     $editUrl = route('product.edit', ['product' => $row->id]);
                     return '<a href="javascript:void()" class="btn-sm btn btn-success viewBtn" data-id="' . $row->id . '">
@@ -45,7 +97,7 @@ class ProductController extends Controller
                                 <i class="bx bx-trash"></i>
                             </a>';
                 })
-                ->rawColumns(['action'])
+                ->rawColumns(['action', 'active_status', 'trandy', 'featured', 'todays_deal'])
                 ->make(true);
         }
         return view('admin.pages.product.index');
@@ -87,7 +139,7 @@ class ProductController extends Controller
             'category_id' => 'required',
             'unit_price' => 'required',
             'quantity' => 'required',
-            'shipping_day' => 'required'
+            'shipping_day' => 'required',
         ]);
         $product = Product::create([
             'user_id' => Auth::user()->id,

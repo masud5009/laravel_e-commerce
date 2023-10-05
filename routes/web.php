@@ -11,6 +11,7 @@ use App\Http\Controllers\Admin\{
     CouponController,
     GeneralSettingController,
     PageController,
+    ProductAllStatusUpdate,
     ProductController,
     ProfileController,
     SeoController,
@@ -43,7 +44,7 @@ Route::prefix('/')->group(function () {
         Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
         //Cart view
         Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
-        Route::get('profile',[LoginController::class,'customerProfile'])->name('customer.profile');
+        Route::get('profile', [LoginController::class, 'customerProfile'])->name('customer.profile');
     });
     //Add To Cart
     Route::get('quick-view/{id}', [CartController::class, 'cartInfo'])->name('cart.info');
@@ -66,7 +67,7 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::resource('sub-category', SubcategoryController::class);
     //childcategory route
     Route::resource('child-category', ChilCategoryController::class);
-    Route::get('selected/subcategory/onchildcategory/{id}',[ChilCategoryController::class,'getSelectedSubcategory'])->name('childcategory.selected.subcategory');
+    Route::get('selected/subcategory/onchildcategory/{id}', [ChilCategoryController::class, 'getSelectedSubcategory'])->name('childcategory.selected.subcategory');
 
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
@@ -76,8 +77,41 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::resource('product', ProductController::class);
     //GET Attribute value form product  controller
     Route::get('attribute-value/{id}', [ProductController::class, 'getAttributeValue'])->name('attribute.value');
-    Route::get('selected/subcategory{id}',[ProductController::class,'getSelectedSubcategory'])->name('selected.subcategory');
-    Route::get('selected/childcategory/{id}',[ProductController::class,'getSelectedChildcategory'])->name('selected.childcategory');
+    Route::get('selected/subcategory{id}', [ProductController::class, 'getSelectedSubcategory'])->name('selected.subcategory');
+    Route::get('selected/childcategory/{id}', [ProductController::class, 'getSelectedChildcategory'])->name('selected.childcategory');
+    /**
+     * Product Active Status Update Route
+     */
+    Route::get('product/deactive/{id}', [ProductAllStatusUpdate::class, 'productDeactive'])
+        ->name('product.deactive');
+
+    Route::get('product/active/{id}', [ProductAllStatusUpdate::class, 'productAactive'])
+        ->name('product.active');
+    /**
+     * Featured Product Active Status Update Route
+     */
+    Route::get('featured/active/{id}', [ProductAllStatusUpdate::class, 'featuredActive'])
+        ->name('featured.active');
+
+    Route::get('featured/deactive/{id}', [ProductAllStatusUpdate::class, 'featuredDactive'])
+        ->name('featured.deactive');
+    /**
+     * Todays_Deal_Active Product Active Status Update Route
+     */
+    Route::get('todays_deal_active/active/{id}', [ProductAllStatusUpdate::class, 'todaysDealActive'])
+        ->name('todays_deal_active.active');
+
+    Route::get('todays_deal_active/deactive/{id}', [ProductAllStatusUpdate::class, 'todaysDealDctive'])
+        ->name('todays_deal_active.deactive');
+
+    /**
+     * Trandy Product Active Status Update Route
+     */
+    Route::get('trandy/active/{id}', [ProductAllStatusUpdate::class, 'trandyActive'])
+        ->name('trandy.active');
+
+    Route::get('trandy/deactive/{id}', [ProductAllStatusUpdate::class, 'trandyDctive'])
+        ->name('trandy.dactive');
 
     Route::resource('color', ColorController::class);
     Route::resource('attribute', AttributeController::class);

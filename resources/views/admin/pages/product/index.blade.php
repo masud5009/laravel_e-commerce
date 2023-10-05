@@ -21,6 +21,10 @@
                 <th>SL</th>
                 <th>Name</th>
                 <th>Image</th>
+                <th>Teatured</th>
+                <th>Todays Deal</th>
+                <th>Trandy</th>
+                <th>Active Status</th>
                 <th>Action</th>
             </tr>
         </thead>
@@ -61,6 +65,22 @@
                                 return '';
                             }
                         },
+                    },
+                    {
+                        data: 'featured',
+                        name: 'featured'
+                    },
+                    {
+                        data: 'todays_deal',
+                        name: 'todays_deal'
+                    },
+                    {
+                        data: 'trandy',
+                        name: 'trandy'
+                    },
+                    {
+                        data: 'active_status',
+                        name: 'active_status'
                     },
                     {
                         data: 'action',
@@ -116,6 +136,121 @@
                     Swal.fire("Cancelled", "Your data is safe!", "info");
                 }
             });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Product Active
+            $('body').on('click', '.product_active', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('product.active', ['id' => '__id__']) }}'.replace('__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // Product Dactive
+            $('body').on('click', '.product_dactive', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('product.deactive', ['id' => '__id__']) }}'.replace('__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // featured Active
+            $('body').on('click', '.featured_active', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('featured.active', ['id' => '__id__']) }}'.replace('__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // featured Dactive
+            $('body').on('click', '.featured_dactive', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('featured.deactive', ['id' => '__id__']) }}'.replace('__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // todays_deal Active
+            $('body').on('click', '.todays_deal_active', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('todays_deal_active.active', ['id' => '__id__']) }}'.replace(
+                        '__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // todays_deal Dactive
+            $('body').on('click', '.todays_deal_dactive', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('todays_deal_active.deactive', ['id' => '__id__']) }}'.replace(
+                        '__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+
+            // Trandy Active
+            $('body').on('click', '.trandy_active', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('trandy.active', ['id' => '__id__']) }}'.replace(
+                        '__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+            // Trandy Dactive
+            $('body').on('click', '.trandy_dactive', function() {
+                let id = $(this).data('id');
+                $.ajax({
+                    url: '{{ route('trandy.dactive', ['id' => '__id__']) }}'.replace(
+                        '__id__',
+                        id),
+                    type: 'get',
+                    success: function(response) {
+                        toastr.success(response);
+                        table.ajax.reload();
+                    }
+                });
+            });
+
         });
     </script>
 @endpush

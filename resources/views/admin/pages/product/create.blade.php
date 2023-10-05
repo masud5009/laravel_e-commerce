@@ -38,7 +38,7 @@
                                 <div class="input-group">
                                     <label class="input-group-text">Brand</label>
                                     <select class="form-select" id="brand" name="brand">
-                                        <option selected>Select Brand</option>
+                                        <option selected disabled>Select Brand</option>
                                         @foreach ($brands as $brand)
                                             <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                         @endforeach
@@ -234,7 +234,7 @@
                                 <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
                                         *</span></label>
                                 <select class="form-select" name="category_id">
-                                    <option selected>Select Category</option>
+                                    <option selected disabled>Select Category</option>
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->name }} </option>
                                     @endforeach
@@ -243,13 +243,13 @@
                             <div class="form-group mb-2">
                                 <label for="subcategory" class="form-label">Select Sub-category</label>
                                 <select class="form-select" name="subcategory_id">
-                                    <option selected>Select Subcategory</option>
+                                    <option selected disabled>Select Subcategory</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Child-category</label>
                                 <select class="form-select" name="childcategory_id">
-                                    <option selected>Select Childcategory</option>
+                                    <option selected disabled>Select Childcategory</option>
                                 </select>
                             </div>
                         </div>
@@ -515,7 +515,7 @@
                 if ($(this).prop('checked')) {
                     cash_on_delivery_status.val(1);
                     $('#cashon_delivery_text').text('Active');
-                }else{
+                } else {
                     $('#cashon_delivery_text').text('Disable');
                 }
             });
@@ -530,7 +530,7 @@
                 if ($(this).prop('checked')) {
                     product_active_status.val(1);
                     $('#active_status_text').text('Active');
-                }else{
+                } else {
                     $('#active_status_text').text('Disable');
                 }
             });
@@ -641,7 +641,7 @@
                         $('[name="subcategory_id"]').append('<option value="' + subcategory.id + '">' +
                             subcategory
                             .name + '</option>');
-                            console.log(subcategory.id + subcategory.name);
+                        console.log(subcategory.id + subcategory.name);
                     });
                 },
                 error: function(xhr, status, error) {
@@ -658,9 +658,10 @@
                 dataType: 'json',
                 success: function(data) {
                     $.each(data, function(index, childcategory) {
-                        $('[name="childcategory_id"]').append('<option value="' + childcategory.id + '">' +
+                        $('[name="childcategory_id"]').append('<option value="' + childcategory.id +
+                            '">' +
                             childcategory.name + '</option>');
-                            console.log(childcategory.id + childcategory.name);
+                        console.log(childcategory.id + childcategory.name);
                     });
                 },
                 error: function(xhr, status, error) {
