@@ -9562,6 +9562,34 @@ a.text-dark:hover, a.text-dark:focus {
   animation: action 1s infinite alternate;
 }
 
+.discount-percentage {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: red;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Define the animation */
+@keyframes md-effect {
+    0% {
+        transform: translateY(-200%);
+        opacity: 0;
+    }
+
+    100% {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Apply the animation to the modal content */
+.modal.fade.md-effect .modal-content {
+    animation: md-effect 0.5s 0.1s both;
+}
 @keyframes action {
   0% {
     transform: translateY(0);

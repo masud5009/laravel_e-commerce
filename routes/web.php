@@ -22,7 +22,8 @@ use App\Http\Controllers\Admin\{
 use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Frontend\{
     IndexpageController,
-    ReviewController
+    ReviewController,
+    ShopController
 };
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Customer\LoginController;
@@ -52,6 +53,7 @@ Route::prefix('/')->group(function () {
     //Customer Login & Registration
     Route::get('customer/account/create', [RegisterController::class, 'register'])->name('customer.account.create');
     Route::get('customer/account/login', [LoginController::class, 'login'])->name('customer.account.login');
+    Route::get('shop/{category}',[ShopController::class,'categoryProduct'])->name('category.product');
 });
 
 /**

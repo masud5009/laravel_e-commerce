@@ -1,35 +1,5 @@
 @extends('frontend.layouts.app')
 @push('css')
-    <style>
-        .discount-percentage {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            background-color: red;
-            color: white;
-            padding: 5px 10px;
-            border-radius: 5px;
-            font-size: 14px;
-        }
-
-        /* Define the animation */
-        @keyframes md-effect {
-            0% {
-                transform: translateY(-200%);
-                opacity: 0;
-            }
-
-            100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        /* Apply the animation to the modal content */
-        .modal.fade.md-effect .modal-content {
-            animation: md-effect 0.5s 0.1s both;
-        }
-    </style>
     <!-- jQuery CDN -->
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
@@ -239,7 +209,8 @@
                 <div class="col-lg-2 col-md-3 col-sm-4 col-6 p-0 m-0" style="height: 250px">
                     <div class="card" style="height: 100%">
                         <div class="card-body overflow-hidden">
-                            <a href="" class="cat-img position-relative overflow-hidden mb-3">
+                            <a href="{{ route('category.product', $category->slug) }}"
+                                class="cat-img position-relative overflow-hidden mb-3">
                                 <img class="img-fluid"
                                     src="{{ asset('storage/images/category_img/' . $category->cover_img) }}"
                                     alt="" style="height: 80%;width:100%">

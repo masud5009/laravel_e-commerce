@@ -1,11 +1,16 @@
 @extends('frontend.layouts.app')
+@push('css')
+    <!-- jQuery CDN -->
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
+        integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
+@endpush
 @section('title')
 @endsection
 @section('content')
     @include('frontend.page.navbar')
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    <div class="modal fade md-effect" id="quickViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -171,42 +176,50 @@
                             </div>
                         </div>
                     </div>
-                    @foreach ($products as $product)
-                        <div class="col-lg-3 col-md-4 col-sm-6">
-                            <div class="card product-item border position-relative">
-                                <div class="card-body product-body text-center p-3">
-                                    <div class="product-img position-relative overflow-hidden bg-transparent border">
+                    @forelse ($categoryProduct as $product)
+                        @php
+                            $unit_price = $product->unit_price;
+                            $discount_value = $product->discount_price;
+                            $discountPrecente = $unit_price * ($discount_value / 100);
+                            $price_real = $unit_price - $discountPrecente;
+                            $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
+                        @endphp
+                        <div class="col-lg-3 p-0 col-md-4 col-sm-4 col-6 px-2 mb-5">
+                            <div class="card product-item border-0">
+                                <div class="card-header bg-transparent border-0 p-0">
+                                    <div class="product-img position-relative overflow-hidden bg-transparent">
                                         <a href="{{ route('product.details', $product->slug) }}">
-                                            <img class="img-fluid" src="{{ $product->thumbnail }}" alt="">
-                                        </a>
-                                    </div>
-                                    <div class="pt-4">
-                                        <div class="d-flex justify-content-center">
-                                            @php
-                                                $unit_price = $product->unit_price;
-                                                $discount_value = $product->discount_price;
-                                                $discountPrecente = $unit_price * ($discount_value / 100);
-                                                $price_real = $unit_price - $discountPrecente;
-                                                $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
-                                            @endphp
-                                            <h6>${{ $price }}</h6>
-                                            <h6 class="text-muted ml-2"><del>${{ $product->unit_price }}</del></h6>
-                                        </div>
-                                        <a href="{{ route('product.details', $product->slug) }}"
-                                            class="text-decoration-none">
-                                            <h6 class="text-truncate mb-3">{{ $product->name }}</h6>
-                                        </a>
-                                        <a href="#" id="{{ $product->id }}" class="quick_view "
-                                            data-toggle="modal" data-target="#exampleModal">Quick View
+                                            <img style="height: 190px;width:100%" src="{{ asset($product->thumbnail) }}"
+                                                alt="">
                                         </a>
                                     </div>
                                 </div>
+                                <div class="card-body">
+                                    <div class="px-2">
+                                        <a href="{{ route('product.details', $product->slug) }}"
+                                            class="text-decoration-none p-0">
+                                            <p class="text-dark p-0" style="font-size: 15px">
+                                                {{ Str::limit($product->name, 40) }}
+                                            </p>
+                                        </a>
+                                        <h6 class="text-danger">${{ $price }}<del
+                                                class="text-muted px-1">${{ $product->unit_price }}</del></h6>
+                                        <div class="discount-percentage">-{{ $discount_value }}%</div>
+
+                                    </div>
+                                </div>
+                                <div class="card-footer bg-transparent border-0  d-flex justify-content-center">
+                                    <button id="{{ $product->id }}" class="quick_view btn btn-sm btn-info"
+                                        data-toggle="modal" data-target="#quickViewModal"><i class="fa fa-eye"></i> Quick
+                                        View</button>
+                                </div>
                             </div>
                         </div>
-                    @endforeach
+                    @empty
+                    @endforelse
                 </div>
                 <div class="d-flex justify-content-center align-items-center">
-                    {{ $products->links() }}
+                    {{ $categoryProduct->links() }}
                 </div>
             </div>
             <!-- Shop Product End -->
@@ -225,6 +238,32 @@
                 success: function(response) {
                     $('#quick_view_modal').html(response);
                 }
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            // Show the modal with animation when it's opened
+            $('#quickViewModal').on('show.bs.modal', function() {
+                $(this).find('.modal-content').addClass('slip-from-top');
+            });
+
+            // Remove the animation class when the modal is closed
+            $('#quickViewModal').on('hidden.bs.modal', function() {
+                $(this).find('.modal-content').removeClass('slip-from-top');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('#quickViewModal').on('show.bs.modal', function() {
+                // Add animation class when the modal is shown
+                $(this).find('.modal-content').addClass('md-effect');
+            });
+
+            $('#quickViewModal').on('hidden.bs.modal', function() {
+                // Remove animation class when the modal is hidden
+                $(this).find('.modal-content').removeClass('md-effect');
             });
         });
     </script>
