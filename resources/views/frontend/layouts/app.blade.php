@@ -25,6 +25,20 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
     <!-- Customized Bootstrap Stylesheet -->
+    <style>
+        #searchResults {
+            width: 100%;
+            background: #fff;
+            /*! position: absolute; */
+            box-shadow: 0px 4px 5px black;
+            padding: 12px;
+            list-style: none;
+        }
+
+        #searchResults {
+            display: none;
+        }
+    </style>
     <link href="{{ asset('asset/frontend/css/style.css') }}" rel="stylesheet">
     @stack('css')
 
@@ -32,7 +46,7 @@
 
 <body>
     <!-- Topbar Start -->
-    <div class="container-fluid">
+    <div class="container-fluid position-relative">
         <div class="row top-bg py-2 px-xl-5">
             <div class="col-lg-6 d-none d-lg-block">
                 <div class="d-inline-flex align-items-center">
@@ -70,12 +84,13 @@
             <div class="col-lg-6 col-6 text-left">
                 <form action="">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for products">
+                        <input type="text" class="form-control" id="productSearch" placeholder="Search for products">
                         <div class="input-group-append">
-                            <span class="input-group-text bg-transparent text-primary">
+                            <button class="input-group-text bg-transparent text-primary">
                                 <i class="fa fa-search"></i>
-                            </span>
+                            </button>
                         </div>
+                        <ul id="searchResults" style="position: absolute; top: 100%; left: 0; width: 100%; background-color: white;"></ul>
                     </div>
                 </form>
             </div>
@@ -118,7 +133,27 @@
     <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
     <!-- Toaster alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <!-- Product display by search -->
+    <script>
+        $(document).ready(function() {
+            $('#productSearch').on('input', function() {
+                let product = $(this).val();
 
+                $.ajax({
+                    url: '{{ route('products.search') }}',
+                    type: 'GET',
+                    data: {
+                        product: product
+                    },
+                    success: function(response) {
+                        $('#searchResults').css('display', 'block');
+                        $('#searchResults').html(response);
+                    }
+                });
+            });
+
+        });
+    </script>
     <script>
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');

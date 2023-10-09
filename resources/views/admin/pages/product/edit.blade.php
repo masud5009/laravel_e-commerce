@@ -14,9 +14,10 @@
                 </ul>
             </div>
         @endif
-        <form action="{{ route('product.store') }}" method="POST" enctype="multipart/form-data"
+        <form action="{{ route('product.update', $product->id) }}" method="POST" enctype="multipart/form-data"
             class="form form-horizontal mar-top">
             @csrf
+            @method('PUT')
             <div class="row">
                 <div class="col-lg-8">
                     <!-- Product Information -->
@@ -248,8 +249,7 @@
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
                                         *</span></label>
-                                <select class="form-select" id="category" name="category">
-                                    <option selected>Select Category</option>
+                                <select class="form-select" id="category" name="category_id">
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}"
                                             {{ $product->category_id == $category->id ? 'selected' : '' }}>
@@ -259,14 +259,14 @@
                             </div>
                             <div class="form-group mb-2">
                                 <label for="subcategory" class="form-label">Select Sub-category</label>
-                                <select class="form-select" id="subcategory" name="subcategory">
-                                    <option selected>Select Subcategory</option>
+                                <select class="form-select" id="subcategory" name="subcategory_id">
+                                    <option selected disabled>Select Subcategory</option>
                                 </select>
                             </div>
                             <div class="form-group mb-2">
                                 <label for="category" class="form-label">Select Child-category</label>
-                                <select class="form-select" id="childcategory" name="childcategory">
-                                    <option selected>Select Childcategory</option>
+                                <select class="form-select" id="childcategory" name="childcategory_id">
+                                    <option selected disabled>Select Childcategory</option>
                                 </select>
                             </div>
                         </div>
@@ -417,7 +417,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary float-end">Save</button>
+            <button class="btn btn-primary float-end">Update & Published</button>
         </form>
     </div>
 @endsection

@@ -228,7 +228,86 @@ class ProductController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'category_id' => 'required',
+            'unit_price' => 'required',
+            'quantity' => 'required',
+            'shipping_day' => 'required',
+        ]);
+        $product = Product::find($id);
+        $product->update([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name,
+            'slug' => Str::slug($request->name, '-'),
+            'category_id' => $request->category_id,
+            'subcategory_id' => $request->subcategory_id,
+            'childcategory_id' => $request->childcategory_id,
+            'brand' => $request->brand,
+            'sku' => $request->sku,
+            'weight' => $request->weight,
+            'barcode' => $request->barcode,
+            'unit' => $request->unit,
+            'tags' => json_encode($request->tags),
+            'unit_price' => $request->unit_price,
+            'discount_date' => $request->discount_date,
+            'discount_price' => $request->discount_price,
+            'quantity' => $request->quantity,
+            'color' => json_encode($request->color),
+            'attattribute_valuesributes' => json_encode($request->attribute_values),
+            'description' => $request->description,
+            'flat_rate' => $request->flat_rate,
+            'trandy' => $request->has('trandy') ? 1 : 0,
+            'active_status' => $request->has('product_active_status') ? 1 : 0,
+            'free_shipping_status' => $request->has('free_shipping_status') ? 1 : 0,
+            'cash_on_delivery_status' => $request->has('cash_on_delivery_status') ? 1 : 0,
+            'warning_quantity' => $request->has('warning_quantity') ? 1 : 0,
+            'show_stock_quantity' => $request->has('show_stock_quantity') ? 1 : 0,
+            'show_stock_text' => $request->has('show_stock_text') ? 1 : 0,
+            'hide_stock' => $request->has('hide_stock') ? 1 : 0,
+            'featured' => $request->has('featured') ? 1 : 0,
+            'todays_deal' => $request->has('todays_deal') ? 1 : 0,
+            'shipping_day' => $request->has('shipping_day') ? 1 : 0,
+        ]);
+        //unlink the old path of thumbnail and upate new thumbnail
+        if ($request->hasFile('thumbnail')) {
+            $currentThumbnailPath = $product->thumbnail;
+            if (File::exists($currentThumbnailPath)) {
+                File::delete($currentThumbnailPath);
+            }
+
+            $thumbnail_file = $request->file('thumbnail');
+            $thumbnail_filename = time() . '_' . uniqid() . '.' . $thumbnail_file->getClientOriginalExtension();
+            $thumbnail_file->move('storage/images/product/thumbnail', $thumbnail_filename);
+            $product->thumbnail = 'storage/images/product/thumbnail/' . $thumbnail_filename;
+        }
+
+        //unlink the old path of images and upate new images
+        $currentImages = json_decode($product->images, true);
+
+        $imagesArray = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $productImagesExtension = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $image->move('storage/images/product/images', $productImagesExtension);
+                $imagesArray[] = 'storage/images/product/images/' . $productImagesExtension;
+            }
+        }
+        foreach ($currentImages as $currentImage) {
+            if (File::exists($currentImage)) {
+                File::delete($currentImage);
+            }
+        }
+
+        $imagesJson = json_encode($imagesArray);
+        $product->images = $imagesJson;
+
+
+
+        $product->update();
+
+        session()->flash('success', 'Your Product Update successfull');
+        return redirect()->back();
     }
 
     /**

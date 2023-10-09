@@ -163,16 +163,11 @@
                                     </div>
                                 </div>
                             </form>
-                            <div class="dropdown ml-4">
-                                <button class="btn border dropdown-toggle" type="button" id="triggerId"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    Sort by
-                                </button>
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="triggerId">
-                                    <a class="dropdown-item" href="#">Latest</a>
-                                    <a class="dropdown-item" href="#">Popularity</a>
-                                    <a class="dropdown-item" href="#">Best Rating</a>
-                                </div>
+                            <div class="ml-4">
+                                <select class="form-control">
+                                    <option selected disabled>Sort by</option>
+                                    <option value="latest">Latest</option>
+                                </select>
                             </div>
                         </div>
                     </div>

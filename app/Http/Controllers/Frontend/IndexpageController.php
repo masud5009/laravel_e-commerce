@@ -14,40 +14,43 @@ class IndexpageController extends Controller
     /**
      * Display a listing of the resource.
      */
-     public function index()
-     {
+    public function index()
+    {
         $categoriesWithImage = Category::take(6)->get();
-        $trendyProducts = Product::where('active_status',1)
-                          ->where('trandy',1)
-                          ->orderBy('created_at', 'desc')
-                          ->paginate(12);
-        $justProducts = Product::where('active_status',1)
-                        ->orderBy('created_at','desc')
-                        ->inRandomOrder()
-                        ->paginate(12);
+        $trendyProducts = Product::where('active_status', 1)
+            ->where('trandy', 1)
+            ->orderBy('created_at', 'desc')
+            ->paginate(12);
+        $justProducts = Product::where('active_status', 1)
+            ->orderBy('created_at', 'desc')
+            ->inRandomOrder()
+            ->paginate(12);
         $generalSetting = GeneralSetting::find(1);
-        $todaysDealProducts = Product::where('todays_deal',1)->take(5)->get();
-        return view('frontend.index',compact('categoriesWithImage','trendyProducts','generalSetting','justProducts','todaysDealProducts'));
-     }
+        $todaysDealProducts = Product::where('todays_deal', 1)->take(5)->get();
+        return view('frontend.index', compact('categoriesWithImage', 'trendyProducts', 'generalSetting', 'justProducts', 'todaysDealProducts'));
+    }
 
-     /**
-      * Product Details page
-      */
-      public function details($slug)
-      {
-        $product = Product::where('slug',$slug)->first();
+    /**
+     * Product Details page
+     */
+    public function details($slug)
+    {
+        $product = Product::where('slug', $slug)->first();
         $randomProducts = Product::all();
         $reviews = Review::all();
-        return view('frontend.page.product_detail_page',compact('product','randomProducts','reviews'));
-      }
+        return view('frontend.page.product_detail_page', compact('product', 'randomProducts', 'reviews'));
+    }
 
-      /**
-       * Dispaly product on shop page
-       */
+    /**
+     * Dispaly product by search
+     */
+    public function productSearch(Request $request)
+    {
+        $product = $request->input('product');
 
-       public function shop()
-       {
-        $products = Product::paginate(9);
-        return view('frontend.page.shop',compact('products'));
-       }
+        $products = Product::where('active_status', 1)->where('name', 'LIKE', '%' . $product . '%')
+            ->get();
+
+        return view('frontend.page.seach_product', compact('products'));
+    }
 }
