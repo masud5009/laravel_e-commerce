@@ -3,7 +3,7 @@
     @php
 
         $unit_price = $product->unit_price;
-        $discount_value = $product->discount_price;
+        $discount_value = number_format($product->discount_price);
         $discountPrecente = $unit_price * ($discount_value / 100);
         $price_real = $unit_price - $discountPrecente;
         $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);

@@ -7,8 +7,6 @@
 @section('title')
 @endsection
 @section('content')
-    @include('frontend.page.navbar')
-
     <!-- Modal -->
     <div class="modal fade md-effect" id="quickViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">

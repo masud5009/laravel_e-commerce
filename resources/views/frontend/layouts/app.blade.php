@@ -18,12 +18,14 @@
 
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="owlcarousel/owl.carousel.min.css">
+    <link rel="stylesheet" href="owlcarousel/owl.theme.default.min.css">
     <!-- Libraries Stylesheet -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <!--Toaster alert-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
+
     <!-- Customized Bootstrap Stylesheet -->
     <style>
         #searchResults {
@@ -75,13 +77,15 @@
             </div>
         </div>
         <div class="row align-items-center py-3 px-xl-5">
-            <div class="col-lg-3 d-none d-lg-block">
+            <!-- logo -->
+            <div class="col-lg-3 col-md-3 col-sm-6 d-lg-block d-md-block d-sm-block d-block py-2">
                 <a href="{{ route('website.home') }}" class="text-decoration-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span
                             class="text-primary font-weight-bold border px-3 mr-1">E</span>Shopper</h1>
                 </a>
             </div>
-            <div class="col-lg-6 col-6 text-left">
+            <!-- search option -->
+            <div class="col-lg-6 col-md-6 col-sm-6 text-left">
                 <form action="">
                     <div class="input-group">
                         <input type="text" class="form-control" id="productSearch" placeholder="Search for products">
@@ -90,11 +94,14 @@
                                 <i class="fa fa-search"></i>
                             </button>
                         </div>
-                        <ul id="searchResults" style="position: absolute; top: 100%; left: 0; width: 100%; background-color: white;"></ul>
+                        <ul id="searchResults"
+                            style="position: absolute; top: 100%; left: 0; width: 100%; background-color: white;z-index:999">
+                        </ul>
                     </div>
                 </form>
             </div>
-            <div class="col-lg-3 col-6 text-right">
+            <!-- cart option -->
+            <div class="col-lg-3 col-md-3 text-right d-none d-lg-block d-md-block">
 
                 <a href="#" data-toggle="modal" data-target="#wishlist">
                     <i class="fas fa-heart text-primary"></i>
@@ -108,6 +115,13 @@
         </div>
     </div>
     <!-- Topbar End -->
+
+
+    <!-- Navbar Start-->
+    @include('frontend.layouts.navbar')
+    <!-- Navbar End-->
+
+
 
     @yield('content')
 
@@ -126,9 +140,8 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 
     <!-- Contact Javascript File -->
-    <script src="mail/jqBootstrapValidation.min.js"></script>
-    <script src="mail/contact.js"></script>
-
+    <script src="jquery.min.js"></script>
+    <script src="owlcarousel/owl.carousel.min.js"></script>
     <!-- Template Javascript -->
     <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
     <!-- Toaster alert -->

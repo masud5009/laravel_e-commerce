@@ -5,8 +5,6 @@
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endpush
 @section('content')
-    @include('frontend.layouts.header')
-
     <!-- Product Quick View Modal -->
     <div class="modal fade md-effect" id="quickViewModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -42,6 +40,8 @@
             </div>
         </div>
     </div>
+
+    @include('frontend.page.carosel.categories')
 
     <!-- Featured Start -->
     <div class="container-fluid">
@@ -83,7 +83,7 @@
                 @forelse ($todaysDealProducts as $todaysDealProduct)
                     @php
                         $unit_price = $todaysDealProduct->unit_price;
-                        $discount_value = $todaysDealProduct->discount_price;
+                        $discount_value = number_format($todaysDealProduct->discount_price);
                         $discountPrecente = $unit_price * ($discount_value / 100);
                         $price_real = $unit_price - $discountPrecente;
                         $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
@@ -132,12 +132,12 @@
             @foreach ($trendyProducts as $trendyProduct)
                 @php
                     $unit_price = $trendyProduct->unit_price;
-                    $discount_value = $trendyProduct->discount_price;
+                    $discount_value = number_format($trendyProduct->discount_price);
                     $discountPrecente = $unit_price * ($discount_value / 100);
                     $price_real = $unit_price - $discountPrecente;
-                    $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+                    $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
                 @endphp
-                <div class="col-lg-2 p-0 col-md-4 col-sm-4 col-6 px-2 mb-5">
+                <div class="col-lg-2 p-0 col-md-3 col-sm-4 col-6 px-2 mb-5">
                     <div class="card product-item border-0">
                         <div class="card-header bg-transparent border-0 p-0">
                             <div class="product-img position-relative overflow-hidden bg-transparent">
@@ -206,14 +206,13 @@
         <h5 class="px-xl-5 py-3">Categories</h5>
         <div class="row px-xl-5 pb-3">
             @forelse ($categoriesWithImage as $category)
-                <div class="col-lg-2 col-md-3 col-sm-4 col-6 p-0 m-0" style="height: 250px">
+                <div class="col-lg-2 col-md-2 col-sm-4 col-6 p-0 m-0" style="height: 250px">
                     <div class="card" style="height: 100%">
                         <div class="card-body overflow-hidden">
                             <a href="{{ route('category.product', $category->slug) }}"
                                 class="cat-img position-relative overflow-hidden mb-3">
-                                <img class="img-fluid"
-                                    src="{{ asset($category->cover_img) }}"
-                                    alt="" style="height: 80%;width:100%">
+                                <img class="img-fluid" src="{{ asset($category->cover_img) }}" alt=""
+                                    style="height: 80%;width:100%">
                                 <h6 class="font-weight-semi-bold py-2 px-3">{{ $category->name }}</h6>
                             </a>
                         </div>
@@ -232,12 +231,12 @@
             @foreach ($justProducts as $justProduct)
                 @php
                     $unit_price = $justProduct->unit_price;
-                    $discount_value = $justProduct->discount_price;
+                    $discount_value = number_format($justProduct->discount_price);
                     $discountPrecente = $unit_price * ($discount_value / 100);
                     $price_real = $unit_price - $discountPrecente;
-                    $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN));
+                    $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
                 @endphp
-                <div class="col-lg-2 p-0 col-md-4 col-sm-4 col-6 px-2 mb-5">
+                <div class="col-lg-2 p-0 col-md-3 col-sm-4 col-6 px-2 mb-5">
                     <div class="card product-item border-0">
                         <div class="card-header bg-transparent border-0 p-0">
                             <div class="product-img position-relative overflow-hidden bg-transparent border">
@@ -255,8 +254,9 @@
                                         {{ Str::limit($justProduct->name, 40) }}
                                     </p>
                                 </a>
-                                <h6 class="text-danger">${{ $price }}<del
-                                        class="text-muted px-1">${{ $justProduct->unit_price }}</del></h6>
+                                <h6 class="text-danger">${{ $price }}
+                                    <del class="text-muted px-1">${{ $justProduct->unit_price }}</del>
+                                </h6>
                                 <div class="discount-percentage">-{{ $discount_value }}%</div>
 
                             </div>
