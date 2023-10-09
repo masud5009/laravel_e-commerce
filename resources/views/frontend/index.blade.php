@@ -212,7 +212,7 @@
                             <a href="{{ route('category.product', $category->slug) }}"
                                 class="cat-img position-relative overflow-hidden mb-3">
                                 <img class="img-fluid"
-                                    src="{{ asset('storage/images/category_img/' . $category->cover_img) }}"
+                                    src="{{ asset($category->cover_img) }}"
                                     alt="" style="height: 80%;width:100%">
                                 <h6 class="font-weight-semi-bold py-2 px-3">{{ $category->name }}</h6>
                             </a>

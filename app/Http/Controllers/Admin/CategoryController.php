@@ -27,7 +27,7 @@ class CategoryController extends Controller
         $this->validate($request, [
             'name' => 'required|string',
             'banner' => 'nullable|image|mimes:jpeg,png,webp,jpg,gif|max:2048',
-            'icon' => 'nullable|image|mimes:jpeg,png,,webp,jpg,gif|max:2048',
+            'icon' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'cover_img' => 'nullable|image|mimes:jpeg,webp,png,jpg,gif|max:2048',
             'description' => 'nullable|string',
         ]);
@@ -57,7 +57,7 @@ class CategoryController extends Controller
                         $file = $request->file($field);
                         $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                         $file->move($basePath, $filename);
-                        $category->$field = $filename;
+                        $category->$field = $basePath . $filename;
                     }
                 }
                 $category->update();
@@ -77,7 +77,7 @@ class CategoryController extends Controller
                     $file = $request->file($field);
                     $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
                     $file->move($basePath, $filename);
-                    $category->$field = $filename;
+                    $category->$field = $basePath . $filename;
                 }
             }
             $category->save();

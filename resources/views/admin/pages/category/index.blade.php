@@ -117,17 +117,17 @@
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
                                             <span>Banner</span>
-                                            <img src="{{ asset('storage/images/category_img/' . $category->banner) }}"
+                                            <img src="{{ asset($category->banner) }}"
                                                 alt="" style="max-width: 100px;max-height:100px">
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
                                             <span>Icon</span>
-                                            <img src="{{ asset('storage/images/category_img/' . $category->icon) }}"
+                                            <img src="{{ asset($category->icon) }}"
                                                 alt="" style="max-width: 100px;max-height:100px">
                                         </div>
                                         <div class="d-flex justify-content-between align-items-center py-4 border-bottom">
                                             <span>Cover Image</span>
-                                            <img src="{{ asset('storage/images/category_img/' . $category->cover_img) }}"
+                                            <img src="{{ asset($category->cover_img) }}"
                                                 alt="" style="max-width: 100px;max-height:100px">
                                         </div>
                                     </div>
