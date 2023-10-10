@@ -42,9 +42,10 @@ Route::prefix('/')->group(function () {
     Route::middleware('customer','verified')->group(function () {
         // Product Review
         Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
-        //Cart view
-        Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+        //customer profile page route
         Route::get('profile', [LoginController::class, 'customerProfile'])->name('customer.profile');
+                //Cart view
+                Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
         //store cart item
         Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.item');
         //remove cart item

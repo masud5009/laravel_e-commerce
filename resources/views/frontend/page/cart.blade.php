@@ -9,15 +9,14 @@
     <div class="container-fluid pt-5">
         <div class="row px-xl-5">
             <div class="col-lg-8 table-responsive mb-5">
-                <table class="table table-bordered text-center mb-0">
-                    <thead class="bg-secondary text-dark">
+                <table class="table text-center mb-0">
+                    <thead class="bg-danger text-white">
                         <tr>
-
-                            <th>Products</th>
-                            <th>Price</th>
-                            <th>Quantity</th>
-                            <th>Total</th>
-                            <th>Remove</th>
+                            <th class="font-weight-light">Products</th>
+                            <th class="font-weight-light">Price</th>
+                            <th class="font-weight-light">Quantity</th>
+                            <th class="font-weight-light">Total</th>
+                            <th class="font-weight-light">Remove</th>
                         </tr>
                     </thead>
                     <tbody class="align-middle">
@@ -35,15 +34,15 @@
                                     <td class="align-middle">
                                         <div class="input-group quantity mx-auto" style="width: 100px;">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-minus">
+                                                <button class="btn btn-sm btn-secondary btn-minus">
                                                     <i class="fa fa-minus"></i>
                                                 </button>
                                             </div>
                                             <input min="1" type="text" value="{{ $product['qty'] }}"
                                                 name="qty"
-                                                class="form-control form-control-sm bg-secondary text-center qty">
+                                                class="form-control form-control-sm text-center qty">
                                             <div class="input-group-btn">
-                                                <button class="btn btn-sm btn-primary btn-plus">
+                                                <button class="btn btn-sm btn-secondary btn-plus">
                                                     <i class="fa fa-plus"></i>
                                                 </button>
                                             </div>
@@ -54,15 +53,16 @@
                                         <span class="price"></span>
                                     </td>
                                     <td class="align-middle">
-                                        <a href="{{ route('remove.cart.item',$product['id'])}}" class="btn btn-sm btn-primary removeProduct">
-                                            <i class="fa fa-times"></i>
+                                        <a href="{{ route('remove.cart.item', $product['id']) }}"
+                                            class="btn btn-sm btn-danger removeProduct">
+                                            <i class="fa fa-trash"></i>
                                         </a>
                                     </td>
                                 </tr>
                             @endforeach
                         @else
                             <tr>
-                                <td colspan="5"><a href="">Go to shop</a></td>
+                                <td colspan="5"><a href="{{ route('website.home') }}">Go to shop</a></td>
                             </tr>
                         @endif
                     </tbody>
@@ -70,38 +70,32 @@
             </div>
             <div class="col-lg-4">
                 <form class="mb-5" action="">
-                    <div class="input-group">
-                        <input type="text" class="form-control p-4" placeholder="Coupon Code">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary">Apply Coupon</button>
-                        </div>
+                    <div class="d-flex">
+                        <input type="text" class="form-control col-lg-8" placeholder="Enter Voucher Code">
+                        <button class="btn btn-block btn-danger font-weight-semi-bold text-white col-lg-4">Apply</button>
                     </div>
                 </form>
                 <div class="card border-secondary mb-5">
-                    <div class="card-header bg-secondary border-0">
-                        <h4 class="font-weight-semi-bold m-0">Cart Summary</h4>
+                    <div class="card-header bg-transparent border-0">
+                        <h6 class="font-weight-semi-bold m-0">Cart Summary</h6>
                     </div>
-                    <div class="card-body">
+                    <div class="card-body border-0">
                         <div class="d-flex justify-content-between mb-3 pt-1">
-                            <h6 class="font-weight-medium">Subtotal</h6>
-                            <h6 class="font-weight-medium" id="subTotalPrice"></h6>
+                            <h6 class="font-weight-light">Subtotal</h6>
+                            <h6 class="font-weight-light" id="subTotalPrice">$0</h6>
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <h6 class="font-weight-medium">Shipping</h6>
-                            {{-- @if ($ProductFlatRate[0] === 1)
-                            <h6 class="font-weight-medium">Free Shipping</h6>
-                            @else
-                            <h6 class="font-weight-medium" id="shipping_charge">{{$ProductFlatRate[0]}}</h6>
-                            @endif --}}
+                            <h6 class="font-weight-light">Shipping</h6>
                         </div>
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">Total</h5>
-                            <h5 class="font-weight-bold">$160</h5>
+                            <h6 class="font-weight-semi-bold">Total</h6>
+                            <h6 class="font-weight-semi-bold text-danger">$160</h6>
                         </div>
-                        <button class="btn btn-block btn-primary my-3 py-3">Proceed To Checkout</button>
+                        <button class="btn btn-block btn-warning font-weight-semi-bold text-white"
+                            style="text-transform: uppercase">Proceed To Checkout</button>
                     </div>
                 </div>
             </div>
@@ -118,7 +112,7 @@
                 var quantity = parseInt(productRow.find(".qty").val());
                 var pricePerItem = parseFloat(productRow.find(".align-middle:eq(1)").text().replace("$", ""));
                 var ProductPricePerIncrement = quantity * pricePerItem;
-                productRow.find(".price").text('$' + ProductPricePerIncrement.toFixed(2));
+                productRow.find(".price").text('$' + ProductPricePerIncrement);
 
                 //SubtotalPrice function
                 updateSubtotal();
@@ -137,7 +131,7 @@
                     let totalPrice = quantity * pricePerItem;
                     subtotal += totalPrice;
                 });
-                $("#subTotalPrice").text("$" + subtotal.toFixed(2));
+                $("#subTotalPrice").text("$" + subtotal);
 
             }
             // TotalPrice with shipping charge

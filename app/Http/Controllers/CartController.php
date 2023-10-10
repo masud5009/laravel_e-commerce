@@ -34,7 +34,7 @@ class CartController extends Controller
                 ];
                 session()->put('cart', $cart);
                 session()->flash('success', 'Product added your cart');
-                return redirect()->back();
+                return redirect()->route('view.cart');
             }
         } else {
             session()->flash('error', 'At first login your account');

@@ -97,7 +97,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="px-2">
                                 <a href="{{ route('product.details', $todaysDealProduct->slug) }}"
                                     class="text-decoration-none p-0">
@@ -147,7 +147,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-body p-0">
                             <div class="px-2">
                                 <a href="{{ route('product.details', $trendyProduct->slug) }}"
                                     class="text-decoration-none p-0">
@@ -208,7 +208,7 @@
             @forelse ($categoriesWithImage as $category)
                 <div class="col-lg-2 col-md-2 col-sm-4 col-6 p-0 m-0" style="height: 250px">
                     <div class="card" style="height: 100%">
-                        <div class="card-body overflow-hidden">
+                        <div class="card-body overflow-hidden p-0">
                             <a href="{{ route('category.product', $category->slug) }}"
                                 class="cat-img position-relative overflow-hidden mb-3">
                                 <img class="img-fluid" src="{{ asset($category->cover_img) }}" alt=""
@@ -246,7 +246,7 @@
                                 </a>
                             </div>
                         </div>
-                        <div class="card-body product-body border-0">
+                        <div class="card-body product-body border-0 p-0">
                             <div class="px-2">
                                 <a href="{{ route('product.details', $justProduct->slug) }}"
                                     class="text-decoration-none p-0">
