@@ -146,6 +146,8 @@
     <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
     <!-- Toaster alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+
+
     <!-- Product display by search -->
     <script>
         $(document).ready(function() {

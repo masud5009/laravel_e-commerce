@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Session;
 class CartController extends Controller
 {
 
+    /**
+     * Store product on cart page using session
+     */
     public function addCartQuickView(Request $req)
     {
         if (Auth::check()) {
@@ -27,18 +30,35 @@ class CartController extends Controller
                     'qty' => $req->quantity,
                     'price' => $req->price,
                     'shipping_charge' => 50,
+                    'image' => $req->image,
                 ];
                 session()->put('cart', $cart);
-                return response()->json('success', 'Product add your cart');
+                session()->flash('success', 'Product added your cart');
+                return redirect()->back();
             }
         } else {
             session()->flash('error', 'At first login your account');
             return redirect()->back();
         }
     }
+    /**
+     * Remove product on cart page using session
+     */
+    public function removeCartItem($productId)
+    {
+        $cart = session()->get('cart', []);
 
-    // public function
+        if (isset($cart[$productId])) {
+            unset($cart[$productId]);
+            session()->put('cart', $cart);
+            session()->flash('success', 'Product removed from your cart');
+        }
 
+        return redirect()->back();
+    }
+    /**
+     * Display Cart page
+     */
     public function viewcart()
     {
         return view('frontend.page.cart');

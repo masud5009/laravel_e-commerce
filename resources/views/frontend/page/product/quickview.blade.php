@@ -1,4 +1,4 @@
-<form action="{{ route('add.cart.quickview') }}" method="post" id="add-cart-form">
+<form action="{{ route('add.cart.item') }}" method="post" id="add-cart-form">
     @csrf
     @php
 
@@ -167,19 +167,21 @@
             }
         });
 
-        $('body').on('submit', '#add-cart-form', function(e) {
-            e.preventDefault();
-            var url = $(this).attr('action');
-            var request = $(this).serialize();
-            $.ajax({
-                url: url,
-                type: "post",
-                data: request,
-                success: function(response) {
-                    $('#add-cart-form')[0].reset();
-                    $('.modal').modal('hide');
-                }
-            });
-        });
+        // $('body').on('submit', '#add-cart-form', function(e) {
+        //     e.preventDefault();
+        //     var url = $(this).attr('action');
+        //     var request = $(this).serialize();
+        //     $.ajax({
+        //         url: url,
+        //         type: "post",
+        //         data: request,
+        //         success: function(response) {
+        //             $('#add-cart-form')[0].reset();
+        //             $('.modal').modal('hide');
+        //             location.reload(true)
+        //             // $('#data').load(location.href + ' #data');
+        //         }
+        //     });
+        // });
     });
 </script>

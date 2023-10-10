@@ -4,7 +4,6 @@
         integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8=" crossorigin="anonymous"></script>
 @endpush
 @section('content')
-    @include('frontend.page.navbar')
 
     <!-- Cart Start -->
     <div class="container-fluid pt-5">
@@ -29,8 +28,8 @@
                             @foreach ($cart as $key => $product)
                                 <tr data-product-id="{{ $key }}">
                                     <td class="align-middle">
-                                        {{-- <img src="{{ $product['image'] }}" alt="" style="width: 50px;"> --}}
-                                        {{ $product['name'] }}
+                                        <img src="{{ asset($product['image']) }}" alt="" style="width: 50px;">
+                                        {{ Str::limit($product['name'], 40) }}
                                     </td>
                                     <td class="align-middle">${{ $product['price'] }}</td>
                                     <td class="align-middle">
@@ -55,9 +54,9 @@
                                         <span class="price"></span>
                                     </td>
                                     <td class="align-middle">
-                                        <button class="btn btn-sm btn-primary removeProduct">
+                                        <a href="{{ route('remove.cart.item',$product['id'])}}" class="btn btn-sm btn-primary removeProduct">
                                             <i class="fa fa-times"></i>
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
                             @endforeach

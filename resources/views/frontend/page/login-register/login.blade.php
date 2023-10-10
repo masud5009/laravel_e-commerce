@@ -3,12 +3,11 @@
     Create New Customer Account
 @endsection
 @section('content')
-@include('frontend.page.navbar')
     <div class="container">
         <div class="d-flex justify-content-center align-items-center py-5">
             <div class="col-lg-10">
                 <h4>Welcome to Daraz! Please login.</h4>
-                <div class="card">
+                <div class="card p-4">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6">

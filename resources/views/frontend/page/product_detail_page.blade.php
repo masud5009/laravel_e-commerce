@@ -13,12 +13,12 @@
             color: #ffc107 !important;
         }
     </style>
+    <!-- sweetalert -->
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 @endpush
 @section('content')
-    @include('frontend.page.navbar')
-
     <!-- Product Details -->
-    <form action="{{ route('add.cart.quickview') }}" method="post" id="add-cart-form">
+    <form action="{{ route('add.cart.item') }}" method="post" id="add-cart-form">
         @csrf
         @php
             $unit_price = $product->unit_price;
@@ -30,6 +30,7 @@
         <input type="hidden" name="id" value="{{ $product->id }}">
         <input type="hidden" name="name" value="{{ $product->name }}">
         <input type="hidden" name="price" value="{{ $price }}">
+        <input type="file" name="image" value="{{ $product->thumbnail }}">
         <div class="container-fluid py-5">
             <div class="row px-xl-5">
                 <div class="col-lg-5 pb-5">
@@ -84,7 +85,6 @@
                                     <span class="fas fa-star checked"></span>
                                     <span class="fas fa-star checked"></span>
                                     <span class="fas fa-star checked"></span>
-                                    {{-- <small class="fas fa-star-half-alt"></small> --}}
                                     <span class="fas fa-star checked"></span>
                                     <span class="fas fa-star checked"></span>
                                 </div>
@@ -355,7 +355,8 @@
                                         <img src="img/user.jpg" alt="Image" class="img-fluid mr-3 mt-1"
                                             style="width: 45px;">
                                         <div class="media-body">
-                                            <h6>{{ $review->user->name }}<small> - <i>01 {{ $review->review_month }}
+                                            <h6>{{ $review->user->name }}<small> - <i>01
+                                                        {{ $review->review_month }}
                                                         {{ $review->review_year }}</i></small></h6>
                                             <div class="text-warning mb-2">
                                                 @if ($review->rating == 1)
@@ -470,6 +471,8 @@
     <!-- Related Products End -->
 @endsection
 @push('script')
+    <!-- Sweetalert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
         $(document).ready(function() {
             function updatePrice() {
@@ -497,24 +500,27 @@
                 }
             });
 
-            $('body').on('submit', '#add-cart-form', function(e) {
-                e.preventDefault();
-                var url = $(this).attr('action');
-                var request = $(this).serialize();
-                $.ajax({
-                    url: url,
-                    type: "post",
-                    data: request,
-                    success: function(response) {
-                        $('#add-cart-form')[0].reset();
-                        $('.modal').modal('hide');
-                    }
-                });
-            });
+            // $('body').on('submit', '#add-cart-form', function(e) {
+            //     e.preventDefault();
+            //     var url = $(this).attr('action');
+            //     var request = $(this).serialize();
+            //     $.ajax({
+            //         url: url,
+            //         type: "post",
+            //         data: request,
+            //         success: function(response) {
+            //              $('#add-cart-form')[0].reset();
+            //             // if (response) {
+            //             //     Swal.fire("Success", response.success, "success");
+            //             // }
+            //             //  $('#data').load(location.href + ' #data');
+            //         }
+            //     });
+            // });
         });
     </script>
+    <!-- Product Rating -->
     <script>
-        // JavaScript (script.js)
         document.addEventListener("DOMContentLoaded", function() {
             const starIcons = document.querySelectorAll(".star-rating i");
             const ratingInput = document.querySelector("#rating-input");
