@@ -48,8 +48,6 @@ class CartController extends Controller
                 ];
                 session(['cart' => $cart]);
                 session(['cart_expires_at' => now()->addSeconds(1)]);
-                // session()->put('cart_expires_at', Date::now()->addMinutes(30));
-                // session(['cart_expires_at' => now()->addMinutes(30)]);
                 session()->flash('success', 'Product added your cart');
                 return redirect()->route('view.cart');
             }
@@ -78,12 +76,28 @@ class CartController extends Controller
      */
     public function viewcart()
     {
-        return view('frontend.page.cart');
+        $cart = session('cart');
+        return view('frontend.page.cart', compact('cart'));
     }
 
     public function cartInfo($id)
     {
         $product = Product::where('id', $id)->first();
         return view('frontend.page.product.quickview', compact('product'));
+    }
+
+    public function updateQuantity(Request $request, $id)
+    {
+        $newQuantity = $request->quantity;
+
+        $cart = session()->get('cart', []);
+
+        if (isset($cart[$id])) {
+            $cart[$id]['qty'] = $newQuantity;
+            session(['cart' => $cart]);
+            return response()->json('Quantity updated successfully');
+        } else {
+            return response()->json('Product not found in cart', 404);
+        }
     }
 }

@@ -47,7 +47,8 @@ Route::prefix('/')->group(function () {
         //Cart view
         Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
         //store cart item
-        Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.item');
+        Route::post('add-to-cart', [CartController::class, 'addCartQuickView'])->name('add.cart.item');
+        Route::post('updateQuantity/{id}', [CartController::class, 'updateQuantity'])->name('update.quantity');
         //remove cart item
         Route::get('remove-cart-item/{productId}', [CartController::class, 'removeCartItem'])->name('remove.cart.item');
         //checkout page show

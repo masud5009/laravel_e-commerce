@@ -10,19 +10,23 @@
             <div class="col-lg-8 table-responsive mb-5">
                 <div class="card">
                     <div class="card-header bg-transparent">Order Information</div>
-                    @php
+                    {{-- @php
                         $cart = (array) session('cart');
                     @endphp
+                    @if ($cart) --}}
                     @if ($cart)
                         @foreach ($cart as $key => $product)
-                            <div id="card-product" class="card-body p-0 py-3 px-3" data-product-id="{{ $key }}">
+                            <div id="card-product" class="card-body p-0 py-3 px-3">
+
                                 <div class="row align-items-center">
                                     <div class="product-name-image col-lg-6">
                                         <img src="{{ asset($product['image']) }}" alt="" style="width: 80px;">
+
                                         {{ Str::limit($product['name'], 30) }}
+
                                     </div>
-                                    <div class="product-qunatiy col-lg-3">
-                                        <p>Quantity : {{ $product['qty'] }}</p>
+                                    <div class="product-quantity col-lg-3">
+                                        Quantity:<p>{{ $product['qty'] }}</p>
                                     </div>
                                     <div class="product_price col-lg-3 d-flex justify-content-between align-items-center">
                                         <p class="text-danger">${{ $product['price'] }}</p>
@@ -32,6 +36,7 @@
                                         </a>
                                     </div>
                                 </div>
+
                             </div>
                         @endforeach
                     @endif
@@ -80,8 +85,10 @@
             function calculateSubtotal() {
                 let subtotal = 0;
                 $('.product_price').each(function() {
+                    let quantity = parseInt($('.product-quantity').find('p').text());
                     let price = parseInt($(this).find('p').text().replace('$', ''));
-                    subtotal += price;
+                    var productSubtotal = quantity * price;
+                    subtotal += productSubtotal;
                 });
 
                 let subtotalPrice = $('#subtotalPrice').text('$' + subtotal);
