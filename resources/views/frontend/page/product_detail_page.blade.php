@@ -28,9 +28,6 @@
             $price = number_format(round($price_real, 0, PHP_ROUND_HALF_DOWN), 2);
         @endphp
         <input type="hidden" name="id" value="{{ $product->id }}">
-        <input type="hidden" name="name" value="{{ $product->name }}">
-        <input type="hidden" name="price" value="{{ $price }}">
-        <input type="file" name="image" value="{{ $product->thumbnail }}">
         <div class="container-fluid py-5">
             <div class="row px-xl-5">
                 <div class="col-lg-5 pb-5">

@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Admin\Product;
+use App\Models\Cart;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
@@ -18,21 +20,36 @@ class CartController extends Controller
     {
         if (Auth::check()) {
             $product = Product::find($req->id);
+
+            $unit_price = $product->unit_price;
+            $discount_value = number_format($product->discount_price);
+            $discountPrecente = $unit_price * ($discount_value / 100);
+            $price_real = $unit_price - $discountPrecente;
+            $price = round($price_real, 0, PHP_ROUND_HALF_DOWN);
+
+
             $cart = session()->get('cart', []);
 
 
             if (isset($cart[$req->id])) {
                 $cart[$req->id]['qty']++;
+                session(['cart' => $cart]);
+                session()->flash('success', 'Product added your cart');
+                return redirect()->route('view.cart');
             } else {
                 $cart[$req->id] = [
-                    'id' => $req->id,
+                    'id' => $product->id,
                     'name' => $product->name,
                     'qty' => $req->quantity,
-                    'price' => $req->price,
-                    'shipping_charge' => 50,
-                    'image' => $req->image,
+                    'price' => $price,
+                    'unit_price' => $unit_price,
+                    'discount' => $discount_value,
+                    'image' => $product->thumbnail,
                 ];
-                session()->put('cart', $cart);
+                session(['cart' => $cart]);
+                session(['cart_expires_at' => now()->addSeconds(1)]);
+                // session()->put('cart_expires_at', Date::now()->addMinutes(30));
+                // session(['cart_expires_at' => now()->addMinutes(30)]);
                 session()->flash('success', 'Product added your cart');
                 return redirect()->route('view.cart');
             }

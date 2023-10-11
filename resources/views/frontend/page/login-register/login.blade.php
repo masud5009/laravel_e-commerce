@@ -1,6 +1,6 @@
 @extends('frontend.layouts.app')
 @section('title')
-    Create New Customer Account
+    Login Your Account
 @endsection
 @section('content')
     <div class="container">

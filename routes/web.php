@@ -19,8 +19,8 @@ use App\Http\Controllers\Admin\{
     SubcategoryController,
     WarhouseCotroller
 };
-use App\Http\Controllers\Auth\LoginController as AuthLoginController;
 use App\Http\Controllers\Frontend\{
+    CheckoutController,
     IndexpageController,
     ReviewController,
     ShopController
@@ -39,17 +39,19 @@ use Illuminate\Support\Facades\Route;
 Route::prefix('/')->group(function () {
     Route::get('', [IndexpageController::class, 'index'])->name('website.home');
     Route::get('details/{slug}', [IndexpageController::class, 'details'])->name('product.details');
-    Route::middleware('customer','verified')->group(function () {
+    Route::middleware('customer', 'verified')->group(function () {
         // Product Review
         Route::post('review/product', [ReviewController::class, 'store'])->name('store.review');
         //customer profile page route
         Route::get('profile', [LoginController::class, 'customerProfile'])->name('customer.profile');
-                //Cart view
-                Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
+        //Cart view
+        Route::get('cart', [CartController::class, 'viewcart'])->name('view.cart');
         //store cart item
         Route::post('add-to-cart-quick-view', [CartController::class, 'addCartQuickView'])->name('add.cart.item');
         //remove cart item
         Route::get('remove-cart-item/{productId}', [CartController::class, 'removeCartItem'])->name('remove.cart.item');
+        //checkout page show
+        Route::get('checkout', [CheckoutController::class, 'checkout'])->name('product.checkout');
     });
     //Add To Cart
     Route::get('quick-view/{id}', [CartController::class, 'cartInfo'])->name('cart.info');
@@ -60,8 +62,7 @@ Route::prefix('/')->group(function () {
     //Category wise Product display
     Route::get('shop/{category}', [ShopController::class, 'categoryProduct'])->name('category.product');
     //Search Product
-    Route::get('/products/search',[IndexpageController::class,'productSearch'])->name('products.search');
-
+    Route::get('/products/search', [IndexpageController::class, 'productSearch'])->name('products.search');
 });
 
 /**
