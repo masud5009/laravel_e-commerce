@@ -26,22 +26,22 @@
     <!-- Icons. Uncomment required icon fonts -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/theme-default.css"
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/theme-default.css"
         class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/demo.css" />
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/my.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/demo.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/my.css" />
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
  <!--Toaster alert-->
  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/lib/apex-charts/apex-charts.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/apex-charts/apex-charts.css" />
 
     <!-- Page CSS -->
     @stack('css')
     <!-- Helpers -->
-    <script src="{{ asset('asset/admin') }}/js/helpers.js"></script>
-    <script src="{{ asset('asset/admin') }}/js/config.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/helpers.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/config.js"></script>
 </head>
 
 <body>
@@ -80,19 +80,19 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('asset/admin') }}/lib/jquery/jquery.js"></script>
-    <script src="{{ asset('asset/admin') }}/lib/popper/popper.js"></script>
-    <script src="{{ asset('asset/admin') }}/js/bootstrap.js"></script>
-    <script src="{{ asset('asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
-    <script src="{{ asset('asset/admin') }}/js/menu.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/jquery/jquery.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/popper/popper.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/bootstrap.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/menu.js"></script>
     <!-- endbuild -->
     <!-- toaster cdn js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Vendors JS -->
-    <script src="{{ asset('asset/admin') }}/lib/apex-charts/apexcharts.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/apex-charts/apexcharts.js"></script>
 
     <!-- Main JS -->
-    <script src="{{ asset('asset/admin') }}/js/main.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/main.js"></script>
     <!-- Toaster alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <!-- Page JS -->

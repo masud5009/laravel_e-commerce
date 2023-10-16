@@ -47,7 +47,6 @@ class CartController extends Controller
                     'image' => $product->thumbnail,
                 ];
                 session(['cart' => $cart]);
-                session(['cart_expires_at' => now()->addSeconds(1)]);
                 session()->flash('success', 'Product added your cart');
                 return redirect()->route('view.cart');
             }

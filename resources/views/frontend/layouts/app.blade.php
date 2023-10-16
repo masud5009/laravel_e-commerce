@@ -24,7 +24,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
     <!--Toaster alert-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-    <link rel="stylesheet" href="{{ asset('asset/admin/css/my.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/asset/admin/css/my.css') }}">
 
     <!-- Customized Bootstrap Stylesheet -->
     <style>
@@ -41,7 +41,7 @@
             display: none;
         }
     </style>
-    <link href="{{ asset('asset/frontend/css/style.css') }}" rel="stylesheet">
+    <link href="{{ asset('public/asset/frontend/css/style.css') }}" rel="stylesheet">
     @stack('css')
 
 </head>
@@ -62,15 +62,15 @@
             <div class="col-lg-6 text-center text-lg-right">
                 <div class="d-inline-flex align-items-center">
                     <a class="text-dark px-2"
-                        href="@if ($generalSetting) {{ $generalSetting->facebook }} @endif">
+                        href="">
                         <i class="fab fa-facebook-f"></i>
                     </a>
                     <a class="text-dark px-2"
-                        href="@if ($generalSetting) {{ $generalSetting->linkedin }} @endif">
+                        href="">
                         <i class="fab fa-linkedin-in"></i>
                     </a>
                     <a class="text-dark px-2"
-                        href="@if ($generalSetting) {{ $generalSetting->instagram }} @endif">
+                        href="">
                         <i class="fab fa-instagram"></i>
                     </a>
                 </div>
@@ -143,7 +143,7 @@
     <script src="jquery.min.js"></script>
     <script src="owlcarousel/owl.carousel.min.js"></script>
     <!-- Template Javascript -->
-    <script src="{{ asset('asset/frontend/js/main.js') }}"></script>
+    <script src="{{ asset('public/asset/frontend/js/main.js') }}"></script>
     <!-- Toaster alert -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
 

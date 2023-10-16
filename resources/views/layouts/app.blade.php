@@ -24,19 +24,19 @@
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Core CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/core.css" class="template-customizer-core-css" />
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/theme-default.css"
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/core.css" class="template-customizer-core-css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/theme-default.css"
         class="template-customizer-theme-css" />
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/demo.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/demo.css" />
 
     <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
 
     <!-- Page CSS -->
-    <link rel="stylesheet" href="{{ asset('asset/admin') }}/css/page-auth.css" />
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/page-auth.css" />
     <!-- Helpers -->
-    <script src="{{ asset('asset/admin') }}/js/helpers.js"></script>
-    <script src="{{ asset('asset/admin') }}/js/config.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/helpers.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/config.js"></script>
 </head>
 
 <body>
@@ -47,18 +47,18 @@
     <!-- / Content -->
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('asset/admin') }}/lib/jquery/jquery.js"></script>
-    <script src="{{ asset('asset/admin') }}/lib/popper/popper.js"></script>
-    <script src="{{ asset('asset/admin') }}/js/bootstrap.js"></script>
-    <script src="{{ asset('asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/jquery/jquery.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/popper/popper.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/bootstrap.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-    <script src="{{ asset('asset/admin') }}/js/menu.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/menu.js"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
 
     <!-- Main JS -->
-    <script src="{{ asset('asset/admin') }}/js/main.js"></script>
+    <script src="{{ asset('public/asset/admin') }}/js/main.js"></script>
 </body>
 
 </html>

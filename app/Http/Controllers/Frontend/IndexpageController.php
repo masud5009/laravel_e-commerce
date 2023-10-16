@@ -16,18 +16,26 @@ class IndexpageController extends Controller
      */
     public function index()
     {
-        $categoriesWithImage = Category::take(6)->get();
+        $categoriesWithImage = Category::select('slug', 'name', 'cover_img')
+            ->take(6)->get();
+
         $trendyProducts = Product::where('active_status', 1)
+        ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
             ->where('trandy', 1)
             ->orderBy('created_at', 'desc')
             ->paginate(12);
+
         $justProducts = Product::where('active_status', 1)
+            ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
             ->orderBy('created_at', 'desc')
             ->inRandomOrder()
             ->paginate(12);
-        $generalSetting = GeneralSetting::find(1);
-        $todaysDealProducts = Product::where('todays_deal', 1)->take(5)->get();
-        return view('frontend.index', compact('categoriesWithImage', 'trendyProducts', 'generalSetting', 'justProducts', 'todaysDealProducts'));
+
+        // $generalSetting = GeneralSetting::find(1);
+        $todaysDealProducts = Product::where('todays_deal', 1)
+        ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
+        ->take(5)->get();
+        return view('frontend.index', compact('categoriesWithImage', 'trendyProducts', 'justProducts', 'todaysDealProducts'));
     }
 
     /**

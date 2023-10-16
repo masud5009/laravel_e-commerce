@@ -15,6 +15,10 @@ return new class extends Migration
             $table->bigIncrements('id');
             $table->integer('role')->default(0);
             $table->string('name');
+            $table->string('user_image')->nullable();
+            $table->string('provider',20)->nullable();
+            $table->string('provider_id')->nullable();
+            $table->string('access_token')->nullable();
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
