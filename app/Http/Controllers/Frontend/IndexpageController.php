@@ -48,8 +48,11 @@ class IndexpageController extends Controller
     {
         $product = $request->input('product');
 
-        $products = Product::where('active_status', 1)->where('name', 'LIKE', '%' . $product . '%')
+        $products = Product::where('active_status', 1)
+            ->where('name', 'LIKE', '%' . $product . '%')
+            ->orWhere('slug', 'LIKE', '%' . $product . '%')
             ->get();
+
 
         return view('frontend.page.seach_product', compact('products'));
     }
