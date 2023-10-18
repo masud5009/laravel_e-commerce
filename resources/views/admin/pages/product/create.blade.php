@@ -34,6 +34,31 @@
                                     name="name" placeholder="Product Name">
                             </div>
                             <div class="form-group mb-2">
+                                <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
+                                        *</span></label>
+                                <select class="form-select" name="category_id">
+                                    <option selected disabled>Select Category</option>
+                                    @foreach ($categories as $category)
+                                        <option class="text-danger" value="{{ $category->id }}">---{{ $category->name }}
+                                        </option>
+                                        @if ($category->subcategory->count() > 0)
+                                            @foreach ($category->subcategory as $subcategory)
+                                                <option class="text-primary" value="{{ $subcategory->id }}">
+                                                    -----{{ $subcategory->name }}
+                                                </option>
+                                                @if ($subcategory->childcategory->count() > 0)
+                                                    @foreach ($subcategory->childcategory as $childcategory)
+                                                        <option class="text-success" value="{{ $childcategory->id }}">
+                                                            -------{{ $childcategory->name }}
+                                                        </option>
+                                                    @endforeach
+                                                @endif
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="form-group mb-2">
                                 <label for="brand" class="form-label">Brand</label>
                                 <div class="input-group">
                                     <label class="input-group-text">Brand</label>
@@ -223,37 +248,6 @@
                 </div>
 
                 <div class="col-lg-4">
-                    <!-- Product category -->
-                    <div class="card mb-3">
-                        <div class="card-header">
-                            <h5 class="card-title p-0">Product category</h5>
-                            <hr>
-                        </div>
-                        <div class="card-body">
-                            <div class="form-group mb-2">
-                                <label for="category" class="form-label">Select Category<span class="text-danger fs-6">
-                                        *</span></label>
-                                <select class="form-select" name="category_id">
-                                    <option selected disabled>Select Category</option>
-                                    @foreach ($categories as $category)
-                                        <option value="{{ $category->id }}">{{ $category->name }} </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="subcategory" class="form-label">Select Sub-category</label>
-                                <select class="form-select" name="subcategory_id">
-                                    <option selected disabled>Select Subcategory</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-2">
-                                <label for="category" class="form-label">Select Child-category</label>
-                                <select class="form-select" name="childcategory_id">
-                                    <option selected disabled>Select Childcategory</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
                     <!-- Product Active status -->
                     <div class="card mb-3">
                         <div class="card-header">
