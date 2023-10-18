@@ -11,17 +11,24 @@ class Category extends Model
     protected $fillable = [
         'name',
         'banner',
+        'parent_id',
         'icon',
         'cover_img',
         'description',
         'created_at'
     ];
 
+    public function parent()
+    {
+        return $this->belongsTo(Category::class, 'parent_id');
+    }
+
     public function subcategory()
     {
-        return $this->hasMany(Subcategory::class);
+        return $this->hasMany(Category::class, 'parent_id');
     }
-    public function childcategory(){
-        return $this->hasMany(childcategory::class);
+    public function childcategory()
+    {
+        return $this->hasMany(Category::class, 'parent_id');
     }
 }

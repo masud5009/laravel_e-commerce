@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('user_id');
             $table->unsignedBigInteger('category_id');
-            $table->unsignedBigInteger('subcategory_id')->nullable();
-            $table->unsignedBigInteger('childcategory_id')->nullable();
+            // $table->unsignedBigInteger('subcategory_id')->nullable();
+            // $table->unsignedBigInteger('childcategory_id')->nullable();
             $table->string('name');
             $table->string('slug');
             $table->string('brand')->nullable();
@@ -47,8 +47,8 @@ return new class extends Migration
             $table->json('images')->nullable();
             $table->string('thumbnail')->nullable();
             $table->foreign('category_id')->references('id')->on('categories')->onDelete('cascade');
-            $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
-            $table->foreign('childcategory_id')->references('id')->on('child_categories')->onDelete('cascade');
+            // $table->foreign('subcategory_id')->references('id')->on('subcategories')->onDelete('cascade');
+            // $table->foreign('childcategory_id')->references('id')->on('child_categories')->onDelete('cascade');
             $table->timestamps();
         });
     }

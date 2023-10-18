@@ -78,16 +78,6 @@
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('sub-category.index') }}" class="menu-link">
-                        <div data-i18n="Without menu">Sub Category</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('child-category.index') }}" class="menu-link">
-                        <div data-i18n="Without menu">Child Category</div>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="{{ route('color.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Colors</div>
                     </a>
@@ -162,18 +152,8 @@
 
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{ route('generalsetting.index') }}" class="menu-link">
-                        <div data-i18n="Without menu">General Settings</div>
-                    </a>
-                </li>
-                <li class="menu-item">
                     <a href="{{ route('seo.index') }}" class="menu-link">
                         <div data-i18n="Without menu">SEO Setting</div>
-                    </a>
-                </li>
-                <li class="menu-item">
-                    <a href="{{ route('sub-category.index') }}" class="menu-link">
-                        <div data-i18n="Without menu">Website Setting</div>
                     </a>
                 </li>
                 <li class="menu-item">

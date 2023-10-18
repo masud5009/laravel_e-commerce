@@ -24,7 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
 
-        $categories = Category::all();
+        $categories = Category::where('parent_id', null)->get();
         view()->share('categories', $categories);
 
         // $ProductFlatRate = Product::pluck('flat_rate','free_shipping_status')->toArray();

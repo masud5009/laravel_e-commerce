@@ -19,11 +19,17 @@ class CategoryController extends Controller
         $categories = Category::orderBy('created_at', 'DESC')->paginate(10);
         return view('admin.pages.category.index', compact('categories'));
     }
+    public function create()
+    {
+        $categories = Category::where('parent_id', null)->get();
+        return view('admin.pages.category.create', compact('categories'));
+    }
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+
         $this->validate($request, [
             'name' => 'required|string',
             'banner' => 'nullable|image|mimes:jpeg,png,webp,jpg,gif|max:2048',
@@ -32,71 +38,43 @@ class CategoryController extends Controller
             'description' => 'nullable|string',
         ]);
 
-        if ($request->category_id) {
-            $category = Category::find($request->category_id);
+        $category = new Category();
+        $category->name = $request->name;
+        $category->slug =  Str::slug($request->name, '_');
+        $category->description =  $request->description;
+        $category->parent_id = $request->parent_id;
 
-            if (!$category) {
-                abort(404);
-            } else {
-                $category->update([
-                    'name' => $request->name,
-                    'slug' => Str::slug($request->name, '_'),
-                    'description' => $request->description,
-                ]);
-                //unlink the old path of image and upate new image
-                $uploadFields = ['banner', 'icon', 'cover_img'];
-                $basePath = 'storage/images/category_img/';
-                foreach ($uploadFields as $field) {
+        $uploadFields = ['banner', 'icon', 'cover_img'];
+        $basePath = 'public/storage/images/category_img/';
 
-                    if ($request->hasFile($field)) {
-                        $currentPath = $basePath . $category->$field;
-                        if (file_exists($currentPath) && is_file($currentPath)) {
-                            unlink($currentPath);
-                        }
-
-                        $file = $request->file($field);
-                        $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                        $file->move($basePath, $filename);
-                        $category->$field = $basePath . $filename;
-                    }
-                }
-                $category->update();
-                return redirect()->back();
+        foreach ($uploadFields as $field) {
+            if ($request->hasFile($field)) {
+                $file = $request->file($field);
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($basePath, $filename);
+                $category->$field = $basePath . $filename;
             }
-        } else {
-            $category = new Category();
-            $category->name = $request->name;
-            $category->slug =  Str::slug($request->name, '_');
-            $category->description =  $request->description;
-
-            $uploadFields = ['banner', 'icon', 'cover_img'];
-            $basePath = 'storage/images/category_img/';
-
-            foreach ($uploadFields as $field) {
-                if ($request->hasFile($field)) {
-                    $file = $request->file($field);
-                    $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
-                    $file->move($basePath, $filename);
-                    $category->$field = $basePath . $filename;
-                }
-            }
-            $category->save();
-            return response()->json(['success' => 'Category create success']);
         }
+        $category->save();
+        session()->flash('success', 'Category create success');
+        return redirect()->back();
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit($id)
     {
         $category = Category::find($id);
         if (!$category) {
             abort(404);
+        } else {
+            return view('admin.pages.category.edit', compact('category'));
         }
-        return $category;
     }
-
+    public function update($id)
+    {
+    }
 
     /**
      * Remove the specified resource from storage.

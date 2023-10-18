@@ -5,7 +5,7 @@
                 <nav style="height: 95%; border-radius: 10px;box-shadow:0px 0px 1px 0px black"
                     class="navbar navbar-vertical navbar-light align-items-start bg-light sidebar">
                     <ul class="navbar-nav w-100">
-                        @foreach ($categories as $category)
+                        {{-- @foreach ($categories as $category)
                             @php
                                 $subcategories = App\Models\Admin\Subcategory::where('category_id', $category->id)->get();
                             @endphp
@@ -46,7 +46,7 @@
                                     </ul>
                                 </div>
                             </li>
-                        @endforeach
+                        @endforeach --}}
                     </ul>
                 </nav>
 

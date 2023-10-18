@@ -16,14 +16,14 @@
                                 <div class="nav-item dropdown">
                                     <a href="#" class="nav-link" data-toggle="dropdown">{{ $category->name }} <i
                                             class="fa fa-angle-down float-right mt-1"></i></a>
-                                    @if ($category->subcategory->count() > 0)
+                                    {{-- @if ($category->subcategory->count() > 0)
                                         @foreach ($category->subcategory as $subcategory)
                                             <div
                                                 class="dropdown-menu position-absolute bg-secondary border-0 rounded-0 w-100 m-0">
                                                 <a href="" class="dropdown-item">{{ $subcategory->name }}</a>
                                             </div>
                                         @endforeach
-                                    @endif
+                                    @endif --}}
 
                                 </div>
                             @endforeach

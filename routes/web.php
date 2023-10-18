@@ -6,17 +6,14 @@ use App\Http\Controllers\Admin\{
     AttributeValueController,
     BrandController,
     CategoryController,
-    ChilCategoryController,
     ColorController,
     CouponController,
-    GeneralSettingController,
     PageController,
     ProductAllStatusUpdate,
     ProductController,
     ProfileController,
     SeoController,
     SmtpController,
-    SubcategoryController,
     WarhouseCotroller
 };
 use App\Http\Controllers\Frontend\{
@@ -75,12 +72,6 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::resource('category', CategoryController::class);
     Route::get('pagination/paginate-data', [CategoryController::class, 'pagination']);
     Route::get('category/search', [CategoryController::class, 'search'])->name('category.search');
-
-    Route::resource('sub-category', SubcategoryController::class);
-    //childcategory route
-    Route::resource('child-category', ChilCategoryController::class);
-    Route::get('selected/subcategory/onchildcategory/{id}', [ChilCategoryController::class, 'getSelectedSubcategory'])->name('childcategory.selected.subcategory');
-
     Route::resource('brand', BrandController::class);
     Route::resource('page', PageController::class);
     /**
@@ -146,10 +137,6 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     //Profile Routes
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');
-
-    //General setting route
-    Route::get('general-setting', [GeneralSettingController::class, 'index'])->name('generalsetting.index');
-    Route::post('general-setting', [GeneralSettingController::class, 'store'])->name('generalsetting.store');
 });
 
 Auth::routes();
