@@ -176,8 +176,8 @@ class ProductController extends Controller
         if ($request->hasFile('thumbnail')) {
             $thumbnail_file = $request->file('thumbnail');
             $thumbnail_filename = time() . '_' . uniqid() . '.' . $thumbnail_file->getClientOriginalExtension();
-            $thumbnail_file->move('storage/images/product/thumbnail', $thumbnail_filename);
-            $product->thumbnail = 'storage/images/product/thumbnail/' . $thumbnail_filename;
+            $thumbnail_file->move('public/storage/images/product/thumbnail', $thumbnail_filename);
+            $product->thumbnail = 'public/storage/images/product/thumbnail/' . $thumbnail_filename;
         }
 
         // Multiple product images
@@ -185,8 +185,8 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $productImagesExtension = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move('storage/images/product/images', $productImagesExtension);
-                $imagesArray[] = 'storage/images/product/images/' . $productImagesExtension;
+                $image->move('public/storage/images/product/images', $productImagesExtension);
+                $imagesArray[] = 'public/storage/images/product/images/' . $productImagesExtension;
             }
         }
 
@@ -274,8 +274,8 @@ class ProductController extends Controller
 
             $thumbnail_file = $request->file('thumbnail');
             $thumbnail_filename = time() . '_' . uniqid() . '.' . $thumbnail_file->getClientOriginalExtension();
-            $thumbnail_file->move('storage/images/product/thumbnail', $thumbnail_filename);
-            $product->thumbnail = 'storage/images/product/thumbnail/' . $thumbnail_filename;
+            $thumbnail_file->move('public/storage/images/product/thumbnail', $thumbnail_filename);
+            $product->thumbnail = 'public/storage/images/product/thumbnail/' . $thumbnail_filename;
         }
 
         //unlink the old path of images and upate new images
@@ -285,8 +285,8 @@ class ProductController extends Controller
         if ($request->hasFile('images')) {
             foreach ($request->file('images') as $image) {
                 $productImagesExtension = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $image->move('storage/images/product/images', $productImagesExtension);
-                $imagesArray[] = 'storage/images/product/images/' . $productImagesExtension;
+                $image->move('public/storage/images/product/images', $productImagesExtension);
+                $imagesArray[] = 'public/storage/images/product/images/' . $productImagesExtension;
             }
         }
         foreach ($currentImages as $currentImage) {
@@ -317,8 +317,8 @@ class ProductController extends Controller
             return response()->json(['error' => 'Product not found'], 404);
         }
 
-        $thumbnailPath = 'storage/images/product/thumbnail/' . $product->thumbnail;
-        $imagesPath = 'storage/images/product/images/' . $product->images;
+        $thumbnailPath = 'public/storage/images/product/thumbnail/' . $product->thumbnail;
+        $imagesPath = 'public/storage/images/product/images/' . $product->images;
 
         if (File::exists($imagesPath)) {
             if (File::delete($imagesPath)) {
@@ -339,19 +339,5 @@ class ProductController extends Controller
         $product->delete();
 
         return response()->json(['success' => 'Product deleted successfully']);
-    }
-
-    /**
-     * realtime change value of suvcategory and child category on change Category
-     */
-    public function getSelectedSubcategory($id)
-    {
-        $subcategories = Subcategory::where('category_id', $id)->orderBy('created_at', 'desc')->get();
-        return json_encode($subcategories);
-    }
-    public function getSelectedChildcategory($id)
-    {
-        $childcategories = ChildCategory::where('subcategory_id', $id)->orderBy('created_at', 'desc')->get();
-        return json_encode($childcategories);
     }
 }

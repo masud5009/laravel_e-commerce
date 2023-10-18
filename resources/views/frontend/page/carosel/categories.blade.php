@@ -1,73 +1,49 @@
 <div class="container-fluid  mb-5" style="height: 400px; overflow: hidden;">
     <div class="row">
         <div class="col-lg-4 px-5">
-            <div class="d-flex">
-                <nav style="height: 95%; border-radius: 10px;box-shadow:0px 0px 1px 0px black"
-                    class="navbar navbar-vertical navbar-light align-items-start bg-light sidebar">
-                    <ul class="navbar-nav w-100">
-                        @foreach ($categories as $category)
-                            <li class="category-menu nav-item">
-                                <a href="#" class="nav-link px-2">
-                                    {{ $category->name }}
-                                    <i class="fa fa-angle-right float-right mt-1 px-2"></i>
-                                </a>
-                                <div
-                                    class="subcategories navbar navbar-vertical navbar-light  align-items-start bg-light sidebar px-3">
-                                    <ul style="list-style: none" class="navbar-nav w-100">
-                                        @if ($category->subcategory->count() > 0)
-                                            @foreach ($category->subcategory as $subcategory)
-                                                <li class="nav-item childcategory">
-                                                    <a href="#" class="nav-link px-2">
-                                                        {{ $subcategory->name }}
-                                                        <i class="fa fa-angle-right float-right mt-1 px-2"></i>
-                                                    </a>
-                                                    <div
-                                                        class="childcategories navbar navbar-vertical navbar-light  align-items-start bg-light sidebar px-3">
-                                                        <ul style="list-style: none" class="navbar-nav w-100">
-                                                            @if ($subcategory->childcategory->count() > 0)
-                                                                @foreach ($subcategory->childcategory as $childcategory)
-                                                                    <li class="nav-item">
-                                                                        <a href="#" class="nav-link px-2">
-                                                                            {{ $childcategory->name }}
-                                                                            <i
-                                                                                class="fa fa-angle-right float-right mt-1 px-2"></i>
-                                                                        </a>
-                                                                    </li>
-                                                                @endforeach
-                                                            @endif
-                                                        </ul>
-                                                    </div>
-                                                </li>
-                                            @endforeach
-                                        @endif
-                                    </ul>
-                                </div>
-                            </li>
-                        @endforeach
-                    </ul>
-                </nav>
-
-                <!-- hover effect -->
-                {{-- <nav class="subcategories navbar navbar-vertical navbar-light  align-items-start bg-light sidebar">
-                    <div class="navbar-nav w-100 overflow-hidden">
-                        @foreach ($categories as $category)
-                            <a href="#" class="nav-link px-2">
-                                {{ $category->name }}
-                                <i class="fa fa-angle-right float-right mt-1 px-2"></i>
-                            </a>
-                        @endforeach
-                    </div>
-                </nav> --}}
-                {{-- <div class="bg-light subcategories">
+            <nav class="navbar navbar-vertical navbar-light align-items-start bg-light sidebar">
+                <ul class="navbar-nav w-100">
                     @foreach ($categories as $category)
-                            <a href="#" class="nav-link px-2">
-                                {{ $category->name }}
+                        <li class="category-menu nav-item">
+                            <a href="javascript:void(0)" class="nav-link px-2">
+                                <img src="{{ asset($category->icon)}}" alt="" style="width: 25px" class="mr-2">{{ $category->name }}
                                 <i class="fa fa-angle-right float-right mt-1 px-2"></i>
                             </a>
-                        @endforeach
-                </div> --}}
-            </div>
-
+                            <div
+                                class="subcategories navbar navbar-vertical navbar-light  align-items-start bg-light sidebar px-3">
+                                <ul style="list-style: none" class="navbar-nav w-100">
+                                    @if ($category->subcategory->count() > 0)
+                                        @foreach ($category->subcategory as $subcategory)
+                                            <li class="nav-item childcategory">
+                                                <a href="#" class="nav-link px-2">
+                                                    {{ $subcategory->name }}
+                                                    <i class="fa fa-angle-right float-right mt-1 px-2"></i>
+                                                </a>
+                                                <div
+                                                    class="childcategories navbar navbar-vertical navbar-light  align-items-start bg-light sidebar px-3">
+                                                    <ul style="list-style: none" class="navbar-nav w-100">
+                                                        @if ($subcategory->childcategory->count() > 0)
+                                                            @foreach ($subcategory->childcategory as $childcategory)
+                                                                <li class="nav-item">
+                                                                    <a href="#" class="nav-link px-2">
+                                                                        {{ $childcategory->name }}
+                                                                        <i
+                                                                            class="fa fa-angle-right float-right mt-1 px-2"></i>
+                                                                    </a>
+                                                                </li>
+                                                            @endforeach
+                                                        @endif
+                                                    </ul>
+                                                </div>
+                                            </li>
+                                        @endforeach
+                                    @endif
+                                </ul>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </nav>
         </div>
 
 

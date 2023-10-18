@@ -14,7 +14,8 @@ use App\Http\Controllers\Admin\{
     ProfileController,
     SeoController,
     SmtpController,
-    WarhouseCotroller
+    WarhouseCotroller,
+    WebsiteSetupController
 };
 use App\Http\Controllers\Frontend\{
     CheckoutController,
@@ -25,6 +26,7 @@ use App\Http\Controllers\Frontend\{
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\Customer\LoginController;
 use App\Http\Controllers\Customer\RegisterController;
+use App\Models\Admin\WebsiteSetup;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -133,7 +135,12 @@ Route::prefix('admin/')->middleware('superAdmin', 'verified')->group(function ()
     Route::post('warehouse', [WarhouseCotroller::class, 'store'])->name('warhouse.store');
     Route::get('/warehouse/{warehouse}/edit', [WarhouseCotroller::class, 'edit'])->name('warehouse.edit');
     Route::delete('/warehouse/{warehouse}/delete', [WarhouseCotroller::class, 'destory'])->name('warehouse.destory');
-
+    //Website Setup Route
+    Route::prefix('website')->group(function () {
+        Route::get('header', [WebsiteSetupController::class, 'header'])->name('website.header');
+        Route::get('footer', [WebsiteSetupController::class, 'footer'])->name('website.footer');
+    });
+    // Route::get('website/header',[WebsiteSetupCont])
     //Profile Routes
     Route::get('profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::post('profile', [ProfileController::class, 'update'])->name('profile.update');

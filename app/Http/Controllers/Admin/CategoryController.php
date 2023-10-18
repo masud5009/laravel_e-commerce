@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Storage;
 
 class CategoryController extends Controller
 {
@@ -16,7 +17,7 @@ class CategoryController extends Controller
      */
     public function index(Request $request)
     {
-        $categories = Category::orderBy('created_at', 'DESC')->paginate(10);
+        $categories = Category::orderBy('created_at', 'DESC')->get();
         return view('admin.pages.category.index', compact('categories'));
     }
     public function create()
@@ -72,8 +73,39 @@ class CategoryController extends Controller
             return view('admin.pages.category.edit', compact('category'));
         }
     }
-    public function update($id)
+    /**
+     * Update Category
+     */
+    public function update($id, Request $request)
     {
+        $category = Category::find($id);
+
+        $category->update([
+            'name' => $request->name,
+            'slug' =>  Str::slug($request->name, '_'),
+            'description' =>  $request->description,
+            'parent_id' => $request->parent_id,
+        ]);
+        $uploadFields = ['banner', 'icon', 'cover_img'];
+        $basePath = 'public/storage/images/category_img/';
+
+        foreach ($uploadFields as $field) {
+            if ($request->hasFile($field)) {
+                //unlinke image form folder
+                $currentPath = $basePath.$field;
+                if (File::exists($currentPath)) {
+                    File::delete($currentPath);
+                }
+
+                $file = $request->file($field);
+                $filename = time() . '_' . uniqid() . '.' . $file->getClientOriginalExtension();
+                $file->move($basePath, $filename);
+                $category->$field = $basePath . $filename;
+            }
+        }
+        $category->save();
+        session()->flash('success', 'Category update success');
+        return redirect()->back();
     }
 
     /**
