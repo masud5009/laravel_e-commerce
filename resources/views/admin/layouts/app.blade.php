@@ -21,27 +21,27 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
         rel="stylesheet" />
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
     <!-- Icons. Uncomment required icon fonts -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-- Vendors CSS -->
+    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
     <!-- Core CSS -->
     <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/core.css" class="template-customizer-core-css" />
     <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/theme-default.css"
         class="template-customizer-theme-css" />
     <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/demo.css" />
     <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/css/my.css" />
-    <!-- Vendors CSS -->
-    <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.css" />
- <!--Toaster alert-->
- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+    <!--Toaster alert-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
     <link rel="stylesheet" href="{{ asset('public/asset/admin') }}/lib/apex-charts/apex-charts.css" />
-
-    <!-- Page CSS -->
-    @stack('css')
     <!-- Helpers -->
     <script src="{{ asset('public/asset/admin') }}/js/helpers.js"></script>
     <script src="{{ asset('public/asset/admin') }}/js/config.js"></script>
+
+    @stack('css')
+
 </head>
 
 <body>
@@ -80,9 +80,19 @@
 
     <!-- Core JS -->
     <!-- build:js assets/vendor/js/core.js -->
-    <script src="{{ asset('public/asset/admin') }}/lib/jquery/jquery.js"></script>
-    <script src="{{ asset('public/asset/admin') }}/lib/popper/popper.js"></script>
-    <script src="{{ asset('public/asset/admin') }}/js/bootstrap.js"></script>
+    {{-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"
+        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous">
+    </script> --}}
+        <script src="{{ asset('public/asset/admin') }}/lib/jquery/jquery.js"></script>
+        <script src="{{ asset('public/asset/admin') }}/lib/popper/popper.js"></script>
+        <script src="{{ asset('public/asset/admin') }}/js/bootstrap.js"></script>
+
     <script src="{{ asset('public/asset/admin') }}/lib/perfect-scrollbar/perfect-scrollbar.js"></script>
     <script src="{{ asset('public/asset/admin') }}/js/menu.js"></script>
     <!-- endbuild -->
@@ -102,8 +112,8 @@
         @if (Session::has('success'))
             toastr.success('{{ Session::get('success') }}');
         @endif
-        @if(Session::has('error'))
-        toastr.error('{{ Session::get('error') }}');
+        @if (Session::has('error'))
+            toastr.error('{{ Session::get('error') }}');
         @endif
     </script>
 </body>

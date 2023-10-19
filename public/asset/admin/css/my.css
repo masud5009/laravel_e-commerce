@@ -1,4 +1,4 @@
-.card-header{
+.card-header {
     padding: 1rem 1rem;
 }
 
@@ -102,21 +102,23 @@ input:checked+.slider:before {
 /* remove inner-spin-button from input type Number */
 .no-spin::-webkit-inner-spin-button,
 .no-spin::-webkit-outer-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
 }
+
 .no-spin {
-  -moz-appearance: textfield;
+    -moz-appearance: textfield;
 }
 
 
-.accordion .accordion-item.active
-{
+.accordion .accordion-item.active {
     box-shadow: none;
 }
+
 .accordion-button::after {
     display: none;
 }
+
 .custom-accordion .accordion-button::after {
     display: none;
 }
@@ -125,19 +127,20 @@ input:checked+.slider:before {
 #myTable_wrapper {
     background: #fff;
     padding: 20px 20px;
-  }
-#myTable_wrapper{
+}
+
+#myTable_wrapper {
     box-shadow: 0 2px 6px 0 rgba(67, 89, 113, 0.12);
     border-radius: 10px;
 }
 
 #myTable_length {
     margin-bottom: 50px;
-  }
+}
 
 
-  /* products tags css */
-  .tags-input {
+/* products tags css */
+.tags-input {
     display: inline-block;
     position: relative;
     border: 1px solid #d9dee3;
@@ -183,11 +186,11 @@ input:checked+.slider:before {
 }
 
 /* topbar css */
-.topbar-bg{
-    background : #d00906 !important;
+.topbar-bg {
+    background: #d00906 !important;
 }
 
 /* footer css */
-.footer-bg{
+.footer-bg {
     background: #212129 !important;
 }

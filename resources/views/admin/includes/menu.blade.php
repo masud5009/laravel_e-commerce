@@ -57,7 +57,7 @@
 
     <ul class="menu-inner py-1">
         <!-- Dashboard -->
-        <li class="menu-item active">
+        <li class="menu-item {{ request()->routeIs('admin.index') ? 'active' : '' }}">
             <a href="{{ route('admin.index') }}" class="menu-link">
                 <i class="menu-icon tf-icons bx bx-home-circle"></i>
                 <div data-i18n="Analytics">Dashboard</div>
@@ -65,34 +65,42 @@
         </li>
 
         <!-- Category -->
-        <li class="menu-item">
+        @php
+            $categoryRouteRequest = request()->routeIs('category.index', 'category.create', 'category.edit');
+            $colorsRouteRequest = request()->routeIs('color.index');
+            $brandRouteRequest = request()->routeIs('brand.index');
+            $attributeRouteRequest = request()->routeIs('attribute.index');
+            $attributeRouteRequest = request()->routeIs('warhouse.index');
+        @endphp
+        <li
+            class="menu-item {{ $categoryRouteRequest || $colorsRouteRequest || $brandRouteRequest || $attributeRouteRequest ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon tf-icons bx bx-list-ul'></i>
                 <div data-i18n="Layouts">Category</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('category.index') ? 'active' : '' }}">
                     <a href="{{ route('category.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Category</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('color.index') ? 'active' : '' }}">
                     <a href="{{ route('color.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Colors</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('attribute.index') ? 'active' : '' }}">
                     <a href="{{ route('attribute.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Attributes</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('warhouse.index') ? 'active' : '' }}">
                     <a href="{{ route('warhouse.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Warhouse</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('brand.index') ? 'active' : '' }}">
                     <a href="{{ route('brand.index') }}" class="menu-link">
                         <div data-i18n="Without menu">Brand</div>
                     </a>
@@ -100,19 +108,22 @@
             </ul>
         </li>
         <!-- product -->
-        <li class="menu-item">
+        @php
+            $productRouteRequest = request()->routeIs('product.index', 'product.create', 'product.edit');
+        @endphp
+        <li class="menu-item {{ $productRouteRequest ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i>
                 <div data-i18n="Layouts">Product</div>
             </a>
 
             <ul class="menu-sub">
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('product.index') ? 'active' : '' }}">
                     <a href="{{ route('product.index') }}" class="menu-link">
                         <div data-i18n="Without menu">All Products</div>
                     </a>
                 </li>
-                <li class="menu-item">
+                <li class="menu-item {{ request()->routeIs('product.create') ? 'active' : '' }}">
                     <a href="{{ route('product.create') }}" class="menu-link">
                         <div data-i18n="Without menu">Add Product</div>
                     </a>
@@ -140,18 +151,20 @@
                 </li>
             </ul>
         </li>
+        @php
+            $couponRouteRequest = request()->routeIs('coupon.index');
+        @endphp
         <!-- Marketing -->
-        <li class="menu-item">
+        <li class="menu-item {{ $couponRouteRequest ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
-                {{-- <i class="menu-icon bx bx-cart aiz-side-nav-icon"></i> --}}
                 <i class="menu-icon fa-solid fa-bullhorn"></i>
-
                 <div data-i18n="Layouts">Marketing</div>
             </a>
 
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{ route('coupon.index') }}" class="menu-link">
+                    <a href="{{ route('coupon.index') }}"
+                        class="menu-link {{ request()->routeIs('coupon.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">Coupon</div>
                     </a>
                 </li>
@@ -163,36 +176,44 @@
             </ul>
         </li>
         <!-- settings -->
-
-        <li class="menu-item">
+        @php
+            $seoRouteRequest = request()->routeIs('seo.index');
+            $smtpRouteRequest = request()->routeIs('smtp.index');
+            $pageManageRouteRequest = request()->routeIs('page.index', 'page.create', 'page.edit');
+        @endphp
+        <li class="menu-item {{ $seoRouteRequest || $smtpRouteRequest || $pageManageRouteRequest ? 'open' : '' }}">
             <a href="javascript:void(0);" class="menu-link menu-toggle">
                 <i class='menu-icon bx bx-cog'></i>
                 <div data-i18n="Layouts">Setup & Configuration</div>
             </a>
-
             <ul class="menu-sub">
                 <li class="menu-item">
-                    <a href="{{ route('seo.index') }}" class="menu-link">
+                    <a href="{{ route('seo.index') }}"
+                        class="menu-link {{ request()->routeIs('seo.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">SEO Setting</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('page.index') }}" class="menu-link">
+                    <a href="{{ route('page.index') }}"
+                        class="menu-link {{ request()->routeIs('page.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">Page Manage</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('smtp.index') }}" class="menu-link">
+                    <a href="{{ route('smtp.index') }}"
+                        class="menu-link {{ request()->routeIs('smtp.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">SMTP Setting</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('brand.index') }}" class="menu-link">
+                    <a href="{{ route('brand.index') }}"
+                        class="menu-link {{ request()->routeIs('brand.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">Payment Gateway</div>
                     </a>
                 </li>
                 <li class="menu-item">
-                    <a href="{{ route('brand.index') }}" class="menu-link">
+                    <a href="{{ route('brand.index') }}"
+                        class="menu-link {{ request()->routeIs('brand.index') ? 'active' : '' }}">
                         <div data-i18n="Without menu">Role Managment</div>
                     </a>
                 </li>

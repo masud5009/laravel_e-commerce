@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers\Frontend;
 
-use App\Http\Controllers\Controller;
-use App\Models\Admin\Category;
-use App\Models\Admin\GeneralSetting;
-use App\Models\Admin\Product;
 use App\Models\Admin\Review;
 use Illuminate\Http\Request;
+use App\Models\Admin\Product;
+use App\Models\Admin\Category;
+use App\Http\Controllers\Controller;
 
 class IndexpageController extends Controller
 {
@@ -17,10 +16,11 @@ class IndexpageController extends Controller
     public function index()
     {
         $categoriesWithImage = Category::select('slug', 'name', 'cover_img')
-            ->take(6)->get();
+            ->take(6)
+            ->get();
 
         $trendyProducts = Product::where('active_status', 1)
-        ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
+            ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
             ->where('trandy', 1)
             ->orderBy('created_at', 'desc')
             ->paginate(12);
@@ -31,10 +31,12 @@ class IndexpageController extends Controller
             ->inRandomOrder()
             ->paginate(12);
 
-        // $generalSetting = GeneralSetting::find(1);
-        $todaysDealProducts = Product::where('todays_deal', 1)
-        ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
-        ->take(5)->get();
+        $todaysDealProducts = Product::where('active_status', 1)
+            ->where('todays_deal', 1)
+            ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
+            ->take(5)
+            ->get();
+
         return view('frontend.index', compact('categoriesWithImage', 'trendyProducts', 'justProducts', 'todaysDealProducts'));
     }
 
@@ -44,7 +46,10 @@ class IndexpageController extends Controller
     public function details($slug)
     {
         $product = Product::where('slug', $slug)->first();
-        $randomProducts = Product::all();
+        $randomProducts = Product::where('active_status', 1)
+            ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
+            ->orderBy('created_at', 'desc')
+            ->get();
         $reviews = Review::all();
         return view('frontend.page.product_detail_page', compact('product', 'randomProducts', 'reviews'));
     }
@@ -56,10 +61,12 @@ class IndexpageController extends Controller
     {
         $product = $request->input('product');
 
-        $products = Product::where('active_status', 1)
-            ->where('name', 'LIKE', '%' . $product . '%')
-            ->orWhere('slug', 'LIKE', '%' . $product . '%')
-            ->get();
+        if ($product) {
+            $products = Product::where('active_status', 1)
+                ->where('name', 'LIKE', '%' . $product . '%')
+                ->orWhere('slug', 'LIKE', '%' . $product . '%')
+                ->get();
+        }
 
 
         return view('frontend.page.seach_product', compact('products'));
