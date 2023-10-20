@@ -149,7 +149,7 @@
                                     id="discunt_date" name="discount_date">
                             </div>
                             <div class="form-group mb-2">
-                                <label for="unit_price" class="form-label">Discount price<span
+                                <label for="unit_price" class="form-label">Discount<span
                                         class="text-danger fs-6">*</span></label>
                                 <div class="input-group input-group-merge">
                                     <span class="input-group-text">$</span>
@@ -409,7 +409,8 @@
                         </div>
                         <div class="card-body">
                             <div class="form-group">
-                                <label for="" class="form-label">Shipping Days </label>
+                                <label for="" class="form-label">Shipping Days<span
+                                    class="text-danger fs-6">*</span></label>
                                 <input type="number" min="1" class="form-control no-spin" id="shipping_day"
                                     name="shipping_day" value="{{ $product->shipping_day }}">
                             </div>
