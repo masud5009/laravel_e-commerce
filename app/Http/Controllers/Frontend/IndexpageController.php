@@ -50,7 +50,8 @@ class IndexpageController extends Controller
             ->select('id', 'slug', 'thumbnail', 'name', 'unit_price', 'discount_price')
             ->orderBy('created_at', 'desc')
             ->get();
-        $reviews = Review::all();
+        $reviews = Review::where('product_id', $product->id)
+            ->get();
         return view('frontend.page.product_detail_page', compact('product', 'randomProducts', 'reviews'));
     }
 
