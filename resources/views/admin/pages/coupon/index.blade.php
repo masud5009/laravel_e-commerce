@@ -1,7 +1,6 @@
 @extends('admin.layouts.app')
 @push('css')
-    <!-- Ajax Cdn -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src=" https://code.jquery.com/jquery-3.7.0.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.css" />
     <!-- sweetalert -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
@@ -14,8 +13,11 @@
 @section('content')
     <!--Bootstrap modal-->
     <!-- Button trigger modal -->
-    <div class="d-flex justify-content-center mb-5">
-        <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#Modal" id="add_coupon">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mt-3">
+            All Coupons
+        </h5>
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#Modal" id="add_coupon">
             Add Coupon
         </button>
     </div>
@@ -32,32 +34,33 @@
                     <div class="modal-body">
                         <input type="hidden" name="coupon_id" id="coupon_id">
                         <div class="form-group mb-2">
-                            <label class="form-label">Code <span class="text-danger">*</span></label>
+                            <label class="form-label">Coupon code <span class="text-danger">*</span></label>
                             <input type="text" class="form-control" name="code" id="code">
-                        </div>
+                            <span id="error-code" class="text-danger"></span>
 
-                        <div class="form-group mb-2">
-                            <label class="form-label">Amount<span class="text-danger">*</span></label>
-                            <input type="number" class="form-control" name="amount" id="amount">
-                            {{-- <div class="form-text">
-                                Example : +88 use your coutnry dial code before write phone number
-                            </div> --}}
                         </div>
                         <div>
                             <label for="type" class="form-label">Select Type</label>
                             <div class="input-group mb-2">
                                 <label class="input-group-text">Type</label>
                                 <select class="form-select" id="type" name="type">
-                                    <option selected>Choose...</option>
-                                    <option value="1">Fixed</option>
-                                    <option value="2">Percentage</option>
+                                    <option selected disabled>Choose...</option>
+                                    <option value="fixed">Fixed</option>
+                                    <option value="percentage">Percentage</option>
                                 </select>
                             </div>
+                            <span class="text-danger" id="error-type"></span>
                         </div>
+                        <div class="form-group mb-2">
+                            <label class="form-label">Discount Amount<span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" name="discount_amount" id="amount">
+                            <span id="error-amount" class="text-danger"></span>
+                        </div>
+
                         <div class="form-group">
                             <label class="form-label">Date</label>
-                            {{-- <input type="date" class="form-control" id="date" name="date"> --}}
-                            <input class="form-control" type="datetime-local" id="date" name="date">
+                            <input class="form-control" type="date" id="date" name="date">
+                            <span class="text-danger" id="error-date"></span>
                         </div>
 
                         <div class="modal-footer">
@@ -68,7 +71,6 @@
                 </div>
             </div>
         </form>
-        <div style="display: none" id="bal">bal</div>
     </div>
     <!--/.Bootsttap modal-->
     <div class="col-lg-12 col-sm-12 col-md-12">
@@ -95,21 +97,23 @@
     <!-- Sweetalert -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.js"></script>
-    <!-- store category -->
+
     <script>
         $(document).ready(function() {
             $('#add_coupon').click(function() {
                 $('#modal-title').html('Add Coupon');
                 $('#saveBtn').html('Add');
-
-                $('#coupon_id').val('');
                 $('#code').val('');
-                $('#date').val('');
                 $('#amount').val('');
+                $('#date').val('');
+                $('#type').val('');
             });
-
             // Load data form serverside
             var table = $('#myTable').DataTable({
+                responsive: true,
+                rowReorder: {
+                    selector: 'td:nth-child(2)'
+                },
                 processing: true,
                 serverSide: true,
                 ajax: '{{ route('coupon.index') }}',
@@ -123,21 +127,13 @@
                         data: 'code'
                     },
                     {
-                        data: 'amount'
+                        data: 'discount_amount'
                     },
                     {
                         data: 'date'
                     },
                     {
-                        data: 'status',
-                        render: function(data, type, row) {
-                            let buttonClass = data === 0 ? 'btn-success' : 'btn-secondary';
-                            let buttonText = data === 0 ? 'Active' : 'Inactive';
-
-                            return '<button class="btn btn-sm ' + buttonClass +
-                                ' toggle-status" data-coupon-id="' + row.id + '">' + buttonText +
-                                '</button>';
-                        }
+                        data: 'status'
                     },
                     {
                         data: 'action',
@@ -147,18 +143,21 @@
                     }
                 ],
 
+                order: [
+                    [1, 'dsc']
+                ]
+
             });
 
-            // Create & Update Coupon
+            //Store Coupon
             var form = $('#ajaxform')[0];
-
             $('#saveBtn').click(function() {
                 var formData = new FormData(form);
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
                 $.ajax({
                     url: '{{ route('coupon.store') }}',
-                    method: 'POST',
+                    type: 'POST',
                     data: formData,
                     processData: false,
                     contentType: false,
@@ -166,14 +165,13 @@
                         'X-CSRF-TOKEN': csrfToken
                     },
                     success: function(response) {
-                        table.draw();
-
+                        // table.draw();
                         $('#code').val('');
                         $('#amount').val('');
                         $('#date').val('');
-
-
+                        $('#type').val('');
                         $('#Modal').modal('hide');
+
                         if (response) {
                             Swal.fire("Success", response.success, "success");
                         }
@@ -185,7 +183,18 @@
 
                         if (error.responseJSON && error.responseJSON.errors) {
                             var errors = error.responseJSON.errors;
-                            console.log(errors);
+                            if (errors.code) {
+                                $('#error-code').text(errors.code[0]);
+                            }
+                            if (errors.discount_amount) {
+                                $('#error-amount').text(errors.discount_amount[0]);
+                            }
+                            if (errors.date) {
+                                $('#error-date').text(errors.date[0]);
+                            }
+                            if (errors.type) {
+                                $('#error-type').text(errors.type[0]);
+                            }
                         } else {
                             console.log("An unexpected error occurred:", error);
                         }
@@ -193,29 +202,6 @@
                 });
             });
 
-            // Edit Coupon
-            $('body').on('click', '.editBtn', function() {
-                var id = $(this).data('id');
-
-                $.ajax({
-                    type: 'GET',
-                    url: '{{ route('coupon.edit', ['coupon' => '__coupon__']) }}'.replace(
-                        '__coupon__', id),
-                    success: function(response) {
-                        // modal section
-                        $('.modal').modal('show');
-                        $('#modal-title').html('Edit coupon');
-                        $('#saveBtn').html('Update');
-
-                        //input section
-                        $('#type option[value="' + response.id + '"]').prop('selected', true);
-                        $('#coupon_id').val(response.id);
-                        $('#code').val(response.code);
-                        $('#date').val(response.date);
-                        $('#amount').val(response.amount);
-                    }
-                });
-            });
 
             //Delete Coupon
             $('body').on('click', '.deletBtn', function() {
@@ -223,7 +209,7 @@
                 const csrfToken = $('meta[name="csrf-token"]').attr('content');
                 Swal.fire({
                     title: "Are you sure?",
-                    text: "Once deleted, you will not be able to recover this warehouse!",
+                    text: "Once deleted, you will not be able to recover this Coupon!",
                     icon: "warning",
                     showCancelButton: true,
                     confirmButtonColor: "#DD6B55",
@@ -247,8 +233,8 @@
                             },
                             error: function(xhr, status, error) {
                                 // Handle errors here, if necessary
-                                Swal.fire("Error",
-                                    "An error occurred while deleting the coupon.",
+                                swal("Error",
+                                    "An error occurred while deleting the Coupon.",
                                     "error");
                                 console.error(xhr.responseText);
                             }
@@ -258,43 +244,6 @@
                     }
                 });
             });
-
-            // Coupon Status
-            $('body').on('click', '.toggle-status', function() {
-                var couponId = $(this).data('coupon-id');
-                var currentStatus = $(this).hasClass('btn-success') ? 1 : 0;
-                const csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-
-                $.ajax({
-                    type: 'POST',
-                    url: '{{ route('coupon.toggle-status', ['coupon' => '__coupon__']) }}'
-                        .replace(
-                            '__coupon__', couponId),
-                    data: {
-                        status: currentStatus
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken
-                    },
-                    success: function(response) {
-                        if (response.success) {
-                            var newStatus = currentStatus === 0 ? 1 : 0;
-                            var buttonClass = newStatus === 1 ? 'btn-success' :
-                                'btn-secondary';
-                            var buttonText = newStatus === 1 ? 'Active' :
-                                'Inactive';
-
-                            $(this).removeClass('btn-success btn-secondary')
-                                .addClass(buttonClass).text(buttonText);
-                        }
-                    }.bind(this), // Use .bind(this) to maintain the correct button context
-                    error: function(error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-
         });
     </script>
 @endpush

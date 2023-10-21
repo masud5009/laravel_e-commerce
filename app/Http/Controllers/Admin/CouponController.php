@@ -16,9 +16,9 @@ class CouponController extends Controller
     {
         if ($request->ajax()) {
 
-            $warehouse = Coupon::query();
+            $coupon = Coupon::query();
 
-            return DataTables::of($warehouse)
+            return DataTables::of($coupon)
                 ->addColumn('action', function ($row) {
                     return '<a href="javascript:void(0)" class="btn-sm btn btn-primary editBtn" data-id="' . $row->id . '">
                                 <i class="bx bx-edit"></i>
@@ -51,37 +51,39 @@ class CouponController extends Controller
     public function store(Request $request)
     {
         if ($request->coupon_id) {
-            $this->validate($request, [
-                'code' => 'required|unique:coupons,code' . $request->coupon_id,
-            ]);
             $coupon = Coupon::find($request->coupon_id);
-
             if (!$coupon) {
                 abort(404);
             } else {
-                $coupon->update([
-                    'code' => $request->code,
-                    'date' => $request->date,
-                    'type' => $request->type,
-                    'amount' => $request->amount,
+                $this->validate($request, [
+                    'code' => 'required|max:12',
+                    'discount_amount' => 'required',
+                    'date' => 'required',
+                    'type' => 'required'
                 ]);
+                $coupon = $coupon->update([
+                    'code' => $request->code,
+                    'type' => $request->type,
+                    'discount_amount' => $request->discount_amount,
+                    'date' => $request->date,
+                ]);
+                return $coupon;
                 return response()->json(['success' => 'Coupon update success']);
             }
         } else {
             $this->validate($request, [
-                'code' => 'required|unique:coupons,code' . $request->coupon_id,
-                'date' => 'required|date',
-                'amount' => 'required',
+                'code' => 'required|max:12|unique:coupons,code',
+                'discount_amount' => 'required',
+                'date' => 'required',
                 'type' => 'required'
             ]);
             $coupon = new Coupon();
             $coupon->create([
                 'code' => $request->code,
-                'date' => $request->date,
                 'type' => $request->type,
-                'amount' => $request->amount,
+                'discount_amount' => $request->discount_amount,
+                'date' => $request->date,
             ]);
-
             return response()->json(['success' => 'Coupon create success']);
         }
     }
